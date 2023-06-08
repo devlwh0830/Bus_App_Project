@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'view/main.dart';
+import 'view/manyfind.dart';
+import 'view/account.dart';
 
 void main() {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   runApp(
     MaterialApp(
+      theme: ThemeData(
+        fontFamily: "Godo",
+      ),
       home:  MyApp(),
     )
   );
@@ -52,9 +57,7 @@ class _MyAppState extends State<MyApp> {
             ),
           ),
       ),
-      body:[Homes(),
-        Text('즐겨찾기',style: TextStyle(fontSize: 100),),
-        Text('내정보',style: TextStyle(fontSize: 100),)][tab],
+      body:[Homes(),ManyFind(),Account()][tab],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: tab,
         onTap: (index) {
