@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'view/main.dart';
 
 void main() {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -36,33 +37,26 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0.0,
-        backgroundColor: Color.fromRGBO(221, 236, 202, 1),
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(80.0),
+        child: AppBar(
+            centerTitle: true,
+            elevation: 0.0,
+            backgroundColor: Color.fromRGBO(221, 236, 202, 1),
+            title: Container(
+              // margin: EdgeInsets.fromLTRB(0, 45, 0, 0),
+              padding: EdgeInsets.fromLTRB(0, 26, 0, 0),
+              width:250,
+              height: 200,
+              child: Image.network("https://media.discordapp.net/attachments/905797523363483659/1116317186177368064/header_logo.png?width=500&height=125"),
+            ),
+          ),
       ),
-      body:[Container(
-        width: double.infinity,
-        height: 150,
-        color: Color.fromRGBO(221, 236, 202, 1),
-        child: TextField(
-            textAlign: TextAlign.center,
-            decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: '정류장을 검색하세요.',
-                labelStyle: TextStyle(fontWeight: FontWeight.bold),
-                enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(30)),
-                    borderSide: BorderSide(color: Colors.blue)
-                )
-            )
-        ),
-      ),
+      body:[Homes(),
         Text('즐겨찾기',style: TextStyle(fontSize: 100),),
         Text('내정보',style: TextStyle(fontSize: 100),)][tab],
       bottomNavigationBar: BottomNavigationBar(
-        //현재 index 변수에 저장
         currentIndex: tab,
-        //tap -> index 변경
         onTap: (index) {
           setState(() {
             tab = index;
