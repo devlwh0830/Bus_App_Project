@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:geolocator/geolocator.dart';
+import 'search.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'popup.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -19,7 +21,7 @@ class _HomesState extends State<Homes> {
     // 결과 확인
     if(!status.isGranted) { // 허용이 안된 경우
       // ignore: use_build_context_synchronously
-      FlutterDialog();
+      FlutterDialog(context);
     } else{
       Position position = await Geolocator.getCurrentPosition(
           desiredAccuracy: LocationAccuracy.high);
@@ -28,107 +30,6 @@ class _HomesState extends State<Homes> {
         launchUrl(url, mode: LaunchMode.externalApplication);
       }
     }
-  }
-
-  void FlutterDialog() {
-    showDialog(
-      context: context,
-      //barrierDismissible - Dialog를 제외한 다른 화면 터치 x
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          // RoundedRectangleBorder - Dialog 화면 모서리 둥글게 조절
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10.0)
-          ),
-          //Dialog Main Title
-          title: Column(
-            children: <Widget>[
-              Text("위치 권한을 먼저 허용해 주세요."),
-            ],
-          ),
-          //
-          content: Container(
-            height: 100,
-            width: double.infinity,
-            padding: EdgeInsets.only(left: 10,right: 10),
-            decoration: BoxDecoration(
-              color: Colors.blueGrey,
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Center(
-              child: Text(
-                "위치 권한이 없는 경우 주변 정류장\n검색 서비스를 사용할 수 없습니다.",
-              textAlign: TextAlign.center,style: TextStyle(color: Colors.white),),
-            )
-          ),
-          actions: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                TextButton(
-                  onPressed: (){
-                    openAppSettings();
-                  },
-                  child: Text("권한설정"),
-                ),
-                TextButton(
-                  onPressed: (){
-                    Navigator.pop(context);
-                  },
-                  child: Text("닫기"),
-                )
-              ],
-            )
-          ],
-        );
-      },
-    );
-  }
-
-  void getLocations(x,y) {
-    showDialog(
-      context: context,
-      //barrierDismissible - Dialog를 제외한 다른 화면 터치 x
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          // RoundedRectangleBorder - Dialog 화면 모서리 둥글게 조절
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10.0)
-          ),
-          //Dialog Main Title
-          title: Column(
-            children: <Widget>[
-              Text("위치 조회 성공"),
-            ],
-          ),
-          //
-          content: Container(
-              height: 100,
-              width: double.infinity,
-              padding: EdgeInsets.only(left: 10,right: 10),
-              decoration: BoxDecoration(
-                color: Colors.blueGrey,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Center(
-                child: Text(
-                  "귀하의 현재 위치 좌표 정보 입니다.\nX좌표 : ${x}\nY좌표 : ${y}",
-                  textAlign: TextAlign.center,style: TextStyle(color: Colors.white),),
-              )
-          ),
-          actions: [
-            TextButton(
-              onPressed: (){
-                Navigator.pop(context);
-              },
-              child: Text("닫기"),
-            )
-          ],
-        );
-      },
-    );
   }
 
   @override
@@ -159,32 +60,34 @@ class _HomesState extends State<Homes> {
                         iconSize: 40
                     ),
                   ),
-                  Container(
-                    width:300,
-                    child: TextField(
-                      keyboardType: TextInputType.text,
-                      onChanged: (text){
-
-                      },
-                      decoration: InputDecoration(
-                        hintText: "노선 번호 또는 정류장 검색",
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(20),
-                          ),
-                        ),
-                        suffixIcon: Padding(
-                          padding: EdgeInsets.only(right: 5),
-                          child: IconButton(
-                            onPressed: (){
-
+                  Hero(
+                      tag: "Search_Page",
+                      child: Material(
+                        type: MaterialType.transparency,
+                        child: Container(
+                          width:300,
+                          child: TextField(
+                            onTap: (){
+                              Navigator.push(context,
+                              MaterialPageRoute(builder: (context) => Search()));
                             },
-                            icon: Icon(Icons.search_outlined,size: 35,),
+                            keyboardType: TextInputType.none,
+                            decoration: InputDecoration(
+                              hintText: "노선 번호 또는 정류장 검색",
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(20),
+                                ),
+                              ),
+                              suffixIcon: Padding(
+                                  padding: EdgeInsets.only(right: 5),
+                                  child: Icon(Icons.search_outlined,size: 35,)
+                              ),
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ),
+                  )
                 ],
               ),
               Container(
