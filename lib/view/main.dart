@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class Homes extends StatefulWidget {
   const Homes({super.key});
@@ -20,7 +23,10 @@ class _HomesState extends State<Homes> {
     } else{
       Position position = await Geolocator.getCurrentPosition(
           desiredAccuracy: LocationAccuracy.high);
-      getLocations(position.latitude,position.longitude);
+      final url = Uri.parse("https://map.kakao.com/link/search/${position.latitude},${position.longitude}");
+      if (await canLaunchUrl(url)) {
+        launchUrl(url, mode: LaunchMode.externalApplication);
+      }
     }
   }
 
