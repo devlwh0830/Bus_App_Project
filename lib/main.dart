@@ -42,6 +42,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(80.0),
         child: AppBar(
@@ -49,7 +50,6 @@ class _MyAppState extends State<MyApp> {
             elevation: 0.0,
             backgroundColor: Color.fromRGBO(221, 236, 202, 1),
             title: Container(
-              // margin: EdgeInsets.fromLTRB(0, 45, 0, 0),
               padding: EdgeInsets.fromLTRB(0, 26, 0, 0),
               width:250,
               height: 200,
