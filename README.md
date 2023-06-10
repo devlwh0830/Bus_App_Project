@@ -1,16 +1,12 @@
-# busapp
+# 버스 타자, 버타
 
-My First Project
+- 플러터로 앱 만들기 프로젝트<br>
+- 2023.06.06 ~ 제작중
+<br>
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- 작업노트
+  - 앱 구동 인트로 화면 구성 -> 2023.06.06
+  - 초기화면 레이아웃 구성 -> 2023.06.07
+  - 메인화면 레이아웃 구성 -> 2023.06.08
+  - 스마트폰의 GPS 불러오기, 검색 화면 구현 -> 2023.06.09
+  - 노선 검색 API을 사용한 검색 구현 -> 2023.06.10
