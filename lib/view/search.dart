@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '/apis/api.dart';
 
 class Search extends StatefulWidget {
   const Search({super.key});
@@ -9,8 +10,16 @@ class Search extends StatefulWidget {
 
 class _SearchState extends State<Search> {
 
-  var data = ["집정류장", "회사정류장", "학교정류장", "한국정류장", "군대정류장", "병원정류장", "하늘나라정류장"];
+  var data;
+  var datas;
   var input = "";
+
+  getData(String c) async {
+    datas = await busLineSeach(c);
+    setState((){
+      data = datas;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,9 +35,7 @@ class _SearchState extends State<Search> {
               padding: EdgeInsets.only(right: 20,top: 60, bottom: 20),
               child: TextField(
                 onChanged: (c){
-                  setState(() {
-                    input = c;
-                  });
+                  getData(c);
                 },
                 autofocus: true,
                 keyboardType: TextInputType.text,
@@ -55,34 +62,30 @@ class _SearchState extends State<Search> {
       ),
       body: ListView(
         children: [
-          for(int i=0;i<data.length;i++)...[
-            if(data[i].contains(input))...[
-              TextButton(
-                onPressed: (){
-                  print("눌림");
-                },
-                style: TextButton.styleFrom(
-                  foregroundColor: Colors.white,
-                ),
-                child: Container(
-                  height: 70,
-                  width: double.infinity,
-                  margin:EdgeInsets.fromLTRB(10,0, 10, 0),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.vertical(bottom: Radius.circular(15),top: Radius.circular(15)),
-                    color: Colors.teal,
-                  ),
-                  child: Center(
-                    child: Text(
-                      data[i].toString(),
-                      style: TextStyle(color: Colors.white,fontSize: 20),
-                    ),
-                  ),
+          TextButton(
+            onPressed: (){
+              print("눌림");
+            },
+            style: TextButton.styleFrom(
+              foregroundColor: Colors.white,
+            ),
+            child: Container(
+              height: 700,
+              width: double.infinity,
+              margin:EdgeInsets.fromLTRB(10,0, 10, 0),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.vertical(bottom: Radius.circular(15),top: Radius.circular(15)),
+                color: Colors.teal,
+              ),
+              child: Center(
+                child: Text(
+                  data.toString(),
+                  style: TextStyle(color: Colors.white,fontSize: 10),
                 ),
               ),
-            ]
-          ]
-        ],
+            ),
+          ),
+        ]
       ),
     );
   }

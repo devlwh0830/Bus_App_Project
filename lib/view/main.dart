@@ -4,8 +4,6 @@ import 'package:geolocator/geolocator.dart';
 import 'search.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'popup.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 
 class Homes extends StatefulWidget {
   const Homes({super.key});
