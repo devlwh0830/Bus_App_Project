@@ -2,7 +2,7 @@ import 'package:http/http.dart' as http;
 import 'package:xml2json/xml2json.dart';
 import 'dart:convert';
 
-busLineSeach(String number) async { // 버스 노선 조회 API
+busLineSearch(String number) async { // 버스 노선 조회 API
   var data = {};
   var datas = [];
   var result = await http.get(
@@ -19,5 +19,19 @@ busLineSeach(String number) async { // 버스 노선 조회 API
       datas.add(data['busRouteList']);
     }
     return datas; // 값 반환
+  }
+}
+
+busStationSearch(String name) async { // 정류장 조회 API
+  var data = [];
+  var url = 'https://api.yhs.kr/bus/station?name=$name&cityCode=12';
+  var response = await http.get(Uri.parse(url));
+
+  if (response.statusCode == 200) {
+    // 요청이 성공한 경우 응답 데이터 처리
+    data = jsonDecode(utf8.decode(response.bodyBytes));
+    return data;
+  } else{
+    return [{"name":"검색 결과 없음","displayId":"검색 결과 없음","id":"000000"}];
   }
 }

@@ -12,13 +12,22 @@ class _SearchState extends State<Search> {
 
   var data;
   var datas;
+  var stationdata;
+  var stationdatas;
   var input = "";
   var colors;
 
   getData(String c) async {
-    datas = await busLineSeach(c);
+    datas = await busLineSearch(c);
     setState((){
       data = datas;
+    });
+  }
+
+  getStationData(String c) async {
+    stationdata = await busStationSearch(c);
+    setState((){
+      stationdatas = stationdata;
     });
   }
 
@@ -33,6 +42,20 @@ class _SearchState extends State<Search> {
       colors = Colors.red;
     }else if(color == "마을버스"){
       colors = Colors.yellow;
+    }else if(color == "따복형 시내버스"){
+      colors = Colors.pink.shade900;
+    }else if(color == "직행좌석형농어촌버스"){
+      colors = Colors.redAccent;
+    }else if(color == "좌석형농어촌버스"){
+      colors = Colors.blue;
+    }else if(color == "일반형농어촌버스"){
+      colors = Colors.green;
+    }else if(color == "일반형시외버스"){
+      colors = Colors.purple;
+    }else if(color == "리무진공항버스"){
+      colors = Colors.lime.shade800;
+    }else if(color == "좌석형공항버스"){
+      colors = Colors.blueAccent;
     }else{
       colors = Colors.grey;
     }
@@ -44,6 +67,7 @@ class _SearchState extends State<Search> {
     super.initState();
     setState(() {
       data = [{"routeName":"N/A","routeTypeName":"N/A","regionName":"N/A","routeId":"N/A"}];
+      stationdatas = [{"name":"검색 결과 없음","displayId":"검색 결과 없음","id":"000000"}];
     });
   }
 
@@ -63,6 +87,7 @@ class _SearchState extends State<Search> {
               child: TextField(
                 onChanged: (c){
                   getData(c);
+                  getStationData(c);
                 },
                 autofocus: true,
                 keyboardType: TextInputType.text,
@@ -160,11 +185,11 @@ class _SearchState extends State<Search> {
             width: double.infinity,
             height: 300,
             child: ListView.builder(
-                itemCount: data.length,
+                itemCount: stationdatas.length,
                 itemBuilder: (c,i){
                   return TextButton(
                     onPressed: (){
-                      print(data[i]['routeId']);
+                      print(stationdatas[i]['id']);
                     },
                     style: TextButton.styleFrom(
                       foregroundColor: Colors.white,
@@ -181,7 +206,7 @@ class _SearchState extends State<Search> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Container(
-                              padding: EdgeInsets.only(left: 20,right: 20),
+                              padding: EdgeInsets.only(left: 20,right: 30),
                               child: Image.network("https://media.discordapp.net/attachments/905797523363483659/1116527200972308560/bus-stop.png?width=432&height=432",scale: 10,),
                             ),
                             Container(
@@ -189,16 +214,16 @@ class _SearchState extends State<Search> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Container(
-                                      padding: EdgeInsets.only(top: 10,right: 10),
+                                      padding: EdgeInsets.only(top: 12,right: 10),
                                       child: Text(
-                                        "정류장명 검색 결과 표시 예정",
-                                        style: TextStyle(color: Colors.white,fontSize: 20),
+                                        "${stationdatas[i]['name']}",
+                                        style: TextStyle(color: Colors.white,fontSize: 15),
                                       ),
                                     ),
                                     Container(
                                       padding: EdgeInsets.only(right: 10),
                                       child: Text(
-                                        "정류장 위치 표시 예정",
+                                        "정류장코드 : ${stationdatas[i]['displayId']}",
                                         style: TextStyle(color: Colors.white,fontSize: 15),
                                       ),
                                     )
