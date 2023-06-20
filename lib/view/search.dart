@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '/apis/api.dart';
+import 'package:busapp/result/result.dart';
 
 class Search extends StatefulWidget {
   const Search({super.key});
@@ -127,6 +128,8 @@ class _SearchState extends State<Search> {
                 itemBuilder: (c,i){
                   return TextButton(
                     onPressed: (){
+                      Navigator.push(
+                          context, MaterialPageRoute(builder: (_) => Result_view(codes:data[i]['routeId'],name:data[i]['routeName'].toString())));
                       print(data[i]['routeId']);
                     },
                     style: TextButton.styleFrom(
@@ -189,6 +192,8 @@ class _SearchState extends State<Search> {
                 itemBuilder: (c,i){
                   return TextButton(
                     onPressed: (){
+                      Navigator.push(
+                        context, MaterialPageRoute(builder: (_) => Result_view(codes:stationdatas[i]['id'],name:stationdatas[i]['name'])));
                       print(stationdatas[i]['id']);
                     },
                     style: TextButton.styleFrom(
@@ -214,10 +219,12 @@ class _SearchState extends State<Search> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Container(
-                                      padding: EdgeInsets.only(top: 12,right: 10),
+                                      padding: EdgeInsets.only(top: 10,right: 10),
+                                      width: 250,
                                       child: Text(
                                         "${stationdatas[i]['name']}",
-                                        style: TextStyle(color: Colors.white,fontSize: 15),
+                                        style: TextStyle(color: Colors.white,fontSize: 20),
+                                        overflow: TextOverflow.ellipsis,
                                       ),
                                     ),
                                     Container(
@@ -225,6 +232,7 @@ class _SearchState extends State<Search> {
                                       child: Text(
                                         "정류장코드 : ${stationdatas[i]['displayId']}",
                                         style: TextStyle(color: Colors.white,fontSize: 15),
+                                        overflow: TextOverflow.ellipsis,
                                       ),
                                     )
                                   ],
