@@ -1,8 +1,9 @@
+import 'package:busapp/view/kakaomap.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:busapp/apis/api.dart';
 import 'search.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'popup.dart';
 
 class Homes extends StatefulWidget {
@@ -23,10 +24,9 @@ class _HomesState extends State<Homes> {
     } else{
       Position position = await Geolocator.getCurrentPosition(
           desiredAccuracy: LocationAccuracy.high);
-      final url = Uri.parse("https://map.kakao.com/link/search/${position.latitude},${position.longitude}");
-      if (await canLaunchUrl(url)) {
-        launchUrl(url, mode: LaunchMode.externalApplication);
-      }
+      var result = await gpsStationSearch(position.longitude, position.latitude);
+      Navigator.push(
+          context, MaterialPageRoute(builder: (_) => NearStation()));
     }
   }
 
