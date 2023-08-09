@@ -17,6 +17,7 @@ class _SearchState extends State<Search> {
   var stationdatas;
   var input = "";
   var colors;
+  var storage;
 
   getData(String c) async {
     datas = await busLineSearch(c);
@@ -29,6 +30,13 @@ class _SearchState extends State<Search> {
     stationdata = await busStationSearch(c);
     setState((){
       stationdatas = stationdata;
+    });
+  }
+
+  getBusArrivalInfo(String c) async {
+    stationdata = await busArrivalInfo(c);
+    setState((){
+      storage = stationdata;
     });
   }
 
@@ -129,7 +137,7 @@ class _SearchState extends State<Search> {
                   return TextButton(
                     onPressed: (){
                       Navigator.push(
-                          context, MaterialPageRoute(builder: (_) => Result_view(codes:data[i]['routeId'],name:data[i]['routeName'].toString())));
+                          context, MaterialPageRoute(builder: (_) => Result_view(storage:storage)));
                       print(data[i]['routeId']);
                     },
                     style: TextButton.styleFrom(
@@ -192,8 +200,9 @@ class _SearchState extends State<Search> {
                 itemBuilder: (c,i){
                   return TextButton(
                     onPressed: (){
+                      getBusArrivalInfo(stationdatas[i]['id']);
                       Navigator.push(
-                        context, MaterialPageRoute(builder: (_) => Result_view(codes:stationdatas[i]['id'],name:stationdatas[i]['name'])));
+                        context, MaterialPageRoute(builder: (_) => Result_view(storage:storage)));
                       print(stationdatas[i]['id']);
                     },
                     style: TextButton.styleFrom(

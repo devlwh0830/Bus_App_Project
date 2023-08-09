@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:busapp/apis/api.dart';
 
 class Result_view extends StatefulWidget {
-  Result_view({super.key,this.codes,this.name});
-  final codes;
-  final name;
+  Result_view({super.key,this.storage});
+  final storage;
 
   @override
   State<Result_view> createState() => _Result_viewState();
 }
 
 class _Result_viewState extends State<Result_view> {
+
+  var data;
+  var datas;
+  var busarrival;
+  var busarrivals;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,10 +27,10 @@ class _Result_viewState extends State<Result_view> {
       ),
       body: Center(
         child: Text(
-            "RESULT: ${widget.name}\nID: ${widget.codes}\n검색결과 표시예정",
-                style: TextStyle(
-            fontSize: 50,
-        ),
+            "${widget.storage}",
+          style: TextStyle(
+            fontSize: 15,
+          ),
         ),
       ),
     );
