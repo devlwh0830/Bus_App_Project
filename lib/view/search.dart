@@ -34,9 +34,9 @@ class _SearchState extends State<Search> {
   }
 
   getBusArrivalInfo(String c) async {
-    stationdata = await busArrivalInfo(c);
+    List<dynamic> datass = await busArrivalInfo(c);
     setState((){
-      storage = stationdata;
+      storage = datass;
     });
   }
 
@@ -137,7 +137,7 @@ class _SearchState extends State<Search> {
                   return TextButton(
                     onPressed: (){
                       Navigator.push(
-                          context, MaterialPageRoute(builder: (_) => Result_view(storage:storage)));
+                          context, MaterialPageRoute(builder: (_) => Result_view()));
                       print(data[i]['routeId']);
                     },
                     style: TextButton.styleFrom(
@@ -199,10 +199,9 @@ class _SearchState extends State<Search> {
                 itemCount: stationdatas.length,
                 itemBuilder: (c,i){
                   return TextButton(
-                    onPressed: (){
-                      getBusArrivalInfo(stationdatas[i]['id']);
+                    onPressed: () {
                       Navigator.push(
-                        context, MaterialPageRoute(builder: (_) => Result_view(storage:storage)));
+                        context, MaterialPageRoute(builder: (_) => Result_view(displayId:stationdatas[i]['id'],station_name: stationdatas[i]['name'],station_id:stationdatas[i]['displayId'])));
                       print(stationdatas[i]['id']);
                     },
                     style: TextButton.styleFrom(

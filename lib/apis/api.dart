@@ -37,7 +37,7 @@ busStationSearch(String name) async { // 정류장 조회 API
 }
 
 busArrivalInfo(stationId) async { // 버스 도착 정보
-  var data = [];
+  List<dynamic> data;
   var url = 'https://api.yhs.kr/bus/route?id=$stationId&cityCode=12';
   var response = await http.get(Uri.parse(url));
   if (response.statusCode == 200) {
