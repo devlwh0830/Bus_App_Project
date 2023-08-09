@@ -21,7 +21,7 @@ class _Result_viewState extends State<Result_view> {
 
   getName(a){
     try{
-      if(a['arrivalInfo'][0]['time']<=60){
+      if(a['arrivalInfo'][0]['time']<=180){
         return Row(
           children: [
             Container(
