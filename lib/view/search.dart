@@ -33,13 +33,6 @@ class _SearchState extends State<Search> {
     });
   }
 
-  getBusArrivalInfo(String c) async {
-    List<dynamic> datass = await busArrivalInfo(c);
-    setState((){
-      storage = datass;
-    });
-  }
-
   getColor(String color){
     if(color == "직행좌석형시내버스"){
       colors = Colors.redAccent;
@@ -50,7 +43,7 @@ class _SearchState extends State<Search> {
     }else if(color == "광역급행형시내버스"){
       colors = Colors.red;
     }else if(color == "마을버스"){
-      colors = Colors.yellow;
+      colors = Colors.yellow.shade800;
     }else if(color == "따복형 시내버스"){
       colors = Colors.pink.shade900;
     }else if(color == "직행좌석형농어촌버스"){
@@ -199,10 +192,14 @@ class _SearchState extends State<Search> {
                 itemCount: stationdatas.length,
                 itemBuilder: (c,i){
                   return TextButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context, MaterialPageRoute(builder: (_) => Result_view(displayId:stationdatas[i]['id'],station_name: stationdatas[i]['name'],station_id:stationdatas[i]['displayId'])));
-                      print(stationdatas[i]['id']);
+                    onPressed: () async{
+                      var result;
+                      try{
+                        result = await busArrivalInfo(stationdatas[i]['stationId']);
+                      }catch(e){
+                        result = [{"routeId":"도착 예정 버스 없음","predictTime1":"-"}];
+                      }
+                      Navigator.push(context, MaterialPageRoute(builder: (_) => Result_view(displayId:stationdatas[i]['stationId'],station_name: stationdatas[i]['stationName'],station_id:stationdatas[i]['mobileNo'],data:result)));
                     },
                     style: TextButton.styleFrom(
                       foregroundColor: Colors.white,
@@ -230,7 +227,7 @@ class _SearchState extends State<Search> {
                                       padding: EdgeInsets.only(top: 10,right: 10),
                                       width: 250,
                                       child: Text(
-                                        "${stationdatas[i]['name']}",
+                                        "${stationdatas[i]['stationName']}",
                                         style: TextStyle(color: Colors.white,fontSize: 20),
                                         overflow: TextOverflow.ellipsis,
                                       ),
@@ -238,7 +235,7 @@ class _SearchState extends State<Search> {
                                     Container(
                                       padding: EdgeInsets.only(right: 10),
                                       child: Text(
-                                        "정류장코드 : ${stationdatas[i]['displayId']}",
+                                        "정류장코드 : ${stationdatas[i]['mobileNo']}",
                                         style: TextStyle(color: Colors.white,fontSize: 15),
                                         overflow: TextOverflow.ellipsis,
                                       ),
