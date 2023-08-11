@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-void FlutterDialog(context,stationName) {
+void FlutterDialog(context,lineName) {
   showDialog(
     context: context,
     //barrierDismissible - Dialog를 제외한 다른 화면 터치 x
@@ -15,7 +15,7 @@ void FlutterDialog(context,stationName) {
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text("$stationName번 버스 도착 예정 정보"),
+            Text("$lineName번 버스 도착 예정 정보"),
           ],
         ),
         //
@@ -29,7 +29,7 @@ void FlutterDialog(context,stationName) {
             ),
             child: Center(
               child: Text(
-                "작업 전\n구현 예정",
+                "구현 예정",
                 textAlign: TextAlign.center,style: TextStyle(color: Colors.white,fontSize: 20),),
             )
         ),

@@ -3,7 +3,6 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'view/main.dart';
 import 'view/manyfind.dart';
 import 'view/account.dart';
-import 'apis/api.dart';
 
 void main() {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();

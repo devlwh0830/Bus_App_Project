@@ -197,9 +197,10 @@ class _SearchState extends State<Search> {
                       try{
                         result = await busArrivalInfo(stationdatas[i]['stationId']);
                       }catch(e){
-                        result = [{"routeId":"도착 예정 버스 없음","predictTime1":"-"}];
+                        result = [{'routeId':'000000','routeName':"정보를 찾을 수 없음","routeTypeName":"정보가 없습니다."}];
                       }
-                      Navigator.push(context, MaterialPageRoute(builder: (_) => Result_view(displayId:stationdatas[i]['stationId'],station_name: stationdatas[i]['stationName'],station_id:stationdatas[i]['mobileNo'],data:result)));
+                      print(result);
+                      Navigator.push(context, MaterialPageRoute(builder: (_) => Result_view(displayId:stationdatas[i]['stationId'],station_name: stationdatas[i]['stationName'],station_id:stationdatas[i]['mobileNo'],station_info:result)));
                     },
                     style: TextButton.styleFrom(
                       foregroundColor: Colors.white,
@@ -235,7 +236,7 @@ class _SearchState extends State<Search> {
                                     Container(
                                       padding: EdgeInsets.only(right: 10),
                                       child: Text(
-                                        "정류장코드 : ${stationdatas[i]['mobileNo']}",
+                                        "정류장코드 : ${stationdatas[i]['mobileNo']} (${stationdatas[i]['regionName']})",
                                         style: TextStyle(color: Colors.white,fontSize: 15),
                                         overflow: TextOverflow.ellipsis,
                                       ),

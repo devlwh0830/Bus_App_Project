@@ -1,14 +1,13 @@
-
 import 'package:flutter/material.dart';
 import 'package:busapp/apis/api.dart';
 import 'package:busapp/result/arival_popup.dart';
 
 class Result_view extends StatefulWidget {
-  Result_view({super.key, this.displayId, this.station_name, this.station_id,this.data});
+  Result_view({super.key, this.displayId, this.station_name, this.station_id,this.station_info});
   final displayId;
   final station_name;
   final station_id;
-  final data;
+  final station_info;
 
   @override
   State<Result_view> createState() => _Result_viewState();
@@ -21,17 +20,13 @@ class _Result_viewState extends State<Result_view> {
   var result;
   var lineName;
 
-  getData(a) async {
-    var datas = await busRouteName(a['routeId']);
-    setState(() {
-      lineName = datas['routeName'];
-    });
-  }
+  // Future<Widget> getData(a) async {
+  //   var datas = await busRouteName(a['routeId']);
+  //   lineName = datas['routeName'];
+  //   return
+  // }
 
-  getColor(color) async {
-    // var routeName = await busRouteName(a['routeId']);
-    // var color = routeName['routeTypeName'];
-
+  getColor(color) {
     if (color == "직행좌석형시내버스" || color == "1211") {
       colors = Colors.redAccent;
     } else if (color == "좌석형시내버스" || color == "1212") {
@@ -94,12 +89,11 @@ class _Result_viewState extends State<Result_view> {
                 width: double.infinity,
                 height: 660,
                 child: ListView.builder(
-                    itemCount: widget.data.length,
+                    itemCount: widget.station_info.length,
                     itemBuilder: (c, i) {
-                      getData(widget.data[i]);
                       return TextButton(
-                        onPressed: () {
-                          // FlutterDialog(context, snapshot.data[i]['name']);
+                        onPressed: () async {
+                          FlutterDialog(context,widget.station_info[i]['routeName']);
                         },
                         style: TextButton.styleFrom(
                           foregroundColor: Colors.white,
@@ -113,7 +107,7 @@ class _Result_viewState extends State<Result_view> {
                               borderRadius: BorderRadius.vertical(
                                   bottom: Radius.circular(15),
                                   top: Radius.circular(15)),
-                              color: Colors.green,
+                              color: getColor(widget.station_info[i]['routeTypeName']),
                             ),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment
@@ -135,7 +129,7 @@ class _Result_viewState extends State<Result_view> {
                                           padding: EdgeInsets.only(top:8, right: 10),
                                           width: 200,
                                           child: Text(
-                                            "$lineName\n${widget.data[i]['predictTime1']}분 후 도착예정",
+                                            "${widget.station_info[i]['routeName']}\n${widget.station_info[i]['routeTypeName']}",
                                             style: TextStyle(color: Colors.white, fontSize: 20),
                                             overflow: TextOverflow.ellipsis,
                                           ),
