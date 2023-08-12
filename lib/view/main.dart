@@ -102,7 +102,15 @@ class _HomesState extends State<Homes> {
                     height: 60,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.vertical(bottom: Radius.circular(10),top: Radius.circular(10)),
-                      color: Colors.greenAccent,
+                      color: Colors.white,
+                      boxShadow:[
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.7),
+                          blurRadius: 1.0,
+                          spreadRadius: 0.0,
+                          offset: const Offset(0,5),
+                        )
+                      ]
                     ),
                     child: Row(
                       children: [
@@ -111,7 +119,7 @@ class _HomesState extends State<Homes> {
                           padding: EdgeInsets.only(left: 20),
                         ),
                         Container(
-                          child: Text("300\n매화마을 2단지 (07235)(성남)",style: TextStyle(fontSize: 18),),
+                          child: Text("300\n일반시내버스",style: TextStyle(fontSize: 18),),
                           padding: EdgeInsets.only(right: 20,left: 10),
                         )
                       ],
@@ -123,16 +131,24 @@ class _HomesState extends State<Homes> {
                     height: 60,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.vertical(bottom: Radius.circular(10),top: Radius.circular(10)),
-                      color: Colors.redAccent,
+                      color: Colors.white,
+                      boxShadow:[
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.7),
+                          blurRadius: 1.0,
+                          spreadRadius: 0.0,
+                          offset: const Offset(0,5),
+                        )
+                      ]
                     ),
                     child: Row(
                       children: [
                         Container(
-                          child: Image.network("https://media.discordapp.net/attachments/905797523363483659/1116366006969962626/green_bus.png?width=432&height=432",scale: 5,),
+                          child: Image.network("https://media.discordapp.net/attachments/905797523363483659/1139884238708146236/green_bus.png?width=460&height=460",scale: 5,),
                           padding: EdgeInsets.only(left: 20),
                         ),
                         Container(
-                          child: Text("1005\n매화마을 2단지 (07235)(성남)",style: TextStyle(fontSize: 18,color: Colors.white),),
+                          child: Text("1005\n직행좌석형시내버스",style: TextStyle(fontSize: 18,color: Colors.black),),
                           padding: EdgeInsets.only(right: 20,left: 10),
                         )
                       ],
@@ -144,16 +160,24 @@ class _HomesState extends State<Homes> {
                     height: 60,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.vertical(bottom: Radius.circular(10),top: Radius.circular(10)),
-                      color: Colors.yellowAccent,
+                      color: Colors.white,
+                      boxShadow:[
+                        BoxShadow(
+                        color: Colors.grey.withOpacity(0.7),
+                        blurRadius: 1.0,
+                        spreadRadius: 0.0,
+                        offset: const Offset(0,5),
+                      )
+                    ]
                     ),
                     child: Row(
                       children: [
                         Container(
-                          child: Image.network("https://media.discordapp.net/attachments/905797523363483659/1116366006969962626/green_bus.png?width=432&height=432",scale: 5,),
+                          child: Image.network("https://media.discordapp.net/attachments/905797523363483659/1139884388683886623/green_bus.png?width=460&height=460",scale: 5,),
                           padding: EdgeInsets.only(left: 20),
                         ),
                         Container(
-                          child: Text("8-1\n매화마을 2단지 (07235)(성남)",style: TextStyle(fontSize: 18,color: Colors.black),),
+                          child: Text("8-1\n마을버스",style: TextStyle(fontSize: 18,color: Colors.black),),
                           padding: EdgeInsets.only(right: 20,left: 10),
                         )
                       ],
@@ -175,7 +199,15 @@ class _HomesState extends State<Homes> {
                     height: 50,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.vertical(bottom: Radius.circular(10),top: Radius.circular(10)),
-                      color: Colors.cyan,
+                      color: Colors.white,
+                        boxShadow:[
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.7),
+                          blurRadius: 1.0,
+                          spreadRadius: 0.0,
+                          offset: const Offset(0,5),
+                        )
+                      ]
                     ),
                     child: Row(
                       children: [
@@ -196,7 +228,15 @@ class _HomesState extends State<Homes> {
                     height: 50,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.vertical(bottom: Radius.circular(10),top: Radius.circular(10)),
-                      color: Colors.cyan,
+                      color: Colors.white,
+                      boxShadow:[
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.7),
+                          blurRadius: 1.0,
+                          spreadRadius: 0.0,
+                          offset: const Offset(0,5),
+                        )
+                      ]
                     ),
                     child: Row(
                       children: [
@@ -217,7 +257,15 @@ class _HomesState extends State<Homes> {
                     height: 50,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.vertical(bottom: Radius.circular(10),top: Radius.circular(10)),
-                      color: Colors.cyan,
+                      color: Colors.white,
+                      boxShadow:[
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.7),
+                          blurRadius: 1.0,
+                          spreadRadius: 0.0,
+                          offset: const Offset(0,5),
+                        )
+                      ]
                     ),
                     child: Row(
                       children: [
@@ -231,6 +279,10 @@ class _HomesState extends State<Homes> {
                         )
                       ],
                     ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(top: 50),
+                    child: Text("🚨 완성되지 않은 앱으로 버그가 발생할 수 있습니다.",style: TextStyle(fontSize: 15),)
                   ),
                 ],
               ),

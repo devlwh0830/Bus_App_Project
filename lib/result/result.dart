@@ -1,6 +1,8 @@
+import 'package:busapp/main.dart';
 import 'package:flutter/material.dart';
 import 'package:busapp/apis/api.dart';
 import 'package:busapp/result/arival_popup.dart';
+import 'package:busapp/result/error_report.dart';
 
 class Result_view extends StatefulWidget {
   Result_view({super.key, this.displayId, this.station_name, this.station_id,this.station_info});
@@ -20,39 +22,35 @@ class _Result_viewState extends State<Result_view> {
   var result;
   var lineName;
 
-  // Future<Widget> getData(a) async {
-  //   var datas = await busRouteName(a['routeId']);
-  //   lineName = datas['routeName'];
-  //   return
-  // }
+  var tab = 0;
 
-  getColor(color) {
-    if (color == "직행좌석형시내버스" || color == "1211") {
-      colors = Colors.redAccent;
-    } else if (color == "좌석형시내버스" || color == "1212") {
-      colors = Colors.blue;
-    } else if (color == "일반형시내버스" || color == "1213") {
-      colors = Colors.green;
-    } else if (color == "광역급행형시내버스" || color == "1214") {
-      colors = Colors.red;
-    } else if (color == "마을버스" || color == "1230") {
-      colors = Colors.yellow.shade800;
-    } else if (color == "따복형 시내버스" || color == "1215") {
-      colors = Colors.pink.shade800;
-    } else if (color == "직행좌석형농어촌버스" || color == "1221") {
-      colors = Colors.redAccent;
-    } else if (color == "좌석형농어촌버스" || color == "1222") {
-      colors = Colors.blue;
-    } else if (color == "일반형농어촌버스" || color == "1223") {
-      colors = Colors.green;
-    } else if (color == "일반형시외버스" || color == "1243") {
-      colors = Colors.purple;
-    } else if (color == "리무진공항버스" || color == "1251") {
-      colors = Colors.lime.shade800;
-    } else if (color == "좌석형공항버스" || color == "1252") {
-      colors = Colors.blueAccent;
-    } else {
-      colors = Colors.grey;
+  getColor(String color){
+    if(color == "직행좌석형시내버스"){
+      colors = Image.network("https://media.discordapp.net/attachments/905797523363483659/1139884238708146236/green_bus.png?width=460&height=460");
+    }else if(color == "좌석형시내버스"){
+      colors = Image.network("https://media.discordapp.net/attachments/905797523363483659/1139893877604618260/green_bus.png?width=460&height=460");
+    }else if(color == "일반형시내버스"){
+      colors = Image.network("https://media.discordapp.net/attachments/905797523363483659/1116366006969962626/green_bus.png?width=432&height=432");
+    }else if(color == "광역급행형시내버스"){
+      colors = Image.network("https://media.discordapp.net/attachments/905797523363483659/1139884238708146236/green_bus.png?width=460&height=460");
+    }else if(color == "마을버스"){
+      colors = Image.network("https://media.discordapp.net/attachments/905797523363483659/1139884388683886623/green_bus.png?width=460&height=460");
+    }else if(color == "따복형 시내버스"){
+      colors = Image.network("https://media.discordapp.net/attachments/905797523363483659/1116366006969962626/green_bus.png?width=432&height=432");
+    }else if(color == "직행좌석형농어촌버스"){
+      colors = Image.network("https://media.discordapp.net/attachments/905797523363483659/1139884238708146236/green_bus.png?width=460&height=460");
+    }else if(color == "좌석형농어촌버스"){
+      colors = Image.network("https://media.discordapp.net/attachments/905797523363483659/1116366006969962626/green_bus.png?width=432&height=432");
+    }else if(color == "일반형농어촌버스"){
+      colors = Image.network("https://media.discordapp.net/attachments/905797523363483659/1116366006969962626/green_bus.png?width=432&height=432");
+    }else if(color == "일반형시외버스"){
+      colors = Image.network("https://media.discordapp.net/attachments/905797523363483659/1116366006969962626/green_bus.png?width=432&height=432");
+    }else if(color == "리무진형 공항버스"){
+      colors = Image.network("https://media.discordapp.net/attachments/905797523363483659/1139894619291799562/green_bus.png?width=460&height=460");
+    }else if(color == "좌석형 공항버스"){
+      colors = Image.network("https://media.discordapp.net/attachments/905797523363483659/1139894619291799562/green_bus.png?width=460&height=460");
+    }else{
+      colors = Image.network("https://media.discordapp.net/attachments/905797523363483659/1139894619291799562/green_bus.png?width=460&height=460");
     }
     return colors;
   }
@@ -60,6 +58,7 @@ class _Result_viewState extends State<Result_view> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(
             centerTitle: true,
             elevation: 0.0,
@@ -70,7 +69,7 @@ class _Result_viewState extends State<Result_view> {
             children: [
               Container(
                 padding: EdgeInsets.only(top: 20, bottom: 5),
-                margin: EdgeInsets.only(bottom: 10),
+                margin: EdgeInsets.only(bottom: 5),
                 height: 100,
                 color: Colors.blueAccent,
                 alignment: Alignment.center,
@@ -107,7 +106,15 @@ class _Result_viewState extends State<Result_view> {
                               borderRadius: BorderRadius.vertical(
                                   bottom: Radius.circular(15),
                                   top: Radius.circular(15)),
-                              color: getColor(widget.station_info[i]['routeTypeName']),
+                              color: Colors.white,
+                              boxShadow:[
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.7),
+                                  blurRadius: 1.0,
+                                  spreadRadius: 0.0,
+                                  offset: const Offset(0,5),
+                                )
+                              ]
                             ),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment
@@ -116,8 +123,7 @@ class _Result_viewState extends State<Result_view> {
                                 Container(
                                   padding: EdgeInsets.only(
                                       left: 20, right: 30),
-                                  child: Image.network(
-                                      "https://media.discordapp.net/attachments/905797523363483659/1116366006969962626/green_bus.png?width=432&height=432"),
+                                  child: getColor(widget.station_info[i]['routeTypeName'])
                                 ),
                                 Container(
                                     child: Column(
@@ -130,7 +136,7 @@ class _Result_viewState extends State<Result_view> {
                                           width: 200,
                                           child: Text(
                                             "${widget.station_info[i]['routeName']}\n${widget.station_info[i]['routeTypeName']}",
-                                            style: TextStyle(color: Colors.white, fontSize: 20),
+                                            style: TextStyle(color: Colors.black, fontSize: 20),
                                             overflow: TextOverflow.ellipsis,
                                           ),
                                         )
@@ -145,7 +151,15 @@ class _Result_viewState extends State<Result_view> {
                 ),
               ),
             ]
-        )
+        ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: (){
+          error_reports(context);
+        },
+        icon: Icon(Icons.message),
+        backgroundColor: Colors.red,
+        label: Text('오류신고'),
+      ),
     );
   }
 }
