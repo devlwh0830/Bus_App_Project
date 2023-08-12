@@ -26,7 +26,7 @@ class _HomesState extends State<Homes> {
           desiredAccuracy: LocationAccuracy.high);
       var result = await gpsStationSearch(position.longitude, position.latitude);
       Navigator.push(
-          context, MaterialPageRoute(builder: (_) => NearStation()));
+          context, MaterialPageRoute(builder: (_) => KakaoMapTest(x:position.latitude,y:position.longitude)));
     }
   }
 
