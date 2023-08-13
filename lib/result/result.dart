@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:busapp/apis/api.dart';
 import 'package:busapp/result/arival_popup.dart';
 import 'package:busapp/result/error_report.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class Result_view extends StatefulWidget {
   Result_view({super.key, this.displayId, this.station_name, this.station_id,this.station_info});
@@ -21,8 +22,18 @@ class _Result_viewState extends State<Result_view> {
   var storage;
   var result;
   var lineName;
+  var datas;
+  Map<String,String> data = {};
 
-  var tab = 0;
+  flutterToast(String a) {
+    Fluttertoast.showToast(
+        msg: "이 버스는 ${a} 입니다.",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
+        fontSize: 15.0
+    );
+  }
 
   getColor(String color){
     if(color == "직행좌석형시내버스"){
@@ -56,7 +67,13 @@ class _Result_viewState extends State<Result_view> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context){
     return Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
@@ -87,68 +104,99 @@ class _Result_viewState extends State<Result_view> {
               Container(
                 width: double.infinity,
                 height: 660,
-                child: ListView.builder(
-                    itemCount: widget.station_info.length,
-                    itemBuilder: (c, i) {
-                      return TextButton(
-                        onPressed: () async {
-                          FlutterDialog(context,widget.station_info[i]['routeName']);
-                        },
-                        style: TextButton.styleFrom(
-                          foregroundColor: Colors.white,
-                        ),
+                child: FutureBuilder(
+                  future: _fetch1(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData == false) {
+                      return Center(
                         child: Container(
-                            height: 60,
-                            width: double.infinity,
-                            margin: EdgeInsets.fromLTRB(
-                                10, 0, 10, 0),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.vertical(
-                                  bottom: Radius.circular(15),
-                                  top: Radius.circular(15)),
-                              color: Colors.white,
-                              boxShadow:[
-                                BoxShadow(
-                                  color: Colors.grey.withOpacity(0.7),
-                                  blurRadius: 1.0,
-                                  spreadRadius: 0.0,
-                                  offset: const Offset(0,5),
-                                )
-                              ]
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment
-                                  .start,
-                              children: [
-                                Container(
-                                  padding: EdgeInsets.only(
-                                      left: 20, right: 30),
-                                  child: getColor(widget.station_info[i]['routeTypeName'])
-                                ),
-                                Container(
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment
-                                          .start,
-                                      children: [
-                                        Container(
-                                          alignment: Alignment.centerLeft,
-                                          padding: EdgeInsets.only(top:8, right: 10),
-                                          width: 200,
-                                          child: Text(
-                                            "${widget.station_info[i]['routeName']}\n${widget.station_info[i]['routeTypeName']}",
-                                            style: TextStyle(color: Colors.black, fontSize: 20),
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                        )
-                                      ],
-                                    )
-                                ),
-                              ],
-                            )
+                          child: CircularProgressIndicator(),
                         ),
                       );
+                    }else{
+                      return ListView.builder(
+                          itemCount: widget.station_info.length,
+                          itemBuilder: (c, i) {
+                            return TextButton(
+                              onPressed: () => setState(() => FlutterDialog(context,widget.station_info[i]['routeName'],widget.displayId,widget.station_info[i]['routeId'],widget.station_info[i]['staOrder'])),
+                              style: TextButton.styleFrom(
+                                foregroundColor: Colors.white,
+                              ),
+                              child: Container(
+                                  height: 60,
+                                  width: double.infinity,
+                                  margin: EdgeInsets.fromLTRB(
+                                      10, 0, 10, 0),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.vertical(
+                                          bottom: Radius.circular(15),
+                                          top: Radius.circular(15)),
+                                      color: Colors.white,
+                                      boxShadow:[
+                                        BoxShadow(
+                                          color: Colors.grey.withOpacity(0.7),
+                                          blurRadius: 1.0,
+                                          spreadRadius: 0.0,
+                                          offset: const Offset(0,5),
+                                        )
+                                      ]
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment
+                                        .start,
+                                    children: [
+                                      Container(
+                                          padding: EdgeInsets.only(
+                                              left: 20, right: 30),
+                                          child: InkWell(
+                                            child: getColor(widget.station_info[i]['routeTypeName'].toString()),
+                                            onTap: (){
+                                              flutterToast(widget.station_info[i]['routeTypeName'].toString());
+                                            },
+                                          ),
+                                      ),
+                                      Container(
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment
+                                                .start,
+                                            children: [
+                                              Container(
+                                                alignment: Alignment.centerLeft,
+                                                padding: EdgeInsets.only(top:8, right: 10),
+                                                width: 200,
+                                                child: Column(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      "",
+                                                      style: TextStyle(color: Colors.black, fontSize: 2),
+                                                      overflow: TextOverflow.ellipsis,
+                                                    ),
+                                                    Text(
+                                                      "${widget.station_info[i]['routeName']}번",
+                                                      style: TextStyle(color: Colors.black, fontSize: 20),
+                                                      overflow: TextOverflow.ellipsis,
+                                                    ),
+                                                    Text(
+                                                      "${data['${widget.station_info[i]['routeId']}']}방면",
+                                                      style: TextStyle(color: Colors.black, fontSize: 15),
+                                                      overflow: TextOverflow.ellipsis,
+                                                    ),
+                                                  ],
+                                                )
+                                              )
+                                            ],
+                                          )
+                                      ),
+                                    ],
+                                  )
+                              ),
+                            );
+                          }
+                      );
                     }
-                ),
+                  },
+                )
               ),
             ]
         ),
@@ -161,5 +209,14 @@ class _Result_viewState extends State<Result_view> {
         label: Text('오류신고'),
       ),
     );
+  }
+  Future<String> _fetch1() async {
+    widget.station_info.forEach((i) async{
+      var a = await busRouteName(i['routeId']);
+      data.addAll(
+          {"${i['routeId']}": "${a['endStationName']}"});
+    });
+    await Future.delayed(Duration(seconds: 1));
+    return 'Call Data';
   }
 }

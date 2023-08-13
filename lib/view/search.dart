@@ -1,6 +1,8 @@
+import 'package:busapp/result/arival_popup.dart';
 import 'package:flutter/material.dart';
 import '/apis/api.dart';
 import 'package:busapp/result/result.dart';
+import 'package:busapp/result/busline_result.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class Search extends StatefulWidget {
@@ -21,6 +23,7 @@ class _SearchState extends State<Search>  with TickerProviderStateMixin{
   var input = "";
   var colors;
   var storage;
+  var list = [];
 
   flutterToast(String a) {
     Fluttertoast.showToast(
@@ -28,7 +31,7 @@ class _SearchState extends State<Search>  with TickerProviderStateMixin{
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.CENTER,
         timeInSecForIosWeb: 1,
-        fontSize: 16.0
+        fontSize: 15.0
     );
   }
 
@@ -44,6 +47,11 @@ class _SearchState extends State<Search>  with TickerProviderStateMixin{
     setState((){
       stationdatas = stationdata;
     });
+  }
+
+  getBusEndStation(a)async{
+    datas = await busRouteName(a);
+    return datas['endStationName'];
   }
 
   getColor(String color){
@@ -180,8 +188,7 @@ class _SearchState extends State<Search>  with TickerProviderStateMixin{
                               return TextButton(
                                 onPressed: (){
                                   Navigator.push(
-                                      context, MaterialPageRoute(builder: (_) => Result_view()));
-                                  print(data[i]['routeId']);
+                                      context, MaterialPageRoute(builder: (_) => BusLine_Result_view()));
                                 },
                                 style: TextButton.styleFrom(
                                   foregroundColor: Colors.white,
@@ -257,7 +264,6 @@ class _SearchState extends State<Search>  with TickerProviderStateMixin{
                                   }catch(e){
                                     result = [{'routeId':'000000','routeName':"정보를 찾을 수 없음","routeTypeName":"정보가 없습니다."}];
                                   }
-                                  print(result);
                                   Navigator.push(context, MaterialPageRoute(builder: (_) => Result_view(displayId:stationdatas[i]['stationId'],station_name: stationdatas[i]['stationName'],station_id:stationdatas[i]['mobileNo'],station_info:result)));
                                 },
                                 style: TextButton.styleFrom(
