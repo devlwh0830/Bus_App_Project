@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:busapp/bus_line_info/bus_line_info.dart';
+import 'package:busapp/result/result.dart';
+import 'package:busapp/apis/api.dart';
 
 class BusLine_Result_view extends StatefulWidget {
   const BusLine_Result_view({super.key,this.stationlist,this.lineName});
@@ -40,40 +42,113 @@ class _BusLine_Result_viewState extends State<BusLine_Result_view> {
           )
         ],
       ),
-      body: ListView.builder(
+      body: ListView.separated(
+          padding: EdgeInsets.zero,
           itemCount: widget.stationlist.length,
           itemBuilder: (c, i) {
             return TextButton(
-              onPressed: (){
-                print(i);
+              style: TextButton.styleFrom(
+                splashFactory: NoSplash.splashFactory,
+                padding: EdgeInsets.zero
+              ),
+              onPressed: ()async{
+                var result;
+                try{
+                  result = await busArrivalInfo(widget.stationlist[i]['stationId']);
+                }catch(e){
+                  result = [{'routeId':'000000','routeName':"정보를 찾을 수 없음","routeTypeName":"정보가 없습니다."}];
+                }
+                Navigator.push(context, MaterialPageRoute(builder: (_) => Result_view(displayId:widget.stationlist[i]['stationId'],station_name: widget.stationlist[i]['stationName'],station_id:widget.stationlist[i]['mobileNo'],station_info:result)));
               },
               child: Container(
-                decoration: BoxDecoration(
-                  border: Border.all(
-                      width: 1.0
-                  ),
-                ),
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Container(
-                        child: Image.network("https://media.discordapp.net/attachments/905797523363483659/1116527200972308560/bus-stop.png?width=590&height=590",scale:12,)
-                    ),
-                    Container(
-                      height: 50,
-                      alignment: Alignment.centerLeft,
-                      margin: EdgeInsets.only(left: 50),
-                      width: 300,
-                      child: Text(
-                          "${widget.stationlist[i]['stationName']}",
-                          style: TextStyle(fontSize: 20,color: i<(widget.stationlist.length/2) ? Colors.blue : Colors.red),
-                          overflow: TextOverflow.ellipsis
+                    if(i==0)...[
+                      Container(
+                          width: 60,
+                          height: 65,
+                          margin: EdgeInsets.only(left: 60),
+                          padding: EdgeInsets.zero,
+                          child: Image(
+                            image: NetworkImage(
+                                "https://media.discordapp.net/attachments/905797523363483659/1140636007180542062/-001_4.png?width=460&height=460"
+                            ),
+                            fit: BoxFit.fill,
+                          )
                       ),
-                    )
+                    ]else if (i==(widget.stationlist.length)-1)...[
+                      Container(
+                          width: 60,
+                          height: 65,
+                          margin: EdgeInsets.only(left: 60),
+                          padding: EdgeInsets.zero,
+                          child: Image(
+                            image: NetworkImage(
+                                "https://media.discordapp.net/attachments/905797523363483659/1140636006903722095/-001_5.png?width=460&height=460"
+                            ),
+                            fit: BoxFit.fill,
+                          )
+                      ),
+                    ]else if (i==((widget.stationlist.length-1)/2).floor())...[
+                      Container(
+                          width: 60,
+                          height: 65,
+                          margin: EdgeInsets.only(left: 60),
+                          padding: EdgeInsets.zero,
+                          child: Image(
+                            image: NetworkImage(
+                                "https://media.discordapp.net/attachments/905797523363483659/1140636824918831205/-001_6.png?width=460&height=460"
+                            ),
+                            fit: BoxFit.fill,
+                          )
+                      ),
+                    ]else...[
+                      Container(
+                          width: 60,
+                          height: 65,
+                          margin: EdgeInsets.only(left: 60),
+                          padding: EdgeInsets.zero,
+                          child: Image(
+                            image: NetworkImage(
+                                "https://media.discordapp.net/attachments/905797523363483659/1140625711326048346/-001_1.png?width=460&height=460"
+                            ),
+                            fit: BoxFit.fill,
+                          )
+                      ),
+                    ],
+                    Container(
+                        height: 40,
+                        margin: EdgeInsets.only(left: 10),
+                        width: 250,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                                "${widget.stationlist[i]['stationName']}",
+                                style: TextStyle(fontSize: 20,color: i<(widget.stationlist.length/2) ? Colors.blue : Colors.red),
+                                overflow: TextOverflow.ellipsis
+                            ),
+                            Text(
+                                "${widget.stationlist[i]['mobileNo']} | ${widget.stationlist[i]['regionName']}",
+                                style: TextStyle(fontSize: 15,color: Colors.grey),
+                                overflow: TextOverflow.ellipsis
+                            ),
+                          ],
+                        )
+                    ),
                   ],
                 ),
-              )
+              ),
             );
-          }
+          },
+          separatorBuilder: (BuildContext ctx, int idx) {
+            return Divider(
+              color: Colors.black,
+              thickness: 0.5,
+              height: 0.5,
+            );
+          },
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: (){
