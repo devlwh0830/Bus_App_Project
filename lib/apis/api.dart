@@ -74,6 +74,22 @@ busRouteName(routeId) async { // 버스 정보
   }
 }
 
+busStationList(routeId) async { // 정류장 리스트 정보
+  var data = {};
+  var datas;
+  var result = await http.get(
+      Uri.parse('http://openapi.gbis.go.kr/ws/rest/busrouteservice/station?serviceKey=1234567890&routeId=$routeId'));
+  if (result.statusCode == 200) { // API 응답 코드 (정상처리)
+    var getXmlData = result.body; //XML 데이터 받기
+    var Xml2JsonData = Xml2Json()..parse(getXmlData); // XML에서 JSON 형식으로 데이터 변환
+    var jsonData = Xml2JsonData.toParker();
+    data = jsonDecode(jsonData); //JSON 형식으로 디코딩
+    data = data['response']['msgBody']; // 필터링
+    datas = data['busRouteStationList'];
+    return datas;
+  }
+}
+
 gpsStationSearch(posX, posY) async { // GPS 기반 정류장 조회 API
   var data = [];
   var url = 'https://api.yhs.kr/bus/station/around?posX=$posX&posY=$posY&cityCode=12';

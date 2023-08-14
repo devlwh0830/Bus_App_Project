@@ -70,6 +70,7 @@ class _Result_viewState extends State<Result_view> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    print(widget.station_info);
   }
 
   @override
@@ -80,7 +81,7 @@ class _Result_viewState extends State<Result_view> {
             centerTitle: true,
             elevation: 0.0,
             backgroundColor: Colors.blueAccent,
-            title: Text("노선/정류장 검색 결과")
+            title: Text("정류장 검색 결과")
         ),
         body: Column(
             children: [
@@ -178,7 +179,7 @@ class _Result_viewState extends State<Result_view> {
                                                       overflow: TextOverflow.ellipsis,
                                                     ),
                                                     Text(
-                                                      "${data['${widget.station_info[i]['routeId']}']}방면",
+                                                      "${data['${widget.station_info[i]['routeId']}${widget.station_info[i]['staOrder']}']}방면",
                                                       style: TextStyle(color: Colors.black, fontSize: 15),
                                                       overflow: TextOverflow.ellipsis,
                                                     ),
@@ -213,8 +214,15 @@ class _Result_viewState extends State<Result_view> {
   Future<String> _fetch1() async {
     widget.station_info.forEach((i) async{
       var a = await busRouteName(i['routeId']);
-      data.addAll(
-          {"${i['routeId']}": "${a['endStationName']}"});
+      var b = await busStationList(i['routeId']);
+      if(int.parse(i['staOrder'])<(b.length/2)){
+        data.addAll(
+            {"${i['routeId']}${i['staOrder']}": "${a['endStationName']}"});
+      }else{
+        data.addAll(
+            {"${i['routeId']}${i['staOrder']}": "${a['startStationName']}"});
+      }
+
     });
     await Future.delayed(Duration(seconds: 1));
     return 'Call Data';

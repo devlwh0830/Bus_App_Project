@@ -186,9 +186,15 @@ class _SearchState extends State<Search>  with TickerProviderStateMixin{
                             itemCount: data.length,
                             itemBuilder: (c,i){
                               return TextButton(
-                                onPressed: (){
+                                onPressed: () async{
+                                  var result;
+                                  try{
+                                    result = await busStationList(data[i]['routeId']);
+                                  }catch(e){
+                                    result = [{'routeId':'000000','routeName':"정보를 찾을 수 없음","routeTypeName":"정보가 없습니다."}];
+                                  }
                                   Navigator.push(
-                                      context, MaterialPageRoute(builder: (_) => BusLine_Result_view()));
+                                      context, MaterialPageRoute(builder: (_) => BusLine_Result_view(stationlist:result)));
                                 },
                                 style: TextButton.styleFrom(
                                   foregroundColor: Colors.white,

@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:busapp/result/error_report.dart';
 
 class BusLine_Result_view extends StatefulWidget {
-  const BusLine_Result_view({super.key});
+  const BusLine_Result_view({super.key,this.stationlist});
+  final stationlist;
 
   @override
   State<BusLine_Result_view> createState() => _BusLine_Result_viewState();
@@ -26,19 +27,37 @@ class _BusLine_Result_viewState extends State<BusLine_Result_view> {
           backgroundColor: Colors.blueAccent,
           title: Text("버스 노선 검색결과")
       ),
-      body: Center(
-        child: Text(
-          "여기까지 만들면 나는 죽어요ㅜㅜ\n구현예정",
-          style: TextStyle(fontSize: 25),
-        ),
+      body: ListView.builder(
+          itemCount: widget.stationlist.length,
+          itemBuilder: (c, i) {
+            return TextButton(
+              onPressed: (){
+                print(i);
+              },
+              child: Row(
+                children: [
+                  Container(
+                    child: Image.network("https://media.discordapp.net/attachments/905797523363483659/1116527200972308560/bus-stop.png?width=590&height=590",scale:12,)
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(left: 10),
+                    width: 300,
+                    child: Text(
+                      "${widget.stationlist[i]['stationName']}",
+                      style: TextStyle(fontSize: 20,color: i<(widget.stationlist.length/2) ? Colors.blue : Colors.red),
+                      overflow: TextOverflow.ellipsis
+                    ),
+                  )
+                ],
+              )
+            );
+          }
       ),
-      floatingActionButton: FloatingActionButton.extended(
+      floatingActionButton: FloatingActionButton(
         onPressed: (){
-          error_reports(context);
+          print("새로고침");
         },
-        icon: Icon(Icons.message),
-        backgroundColor: Colors.red,
-        label: Text('오류신고'),
+        child: Icon(Icons.restart_alt,size: 35,),
       ),
     );
   }
