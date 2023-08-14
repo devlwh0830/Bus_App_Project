@@ -222,7 +222,6 @@ class _Result_viewState extends State<Result_view> {
         data.addAll(
             {"${i['routeId']}${i['staOrder']}": "${a['startStationName']}"});
       }
-
     });
     await Future.delayed(Duration(seconds: 1));
     return 'Call Data';

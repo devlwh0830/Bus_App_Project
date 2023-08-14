@@ -194,7 +194,7 @@ class _SearchState extends State<Search>  with TickerProviderStateMixin{
                                     result = [{'routeId':'000000','routeName':"정보를 찾을 수 없음","routeTypeName":"정보가 없습니다."}];
                                   }
                                   Navigator.push(
-                                      context, MaterialPageRoute(builder: (_) => BusLine_Result_view(stationlist:result)));
+                                      context, MaterialPageRoute(builder: (_) => BusLine_Result_view(stationlist:result,lineName:data[i]['routeName'])));
                                 },
                                 style: TextButton.styleFrom(
                                   foregroundColor: Colors.white,

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:busapp/result/error_report.dart';
+import 'package:busapp/bus_line_info/bus_line_info.dart';
 
 class BusLine_Result_view extends StatefulWidget {
-  const BusLine_Result_view({super.key,this.stationlist});
+  const BusLine_Result_view({super.key,this.stationlist,this.lineName});
   final stationlist;
+  final lineName;
 
   @override
   State<BusLine_Result_view> createState() => _BusLine_Result_viewState();
@@ -22,10 +23,22 @@ class _BusLine_Result_viewState extends State<BusLine_Result_view> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-          centerTitle: true,
-          elevation: 0.0,
-          backgroundColor: Colors.blueAccent,
-          title: Text("버스 노선 검색결과")
+        centerTitle: true,
+        elevation: 0.0,
+        backgroundColor: Colors.blueAccent,
+        title: Text("${widget.lineName}번 버스 노선"),
+        actions: [
+          IconButton(
+              onPressed: (){
+                Navigator.push(
+                    context, MaterialPageRoute(builder: (_) => bus_line_info(lineName:widget.lineName)));
+              },
+              icon: Icon(
+                Icons.info_outline_rounded,
+                size: 30,
+              )
+          )
+        ],
       ),
       body: ListView.builder(
           itemCount: widget.stationlist.length,
@@ -34,21 +47,30 @@ class _BusLine_Result_viewState extends State<BusLine_Result_view> {
               onPressed: (){
                 print(i);
               },
-              child: Row(
-                children: [
-                  Container(
-                    child: Image.network("https://media.discordapp.net/attachments/905797523363483659/1116527200972308560/bus-stop.png?width=590&height=590",scale:12,)
+              child: Container(
+                decoration: BoxDecoration(
+                  border: Border.all(
+                      width: 1.0
                   ),
-                  Container(
-                    margin: EdgeInsets.only(left: 10),
-                    width: 300,
-                    child: Text(
-                      "${widget.stationlist[i]['stationName']}",
-                      style: TextStyle(fontSize: 20,color: i<(widget.stationlist.length/2) ? Colors.blue : Colors.red),
-                      overflow: TextOverflow.ellipsis
+                ),
+                child: Row(
+                  children: [
+                    Container(
+                        child: Image.network("https://media.discordapp.net/attachments/905797523363483659/1116527200972308560/bus-stop.png?width=590&height=590",scale:12,)
                     ),
-                  )
-                ],
+                    Container(
+                      height: 50,
+                      alignment: Alignment.centerLeft,
+                      margin: EdgeInsets.only(left: 50),
+                      width: 300,
+                      child: Text(
+                          "${widget.stationlist[i]['stationName']}",
+                          style: TextStyle(fontSize: 20,color: i<(widget.stationlist.length/2) ? Colors.blue : Colors.red),
+                          overflow: TextOverflow.ellipsis
+                      ),
+                    )
+                  ],
+                ),
               )
             );
           }
