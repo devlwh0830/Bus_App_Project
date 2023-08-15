@@ -69,12 +69,8 @@ class _BusLine_Result_viewState extends State<BusLine_Result_view> {
                           .toString()
                           .contains("(경유)")) {
                         var result;
-                        var result2;
                         try {
                           result = await busArrivalInfo(
-                              widget.stationlist[i]['stationId']);
-                          result2 =  await busStationSearch2(
-                              widget.stationlist[i]['stationName'],
                               widget.stationlist[i]['stationId']);
                         } catch (e) {
                           result = [{
@@ -85,9 +81,9 @@ class _BusLine_Result_viewState extends State<BusLine_Result_view> {
                           ];
                         }
                         Navigator.push(context, MaterialPageRoute(builder: (_) =>
-                            Result_view(displayId: result2['stationId'],
-                                station_name: result2['stationName'],
-                                station_id: result2['mobileNo'],
+                            Result_view(displayId: widget.stationlist[i]['stationId'],
+                                station_name: widget.stationlist[i]['stationName'],
+                                station_id: widget.stationlist[i]['mobileNo']==null ? data['${widget.stationlist[i]['stationId']}'] : widget.stationlist[i]['stationName'],
                                 station_info: result)));
                       }
                     },
@@ -232,10 +228,12 @@ class _BusLine_Result_viewState extends State<BusLine_Result_view> {
   }
   Future<String> _fetch1() async {
     widget.stationlist.forEach((i) async{
-      var a =  await busStationSearch2(
-          i['stationName'],
-          i['stationId']);
-      data.addAll({"${i['stationId']}": "${a['mobileNo']}"});
+      if(!i['stationName'].toString().contains("(경유)") && i['mobileNo']==null){
+        var a = await busStationSearch2(
+            i['stationName'],
+            i['stationId']);
+        data.addAll({"${i['stationId']}": "${a['mobileNo']}"});
+      }
     });
     await Future.delayed(Duration(seconds: 1));
     return 'Call Data';

@@ -49,13 +49,16 @@ busStationSearch2(String name,String Id) async { // 정류장 5자리 고유번�
     var jsonData = Xml2JsonData.toParker();
     data = jsonDecode(jsonData); //JSON 형식으로 디코딩
     data = data['response']['msgBody']; // 필터링
-    datas = data['busStationList'];
-    for(int i=0;i<datas.length;i++){
-      if(datas[i]['stationId']==Id){
-        return datas[i];
+    try{
+      datas = data['busStationList'];
+      for(int i=0;i<datas.length;i++){
+        if(datas[i]['stationId']==Id){
+          return datas[i];
+        }
       }
+    }catch(e){
+      return data['busStationList'];
     }
-    return datas; // 값 반환
   }
 }
 
