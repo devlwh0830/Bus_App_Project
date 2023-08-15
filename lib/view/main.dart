@@ -117,13 +117,15 @@ class _HomesState extends State<Homes> {
                     child: InkWell(
                       onTap: ()async{
                         var result;
+                        var result2;
                         try{
                           result = await busStationList("206000003");
+                          result2 = await turnBus("206000003");
                         }catch(e){
                           result = [{'routeId':'000000','routeName':"정보를 찾을 수 없음","routeTypeName":"정보가 없습니다."}];
                         }
                         Navigator.push(
-                            context, MaterialPageRoute(builder: (_) => BusLine_Result_view(stationlist:result,lineName:"300")));
+                            context, MaterialPageRoute(builder: (_) => BusLine_Result_view(stationlist:result,lineName:"300",turnYn: result2,)));
                       },
                       child: Row(
                         children: [
@@ -158,13 +160,15 @@ class _HomesState extends State<Homes> {
                     child: InkWell(
                       onTap: ()async{
                         var result;
+                        var result2;
                         try{
                           result = await busStationList("234000065");
+                          result2 = await turnBus("234000065");
                         }catch(e){
                           result = [{'routeId':'000000','routeName':"정보를 찾을 수 없음","routeTypeName":"정보가 없습니다."}];
                         }
                         Navigator.push(
-                            context, MaterialPageRoute(builder: (_) => BusLine_Result_view(stationlist:result,lineName:"1005")));
+                            context, MaterialPageRoute(builder: (_) => BusLine_Result_view(stationlist:result,lineName:"1005",turnYn: result2,)));
                       },
                       child: Row(
                         children: [
@@ -199,13 +203,15 @@ class _HomesState extends State<Homes> {
                     child: InkWell(
                       onTap: ()async{
                         var result;
+                        var result2;
                         try{
                           result = await busStationList("241221001");
+                          result2 = await turnBus("241221001");
                         }catch(e){
                           result = [{'routeId':'000000','routeName':"정보를 찾을 수 없음","routeTypeName":"정보가 없습니다."}];
                         }
                         Navigator.push(
-                            context, MaterialPageRoute(builder: (_) => BusLine_Result_view(stationlist:result,lineName:"8-1")));
+                            context, MaterialPageRoute(builder: (_) => BusLine_Result_view(stationlist:result,lineName:"8-1",turnYn: result2,)));
                       },
                       child: Row(
                         children: [

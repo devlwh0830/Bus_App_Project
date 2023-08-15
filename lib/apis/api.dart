@@ -38,6 +38,27 @@ busStationSearch(String name) async { // 정류장 조회 API
   }
 }
 
+busStationSearch2(String name,String Id) async { // 정류장 5자리 고유번호 조회용
+  var data = {};
+  var datas = [];
+  var result = await http.get(
+      Uri.parse('http://openapi.gbis.go.kr/ws/rest/busstationservice?serviceKey=1234567890&keyword=$name'));
+  if (result.statusCode == 200) { // API 응답 코드 (정상처리)
+    var getXmlData = result.body; //XML 데이터 받기
+    var Xml2JsonData = Xml2Json()..parse(getXmlData); // XML에서 JSON 형식으로 데이터 변환
+    var jsonData = Xml2JsonData.toParker();
+    data = jsonDecode(jsonData); //JSON 형식으로 디코딩
+    data = data['response']['msgBody']; // 필터링
+    datas = data['busStationList'];
+    for(int i=0;i<datas.length;i++){
+      if(datas[i]['stationId']==Id){
+        return datas[i];
+      }
+    }
+    return datas; // 값 반환
+  }
+}
+
 busArrivalInfo(stationId) async { // 정류장 버스 정보
   var data = {};
   var datas = [];
@@ -87,6 +108,26 @@ busStationList(routeId) async { // 정류장 리스트 정보
     data = data['response']['msgBody']; // 필터링
     datas = data['busRouteStationList'];
     return datas;
+  }
+}
+
+turnBus(routeId) async { // 회차 정류장 번호
+  var data = {};
+  var datas;
+  var result = await http.get(
+      Uri.parse('http://openapi.gbis.go.kr/ws/rest/busrouteservice/station?serviceKey=1234567890&routeId=$routeId'));
+  if (result.statusCode == 200) { // API 응답 코드 (정상처리)
+    var getXmlData = result.body; //XML 데이터 받기
+    var Xml2JsonData = Xml2Json()..parse(getXmlData); // XML에서 JSON 형식으로 데이터 변환
+    var jsonData = Xml2JsonData.toParker();
+    data = jsonDecode(jsonData); //JSON 형식으로 디코딩
+    data = data['response']['msgBody']; // 필터링
+    datas = data['busRouteStationList'];
+    for(int i=0;i<datas.length;i++){
+      if(datas[i]['turnYn']=="Y"){
+        return i;
+      }
+    }
   }
 }
 

@@ -18,26 +18,9 @@ class _bus_line_infoState extends State<bus_line_info> {
         elevation: 0.0,
         backgroundColor: Colors.blueAccent,
         title: Text("${widget.lineName}번 노선 정보"),
-        actions: [
-          IconButton(
-              onPressed: (){
-
-              },
-              icon: Icon(
-                Icons.info_outline_rounded,
-                size: 30,
-              )
-          )
-        ],
       ),
       body: Container(
         child: Text("구현예정"),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: (){
-          print("새로고침");
-        },
-        child: Icon(Icons.restart_alt,size: 35,),
       ),
     );
   }

@@ -70,7 +70,6 @@ class _Result_viewState extends State<Result_view> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    print(widget.station_info);
   }
 
   @override
@@ -143,8 +142,7 @@ class _Result_viewState extends State<Result_view> {
                                       ]
                                   ),
                                   child: Row(
-                                    mainAxisAlignment: MainAxisAlignment
-                                        .start,
+                                    mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       Container(
                                           padding: EdgeInsets.only(
@@ -158,8 +156,7 @@ class _Result_viewState extends State<Result_view> {
                                       ),
                                       Container(
                                           child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment
-                                                .start,
+                                            crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
                                               Container(
                                                 alignment: Alignment.centerLeft,
@@ -214,8 +211,8 @@ class _Result_viewState extends State<Result_view> {
   Future<String> _fetch1() async {
     widget.station_info.forEach((i) async{
       var a = await busRouteName(i['routeId']);
-      var b = await busStationList(i['routeId']);
-      if(int.parse(i['staOrder'])<(b.length/2)){
+      var b = await turnBus(i['routeId']);
+      if(int.parse(i['staOrder'])<=b){
         data.addAll(
             {"${i['routeId']}${i['staOrder']}": "${a['endStationName']}"});
       }else{
