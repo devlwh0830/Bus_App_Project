@@ -1,13 +1,18 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:busapp/bus_line_info/bus_line_info.dart';
 import 'package:busapp/result/result.dart';
 import 'package:busapp/apis/api.dart';
 
 class BusLine_Result_view extends StatefulWidget {
-  const BusLine_Result_view({super.key,this.stationlist,this.lineName,this.turnYn});
+  const BusLine_Result_view({super.key,this.stationlist,this.lineName,this.turnYn,this.routeId,this.seachroute,this.staOrder});
   final stationlist;
   final lineName;
   final turnYn;
+  final routeId;
+  final seachroute;
+  final staOrder;
 
   @override
   State<BusLine_Result_view> createState() => _BusLine_Result_viewState();
@@ -16,11 +21,31 @@ class BusLine_Result_view extends StatefulWidget {
 class _BusLine_Result_viewState extends State<BusLine_Result_view> {
 
   Map<String,String> data = {};
+  ScrollController scrollController = ScrollController();
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+  }
+
+  void moveScroll(double a){
+    scrollController.animateTo(
+        65*a,
+        duration: Duration(microseconds: 700),
+        curve: Curves.ease
+    );
+  }
+
+  getColor(a){
+    var color;
+    if((a+1)==int.parse(widget.staOrder) && widget.seachroute){
+      moveScroll(double.parse(widget.staOrder));
+      color =  Colors.yellow.shade100;
+    }else{
+      color = Colors.white;
+    }
+    return color;
   }
 
   @override
@@ -34,15 +59,17 @@ class _BusLine_Result_viewState extends State<BusLine_Result_view> {
         title: Text("${widget.lineName}번 버스 노선"),
         actions: [
           IconButton(
-              onPressed: (){
+              onPressed: () async{
+                var result;
+                result = await busRouteName(widget.routeId);
                 Navigator.push(
-                    context, MaterialPageRoute(builder: (_) => bus_line_info(lineName:widget.lineName)));
+                    context, MaterialPageRoute(builder: (_) => bus_line_info(lineName:widget.lineName,result:result)));
               },
               icon: Icon(
                 Icons.info_outline_rounded,
                 size: 30,
               )
-          )
+          ),
         ],
       ),
       body: FutureBuilder(
@@ -56,6 +83,7 @@ class _BusLine_Result_viewState extends State<BusLine_Result_view> {
             );
             }else {
               return ListView.separated(
+                controller: scrollController,
                 padding: EdgeInsets.zero,
                 itemCount: widget.stationlist.length,
                 itemBuilder: (c, i) {
@@ -83,11 +111,12 @@ class _BusLine_Result_viewState extends State<BusLine_Result_view> {
                         Navigator.push(context, MaterialPageRoute(builder: (_) =>
                             Result_view(displayId: widget.stationlist[i]['stationId'],
                                 station_name: widget.stationlist[i]['stationName'],
-                                station_id: widget.stationlist[i]['mobileNo']==null ? data['${widget.stationlist[i]['stationId']}'] : widget.stationlist[i]['stationName'],
+                                station_id: widget.stationlist[i]['mobileNo']==null ? data['${widget.stationlist[i]['stationId']}'] : widget.stationlist[i]['mobileNo'],
                                 station_info: result)));
                       }
                     },
                     child: Container(
+                      color: getColor(i),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [

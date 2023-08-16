@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:xml2json/xml2json.dart';
 import 'dart:convert';
+import 'package:busapp/apis/api.dart';
+import 'package:busapp/result/busline_result.dart';
 
 var result;
 busArrivalInfo2(stationId,routeId,number) async { // 버스 도착 정보
@@ -207,6 +209,21 @@ void FlutterDialog(context,lineName,stationId,busline,staOrder) async{
               ),
             ),
             actions: <Widget>[
+              TextButton(
+                onPressed: () async{
+                  var result;
+                  var result2;
+                  try{
+                    result = await busStationList(busline);
+                    result2 = await turnBus(busline);
+                  }catch(e){
+                    result = [{'routeId':'000000','routeName':"정보를 찾을 수 없음","routeTypeName":"정보가 없습니다."}];
+                  }
+                  Navigator.push(
+                      context, MaterialPageRoute(builder: (_) => BusLine_Result_view(stationlist:result,lineName:lineName,turnYn:result2,routeId:busline,seachroute:true,staOrder:staOrder)));
+                },
+                child: Text("노선도"),
+              ),
               TextButton(
                 onPressed: () async{
                   result = await busArrivalInfo2(stationId,busline,staOrder);
