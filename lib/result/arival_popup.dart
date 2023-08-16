@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:xml2json/xml2json.dart';
@@ -37,7 +39,7 @@ busType(a){
 }
 
 time(a){
-  if(int.parse(a)<=5){
+  if(int.parse(a)<=2){
     return "잠시후";
   }else{
     return "${a}분 뒤";
@@ -158,7 +160,7 @@ void FlutterDialog(context,lineName,stationId,busline,staOrder) async{
                                   margin: EdgeInsets.only(top: 8,left: 10),
                                   child: Text(
                                     "${busType(result[0]['lowPlate2'])}",
-                                    textAlign: TextAlign.center,style: TextStyle(color: busType(result[0]['lowPlate1'])=="저상"?Colors.cyanAccent:Colors.white,fontSize: 20),
+                                    textAlign: TextAlign.center,style: TextStyle(color: busType(result[0]['lowPlate2'])=="저상"?Colors.cyanAccent:Colors.white,fontSize: 20),
                                   ),
                                 ),
                                 Container(
@@ -191,7 +193,7 @@ void FlutterDialog(context,lineName,stationId,busline,staOrder) async{
                             )
                           ]else...[
                             Container(
-                              margin: EdgeInsets.only(left: 90),
+                              margin: EdgeInsets.only(left: 100),
                               child: Text(
                                 "운행 정보 없음",
                                 textAlign: TextAlign.center,style: TextStyle(color: Colors.white,fontSize: 17),
@@ -208,19 +210,24 @@ void FlutterDialog(context,lineName,stationId,busline,staOrder) async{
                 ],
               ),
             ),
+            titlePadding: EdgeInsets.only(left: 15,bottom: 15,top: 15),
+            contentPadding: EdgeInsets.only(left: 10,right: 10,bottom: 5),
+            actionsPadding: EdgeInsets.only(right: 10,bottom: 5),
             actions: <Widget>[
               TextButton(
                 onPressed: () async{
                   var result;
                   var result2;
+                  var result3;
                   try{
                     result = await busStationList(busline);
                     result2 = await turnBus(busline);
+                    result3 = await busLocationList(busline);
                   }catch(e){
                     result = [{'routeId':'000000','routeName':"정보를 찾을 수 없음","routeTypeName":"정보가 없습니다."}];
                   }
                   Navigator.push(
-                      context, MaterialPageRoute(builder: (_) => BusLine_Result_view(stationlist:result,lineName:lineName,turnYn:result2,routeId:busline,seachroute:true,staOrder:staOrder)));
+                      context, MaterialPageRoute(builder: (_) => BusLine_Result_view(stationlist:result,lineName:lineName,turnYn:result2,routeId:busline,seachroute:true,staOrder:staOrder,busposition: result3,)));
                 },
                 child: Text("노선도"),
               ),

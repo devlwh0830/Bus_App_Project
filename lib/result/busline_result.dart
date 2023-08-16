@@ -5,13 +5,14 @@ import 'package:busapp/result/result.dart';
 import 'package:busapp/apis/api.dart';
 
 class BusLine_Result_view extends StatefulWidget {
-  const BusLine_Result_view({super.key,this.stationlist,this.lineName,this.turnYn,this.routeId,this.seachroute,this.staOrder});
+  const BusLine_Result_view({super.key,this.stationlist,this.lineName,this.turnYn,this.routeId,this.seachroute,this.staOrder,this.busposition});
   final stationlist;
   final lineName;
   final turnYn;
   final routeId;
   final seachroute;
   final staOrder;
+  final busposition;
 
   @override
   State<BusLine_Result_view> createState() => _BusLine_Result_viewState();
@@ -21,6 +22,8 @@ class _BusLine_Result_viewState extends State<BusLine_Result_view> {
 
   Map<String,String> data = {};
   ScrollController scrollController = ScrollController();
+  Map<String,String> bus_position = {};
+  Map<String,String> bus_position_update = {};
 
   @override
   void initState() {
@@ -28,6 +31,11 @@ class _BusLine_Result_viewState extends State<BusLine_Result_view> {
     super.initState();
     SchedulerBinding.instance!.addPostFrameCallback((_) {
       fetchDataAndPerformAction(widget.staOrder); // 모든 작업이 완료되면 함수 호출
+    });
+    widget.busposition.forEach((i){
+      setState(() {
+        bus_position.addAll({"${i['stationSeq']}${i['plateNo']}":"${i['stationSeq']}"});
+      });
     });
   }
 
@@ -115,38 +123,40 @@ class _BusLine_Result_viewState extends State<BusLine_Result_view> {
                                 station_info: result)));
                       }
                     },
-                    child: Container(
-                      color: getColor(i),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          if(i == 0)...[
-                            Container(
-                                width: 60,
-                                height: 65,
-                                margin: EdgeInsets.only(left: 60),
-                                padding: EdgeInsets.zero,
-                                child: Image(
-                                  image: NetworkImage(
-                                      "https://media.discordapp.net/attachments/905797523363483659/1140636007180542062/-001_4.png?width=460&height=460"
-                                  ),
-                                  fit: BoxFit.fill,
-                                )
-                            ),
-                          ] else if(i == (widget.stationlist.length) - 1)...[
-                              Container(
-                                  width: 60,
-                                  height: 65,
-                                  margin: EdgeInsets.only(left: 60),
-                                  padding: EdgeInsets.zero,
-                                  child: Image(
-                                    image: NetworkImage(
-                                        "https://media.discordapp.net/attachments/905797523363483659/1140636006903722095/-001_5.png?width=460&height=460"
-                                    ),
-                                    fit: BoxFit.fill,
-                                  )
-                              ),
-                            ] else if(widget.stationlist[i]['turnYn'] == "Y")...[
+                    child: Stack(
+                      children: [
+                        Container(
+                          color: getColor(i),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              if(i == 0)...[
+                                Container(
+                                    width: 60,
+                                    height: 65,
+                                    margin: EdgeInsets.only(left: 60),
+                                    padding: EdgeInsets.zero,
+                                    child: Image(
+                                      image: NetworkImage(
+                                          "https://media.discordapp.net/attachments/905797523363483659/1140636007180542062/-001_4.png?width=460&height=460"
+                                      ),
+                                      fit: BoxFit.fill,
+                                    )
+                                ),
+                              ] else if(i == (widget.stationlist.length) - 1)...[
+                                Container(
+                                    width: 60,
+                                    height: 65,
+                                    margin: EdgeInsets.only(left: 60),
+                                    padding: EdgeInsets.zero,
+                                    child: Image(
+                                      image: NetworkImage(
+                                          "https://media.discordapp.net/attachments/905797523363483659/1140636006903722095/-001_5.png?width=460&height=460"
+                                      ),
+                                      fit: BoxFit.fill,
+                                    )
+                                ),
+                              ] else if(widget.stationlist[i]['turnYn'] == "Y")...[
                                 Container(
                                     width: 60,
                                     height: 65,
@@ -174,64 +184,83 @@ class _BusLine_Result_viewState extends State<BusLine_Result_view> {
                                       )
                                   ),
                                 ],
-                          Container(
-                              height: 40,
-                              margin: EdgeInsets.only(left: 10),
-                              width: 250,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  if(widget.stationlist[i]['stationName']
-                                      .toString()
-                                      .contains("(경유)"))...[
-                                    Text(
-                                        "${widget.stationlist[i]['stationName']}",
-                                        style: TextStyle(
-                                            fontSize: 20, color: Colors.grey),
-                                        overflow: TextOverflow.ellipsis
-                                    ),
-                                    Text(
-                                        "미정차 | ${widget
-                                            .stationlist[i]['regionName']}",
-                                        style: TextStyle(
-                                            fontSize: 15, color: Colors.grey),
-                                        overflow: TextOverflow.ellipsis
-                                    ),
-                                  ] else
-                                    ...[
-                                      Text(
-                                          "${widget
-                                              .stationlist[i]['stationName']}",
-                                          style: TextStyle(fontSize: 20,
-                                              color: widget.turnYn > i ? Colors
-                                                  .blue : Colors.red),
-                                          overflow: TextOverflow.ellipsis
-                                      ),
-                                      if(widget.stationlist[i]['mobileNo']==null)...[
+                              Container(
+                                  height: 40,
+                                  margin: EdgeInsets.only(left: 10),
+                                  width: 250,
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      if(widget.stationlist[i]['stationName']
+                                          .toString()
+                                          .contains("(경유)"))...[
                                         Text(
-                                            "${data['${widget.stationlist[i]['stationId']}']} | ${widget.stationlist[i]['regionName']}",
+                                            "${widget.stationlist[i]['stationName']}",
                                             style: TextStyle(
-                                                fontSize: 15, color: Colors.grey),
+                                                fontSize: 20, color: Colors.grey),
                                             overflow: TextOverflow.ellipsis
                                         ),
-                                      ]else...[
                                         Text(
-                                            "${widget
-                                                .stationlist[i]['mobileNo']} | ${widget
+                                            "미정차 | ${widget
                                                 .stationlist[i]['regionName']}",
                                             style: TextStyle(
                                                 fontSize: 15, color: Colors.grey),
                                             overflow: TextOverflow.ellipsis
                                         ),
-                                      ]
+                                      ] else
+                                        ...[
+                                          Text(
+                                              "${widget
+                                                  .stationlist[i]['stationName']}",
+                                              style: TextStyle(fontSize: 20,
+                                                  color: widget.turnYn > i ? Colors
+                                                      .blue : Colors.red),
+                                              overflow: TextOverflow.ellipsis
+                                          ),
+                                          if(widget.stationlist[i]['mobileNo']==null)...[
+                                            Text(
+                                                "${data['${widget.stationlist[i]['stationId']}']} | ${widget.stationlist[i]['regionName']}",
+                                                style: TextStyle(
+                                                    fontSize: 15, color: Colors.grey),
+                                                overflow: TextOverflow.ellipsis
+                                            ),
+                                          ]else...[
+                                            Text(
+                                                "${widget
+                                                    .stationlist[i]['mobileNo']} | ${widget
+                                                    .stationlist[i]['regionName']}",
+                                                style: TextStyle(
+                                                    fontSize: 15, color: Colors.grey),
+                                                overflow: TextOverflow.ellipsis
+                                            ),
+                                          ]
 
-                                    ]
-                                ],
-                              )
+                                        ]
+                                    ],
+                                  )
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                    ),
+                        ),
+                        if(bus_position.containsValue((i+1).toString()))...[
+                          Row(
+                            children: [
+                              Container(
+                                margin: EdgeInsets.only(left: 10),
+                                alignment: Alignment.center,
+                                child: Text("정차 또는\n    이동중",style: TextStyle(fontSize: 15),),
+                              ),
+                              Container(
+                                alignment: Alignment.centerLeft,
+                                width: 40,
+                                height: 65,
+                                child: Image.network("https://media.discordapp.net/attachments/905797523363483659/1141336135893798964/-001_1.png?width=460&height=460"),
+                              ),
+                            ],
+                          )
+                        ]
+                      ],
+                    )
                   );
                 },
                 separatorBuilder: (BuildContext ctx, int idx) {
@@ -246,12 +275,18 @@ class _BusLine_Result_viewState extends State<BusLine_Result_view> {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: (){
-          print("새로고침");
+        onPressed: ()async{
+          bus_position.clear();
+          var result;
+          result = await busLocationList(widget.routeId);
+          result.forEach((i){
+            setState(() {
+              bus_position.addAll({"${i['stationSeq']}${i['plateNo']}":"${i['stationSeq']}"});
+            });
+          });
         },
         child: Icon(Icons.restart_alt,size: 35,),
       ),
-
     );
   }
   Future<String> _fetch1() async {
