@@ -1,5 +1,4 @@
-import 'dart:io';
-
+import 'package:flutter/scheduler.dart' show SchedulerBinding;
 import 'package:flutter/material.dart';
 import 'package:busapp/bus_line_info/bus_line_info.dart';
 import 'package:busapp/result/result.dart';
@@ -27,20 +26,21 @@ class _BusLine_Result_viewState extends State<BusLine_Result_view> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    SchedulerBinding.instance!.addPostFrameCallback((_) {
+      fetchDataAndPerformAction(widget.staOrder); // 모든 작업이 완료되면 함수 호출
+    });
   }
 
   void moveScroll(double a){
     scrollController.animateTo(
-        65*a,
-        duration: Duration(microseconds: 700),
-        curve: Curves.ease
-    );
+        65*(a-1),
+        duration: Duration(seconds: 1),
+        curve: Curves.ease);
   }
 
   getColor(a){
     var color;
     if((a+1)==int.parse(widget.staOrder) && widget.seachroute){
-      moveScroll(double.parse(widget.staOrder));
       color =  Colors.yellow.shade100;
     }else{
       color = Colors.white;
@@ -133,8 +133,7 @@ class _BusLine_Result_viewState extends State<BusLine_Result_view> {
                                   fit: BoxFit.fill,
                                 )
                             ),
-                          ] else
-                            if (i == (widget.stationlist.length) - 1)...[
+                          ] else if(i == (widget.stationlist.length) - 1)...[
                               Container(
                                   width: 60,
                                   height: 65,
@@ -147,8 +146,7 @@ class _BusLine_Result_viewState extends State<BusLine_Result_view> {
                                     fit: BoxFit.fill,
                                   )
                               ),
-                            ] else
-                              if (widget.stationlist[i]['turnYn'] == "Y")...[
+                            ] else if(widget.stationlist[i]['turnYn'] == "Y")...[
                                 Container(
                                     width: 60,
                                     height: 65,
@@ -253,6 +251,7 @@ class _BusLine_Result_viewState extends State<BusLine_Result_view> {
         },
         child: Icon(Icons.restart_alt,size: 35,),
       ),
+
     );
   }
   Future<String> _fetch1() async {
@@ -266,5 +265,10 @@ class _BusLine_Result_viewState extends State<BusLine_Result_view> {
     });
     await Future.delayed(Duration(seconds: 1));
     return 'Call Data';
+  }
+  void fetchDataAndPerformAction(staOrder) async{
+    // 여기에 원하는 작업 수행
+    await Future.delayed(Duration(seconds: 2));
+    moveScroll(double.parse(staOrder));
   }
 }
