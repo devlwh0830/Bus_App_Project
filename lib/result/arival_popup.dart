@@ -222,10 +222,16 @@ void FlutterDialog(context,lineName,stationId,busline,staOrder) async{
                   try{
                     result = await busStationList(busline);
                     result2 = await turnBus(busline);
-                    result3 = await busLocationList(busline);
                   }catch(e){
                     result = [{'routeId':'000000','routeName':"정보를 찾을 수 없음","routeTypeName":"정보가 없습니다."}];
                   }
+
+                  try{
+                    result3 = await busLocationList(busline);
+                  }catch(e){
+                    result3 = null;
+                  }
+
                   Navigator.push(
                       context, MaterialPageRoute(builder: (_) => BusLine_Result_view(stationlist:result,lineName:lineName,turnYn:result2,routeId:busline,seachroute:true,staOrder:staOrder,busposition: result3,)));
                 },

@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:busapp/bus_line_info/bus_line_info.dart';
 import 'package:busapp/result/result.dart';
 import 'package:busapp/apis/api.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class BusLine_Result_view extends StatefulWidget {
-  const BusLine_Result_view({super.key,this.stationlist,this.lineName,this.turnYn,this.routeId,this.seachroute,this.staOrder,this.busposition});
+  const BusLine_Result_view({super.key,this.stationlist,this.lineName,this.turnYn,this.routeId,this.seachroute,this.staOrder,this.busposition,this.regionName});
   final stationlist;
   final lineName;
   final turnYn;
@@ -13,17 +14,29 @@ class BusLine_Result_view extends StatefulWidget {
   final seachroute;
   final staOrder;
   final busposition;
+  final regionName;
 
   @override
   State<BusLine_Result_view> createState() => _BusLine_Result_viewState();
 }
 
-class _BusLine_Result_viewState extends State<BusLine_Result_view> {
+class _BusLine_Result_viewState extends State<BusLine_Result_view> with SingleTickerProviderStateMixin{
 
   Map<String,String> data = {};
   ScrollController scrollController = ScrollController();
   Map<String,String> bus_position = {};
   Map<String,String> bus_position_update = {};
+  var turn_number;
+
+  flutterToast() {
+    Fluttertoast.showToast(
+        msg: "버스 위치 정보가 없습니다.",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
+        fontSize: 15.0
+    );
+  }
 
   @override
   void initState() {
@@ -32,11 +45,15 @@ class _BusLine_Result_viewState extends State<BusLine_Result_view> {
     SchedulerBinding.instance!.addPostFrameCallback((_) {
       fetchDataAndPerformAction(widget.staOrder); // 모든 작업이 완료되면 함수 호출
     });
-    widget.busposition.forEach((i){
-      setState(() {
-        bus_position.addAll({"${i['stationSeq']}${i['plateNo']}":"${i['stationSeq']}"});
+    if(widget.busposition != null){
+      widget.busposition.forEach((i){
+        setState(() {
+          bus_position.addAll({"${i['stationSeq']}${i['plateNo']}":"${i['stationSeq']}"});
+        });
       });
-    });
+    }else{
+      flutterToast();
+    }
   }
 
   void moveScroll(double a){
@@ -62,9 +79,67 @@ class _BusLine_Result_viewState extends State<BusLine_Result_view> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         centerTitle: true,
-        elevation: 0.0,
-        backgroundColor: Colors.blueAccent,
-        title: Text("${widget.lineName}번 버스 노선"),
+        elevation: 5.0,
+        backgroundColor: Colors.green.shade600,
+        title: Text("실시간 버스 위치"),
+        bottom: PreferredSize(
+          preferredSize: Size(double.infinity,110),
+          child: Container(
+            width: double.infinity,
+            height: 110,
+            alignment: Alignment.topCenter,
+            child: Column(
+              children: [
+                Text(
+                  "${widget.lineName}번",
+                  style: TextStyle(fontSize: 25,color: Colors.white),
+                ),
+                Text(
+                  "${widget.regionName}",
+                  style: TextStyle(fontSize: 15,color: Colors.white),
+                ),
+                Container(
+                  margin: EdgeInsets.only(top: 10),
+                  height: 45,
+                  width: double.infinity,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Container(
+                        height: double.infinity,
+                        width: 190,
+                        child: ElevatedButton(
+                          onPressed: (){
+                            moveScroll(0.0);
+                          },
+                          child: Text("상행노선",style: TextStyle(fontSize: 15),),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.black38,
+                            elevation: 0.0,
+                          )
+                        ),
+                      ),
+                      Container(
+                        height: double.infinity,
+                        width: 190,
+                        child: ElevatedButton(
+                          onPressed: (){
+                            moveScroll(double.parse((widget.turnYn+1).toString()));
+                          },
+                            child: Text("하행노선",style: TextStyle(fontSize: 15),),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.black38,
+                              elevation: 0.0,
+                            )
+                        ),
+                      )
+                    ],
+                  ),
+                )
+              ],
+            )
+          ),
+        ),
         actions: [
           IconButton(
               onPressed: () async{
@@ -116,11 +191,16 @@ class _BusLine_Result_viewState extends State<BusLine_Result_view> {
                           }
                           ];
                         }
-                        Navigator.push(context, MaterialPageRoute(builder: (_) =>
-                            Result_view(displayId: widget.stationlist[i]['stationId'],
-                                station_name: widget.stationlist[i]['stationName'],
-                                station_id: widget.stationlist[i]['mobileNo']==null ? data['${widget.stationlist[i]['stationId']}'] : widget.stationlist[i]['mobileNo'],
-                                station_info: result)));
+                        if((i+1)==int.parse(widget.staOrder) && widget.seachroute){
+                          Navigator.pop(context);
+                        }else{
+                          Navigator.pop(context);
+                          Navigator.push(context, MaterialPageRoute(builder: (_) =>
+                              Result_view(displayId: widget.stationlist[i]['stationId'],
+                                  station_name: widget.stationlist[i]['stationName'],
+                                  station_id: widget.stationlist[i]['mobileNo']==null ? data['${widget.stationlist[i]['stationId']}'] : widget.stationlist[i]['mobileNo'],
+                                  station_info: result)));
+                        }
                       }
                     },
                     child: Stack(
@@ -169,8 +249,7 @@ class _BusLine_Result_viewState extends State<BusLine_Result_view> {
                                       fit: BoxFit.fill,
                                     )
                                 ),
-                              ] else
-                                ...[
+                              ] else...[
                                   Container(
                                       width: 60,
                                       height: 65,
@@ -278,14 +357,22 @@ class _BusLine_Result_viewState extends State<BusLine_Result_view> {
         onPressed: ()async{
           bus_position.clear();
           var result;
-          result = await busLocationList(widget.routeId);
-          result.forEach((i){
-            setState(() {
-              bus_position.addAll({"${i['stationSeq']}${i['plateNo']}":"${i['stationSeq']}"});
+          try{
+            result = await busLocationList(widget.routeId);
+          }catch(e){
+            result = null;
+          }
+          if(result != null) {
+            result.forEach((i) {
+              setState(() {
+                bus_position.addAll({"${i['stationSeq']}${i['plateNo']}": "${i['stationSeq']}"});
+              });
             });
-          });
+          }else{
+            flutterToast();
+          }
         },
-        child: Icon(Icons.restart_alt,size: 35,),
+        child: Icon(Icons.refresh_outlined,size: 35,),
       ),
     );
   }
@@ -293,17 +380,18 @@ class _BusLine_Result_viewState extends State<BusLine_Result_view> {
     widget.stationlist.forEach((i) async{
       if(!i['stationName'].toString().contains("(경유)") && i['mobileNo']==null){
         var a = await busStationSearch2(
-            i['stationName'],
-            i['stationId']);
+            i['stationName'].toString(),
+            i['stationId'].toString());
         data.addAll({"${i['stationId']}": "${a['mobileNo']}"});
       }
     });
+
     await Future.delayed(Duration(seconds: 1));
     return 'Call Data';
   }
   void fetchDataAndPerformAction(staOrder) async{
     // 여기에 원하는 작업 수행
-    await Future.delayed(Duration(seconds: 2));
+    await Future.delayed(Duration(seconds: 1));
     moveScroll(double.parse(staOrder));
   }
 }

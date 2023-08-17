@@ -150,6 +150,7 @@ busLocationList(routeId) async { // 버스 위치 리스트
     }catch (e){
       datas.add(data['busLocationList']);
     }
+    print(datas[0]);
     return datas;
   }
 }
