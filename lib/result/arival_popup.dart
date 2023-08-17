@@ -46,7 +46,7 @@ time(a){
   }
 }
 
-void FlutterDialog(context,lineName,stationId,busline,staOrder) async{
+void FlutterDialog(context,lineName,stationId,busline,staOrder,routeTypeName,regionName) async{
   try{
     result = await busArrivalInfo2(stationId,busline,staOrder);
   }catch(e){
@@ -130,7 +130,8 @@ void FlutterDialog(context,lineName,stationId,busline,staOrder) async{
                             )
                           ]else...[
                             Container(
-                              margin: EdgeInsets.only(left: 90),
+                              alignment: Alignment.center,
+                              margin: EdgeInsets.only(left: 105),
                               child: Text(
                                 "운행 정보 없음",
                                 textAlign: TextAlign.center,style: TextStyle(color: Colors.white,fontSize: 17),
@@ -193,7 +194,8 @@ void FlutterDialog(context,lineName,stationId,busline,staOrder) async{
                             )
                           ]else...[
                             Container(
-                              margin: EdgeInsets.only(left: 100),
+                              alignment: Alignment.center,
+                              margin: EdgeInsets.only(left: 105),
                               child: Text(
                                 "운행 정보 없음",
                                 textAlign: TextAlign.center,style: TextStyle(color: Colors.white,fontSize: 17),
@@ -233,7 +235,7 @@ void FlutterDialog(context,lineName,stationId,busline,staOrder) async{
                   }
 
                   Navigator.push(
-                      context, MaterialPageRoute(builder: (_) => BusLine_Result_view(stationlist:result,lineName:lineName,turnYn:result2,routeId:busline,seachroute:true,staOrder:staOrder,busposition: result3,)));
+                      context, MaterialPageRoute(builder: (_) => BusLine_Result_view(stationlist:result,lineName:lineName,turnYn:result2,routeId:busline,seachroute:true,staOrder:staOrder,busposition: result3,routeTypeName: routeTypeName,regionName:regionName)));
                 },
                 child: Text("노선도"),
               ),

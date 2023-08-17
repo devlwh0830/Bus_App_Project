@@ -119,7 +119,7 @@ class _Result_viewState extends State<Result_view> {
                           itemCount: widget.station_info.length,
                           itemBuilder: (c, i) {
                             return TextButton(
-                              onPressed: () => setState(() => FlutterDialog(context,widget.station_info[i]['routeName'],widget.displayId,widget.station_info[i]['routeId'],widget.station_info[i]['staOrder'])),
+                              onPressed: () => setState(() => FlutterDialog(context,widget.station_info[i]['routeName'],widget.displayId,widget.station_info[i]['routeId'],widget.station_info[i]['staOrder'],widget.station_info[i]['routeTypeName'],widget.station_info[i]['regionName'])),
                               style: TextButton.styleFrom(
                                 foregroundColor: Colors.white,
                               ),

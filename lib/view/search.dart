@@ -202,7 +202,7 @@ class _SearchState extends State<Search>  with TickerProviderStateMixin{
                                     result3 = null;
                                   }
                                   Navigator.push(
-                                      context, MaterialPageRoute(builder: (_) => BusLine_Result_view(stationlist:result,lineName:data[i]['routeName'],turnYn:result2,routeId:data[i]['routeId'],seachroute: false, staOrder:"0",busposition:result3,regionName:data[i]['regionName'].toString())));
+                                      context, MaterialPageRoute(builder: (_) => BusLine_Result_view(stationlist:result,lineName:data[i]['routeName'],turnYn:result2,routeId:data[i]['routeId'],seachroute: false, staOrder:"0",busposition:result3,regionName:data[i]['regionName'].toString(),routeTypeName:data[i]['routeTypeName'].toString())));
                                 },
                                 style: TextButton.styleFrom(
                                   foregroundColor: Colors.white,

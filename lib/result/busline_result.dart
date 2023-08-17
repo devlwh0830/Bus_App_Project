@@ -6,7 +6,7 @@ import 'package:busapp/apis/api.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class BusLine_Result_view extends StatefulWidget {
-  const BusLine_Result_view({super.key,this.stationlist,this.lineName,this.turnYn,this.routeId,this.seachroute,this.staOrder,this.busposition,this.regionName});
+  const BusLine_Result_view({super.key,this.stationlist,this.lineName,this.turnYn,this.routeId,this.seachroute,this.staOrder,this.busposition,this.regionName,this.routeTypeName});
   final stationlist;
   final lineName;
   final turnYn;
@@ -15,6 +15,7 @@ class BusLine_Result_view extends StatefulWidget {
   final staOrder;
   final busposition;
   final regionName;
+  final routeTypeName;
 
   @override
   State<BusLine_Result_view> createState() => _BusLine_Result_viewState();
@@ -27,6 +28,7 @@ class _BusLine_Result_viewState extends State<BusLine_Result_view> with SingleTi
   Map<String,String> bus_position = {};
   Map<String,String> bus_position_update = {};
   var turn_number;
+  var colors;
 
   flutterToast() {
     Fluttertoast.showToast(
@@ -42,6 +44,33 @@ class _BusLine_Result_viewState extends State<BusLine_Result_view> with SingleTi
   void initState() {
     // TODO: implement initState
     super.initState();
+    if(widget.routeTypeName == "직행좌석형시내버스"){
+      colors = Colors.redAccent;
+    }else if(widget.routeTypeName == "좌석형시내버스"){
+      colors = Colors.blueAccent;
+    }else if(widget.routeTypeName == "일반형시내버스"){
+      colors = Colors.green.shade600;
+    }else if(widget.routeTypeName == "광역급행형시내버스"){
+      colors = Colors.redAccent;
+    }else if(widget.routeTypeName == "마을버스"){
+      colors = Colors.yellow.shade700;
+    }else if(widget.routeTypeName == "따복형 시내버스"){
+      colors = Colors.green.shade600;
+    }else if(widget.routeTypeName == "직행좌석형농어촌버스"){
+      colors = Colors.redAccent;
+    }else if(widget.routeTypeName == "좌석형농어촌버스"){
+      colors = Colors.green.shade600;
+    }else if(widget.routeTypeName == "일반형농어촌버스"){
+      colors = Colors.green.shade600;
+    }else if(widget.routeTypeName == "일반형시외버스"){
+      colors = Colors.green.shade600;
+    }else if(widget.routeTypeName == "리무진형 공항버스"){
+      colors = Colors.grey;
+    }else if(widget.routeTypeName == "좌석형 공항버스"){
+      colors = Colors.grey;
+    }else{
+      colors = Colors.grey;
+    }
     SchedulerBinding.instance!.addPostFrameCallback((_) {
       fetchDataAndPerformAction(widget.staOrder); // 모든 작업이 완료되면 함수 호출
     });
@@ -80,7 +109,7 @@ class _BusLine_Result_viewState extends State<BusLine_Result_view> with SingleTi
       appBar: AppBar(
         centerTitle: true,
         elevation: 5.0,
-        backgroundColor: Colors.green.shade600,
+        backgroundColor: colors,
         title: Text("실시간 버스 위치"),
         bottom: PreferredSize(
           preferredSize: Size(double.infinity,110),
