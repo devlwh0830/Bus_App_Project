@@ -46,30 +46,36 @@ class _HomesState extends State<Homes> {
         child: Padding(
           padding: EdgeInsets.all(20),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Row(
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Padding(
-                    padding: EdgeInsets.only(left: 5,right: 5),
-                    child: IconButton(
-                        onPressed: (){
-                          // FlutterDialog();
-                          getLocation();
-                        },
-                        icon: Image.network("https://media.discordapp.net/attachments/905797523363483659/1116528450434506772/pngwing.com_1.png?width=590&height=590",scale:1),
-                        iconSize: 40
+                  Container(
+                    width: 70,
+                    child: Padding(
+                      padding: EdgeInsets.only(left: 5,right: 5),
+                      child: IconButton(
+                          onPressed: (){
+                            // FlutterDialog();
+                            getLocation();
+                          },
+                          icon: Image.network("https://media.discordapp.net/attachments/905797523363483659/1116528450434506772/pngwing.com_1.png?width=590&height=590",scale:1),
+                          iconSize: 40
+                      ),
                     ),
                   ),
-                  Hero(
+                  Container(
+                    width: MediaQuery.of(context).size.width-120,
+                    child: Hero(
                       tag: "Search_Page",
                       child: Material(
                         type: MaterialType.transparency,
                         child: Container(
-                          width:300,
                           child: TextField(
                             onTap: (){
                               Navigator.push(context,
-                              MaterialPageRoute(builder: (context) => Search()));
+                                  MaterialPageRoute(builder: (context) => Search()));
                             },
                             keyboardType: TextInputType.none,
                             decoration: InputDecoration(
@@ -87,6 +93,7 @@ class _HomesState extends State<Homes> {
                           ),
                         ),
                       ),
+                    ),
                   )
                 ],
               ),

@@ -80,9 +80,10 @@ class _Result_viewState extends State<Result_view> {
             centerTitle: true,
             elevation: 0.0,
             backgroundColor: Colors.blueAccent,
-            title: Text("정류장 검색 결과")
+            title: Text("정류장 검색 결과"),
         ),
         body: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Container(
                 padding: EdgeInsets.only(top: 20, bottom: 5),
@@ -103,7 +104,7 @@ class _Result_viewState extends State<Result_view> {
               ),
               Container(
                 width: double.infinity,
-                height: 660,
+                height: MediaQuery.of(context).size.height - 205,
                 child: FutureBuilder(
                   future: _fetch1(),
                   builder: (context, snapshot) {

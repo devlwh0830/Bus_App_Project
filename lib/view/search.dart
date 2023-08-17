@@ -232,7 +232,7 @@ class _SearchState extends State<Search>  with TickerProviderStateMixin{
                                           )
                                         ),
                                         Container(
-                                            width: 280,
+                                            width: MediaQuery.of(context).size.width-135,
                                             child:Column(
                                               crossAxisAlignment: CrossAxisAlignment.end,
                                               children: [
