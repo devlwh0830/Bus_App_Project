@@ -77,9 +77,9 @@ class _MyAppState extends State<MyApp> {
             activeIcon: Icon(Icons.star)
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.account_circle_outlined),
-            label: '내정보',
-            activeIcon: Icon(Icons.account_circle)
+            icon: Icon(Icons.map_outlined),
+            label: '주변정류장',
+            activeIcon: Icon(Icons.map)
           ),
         ],
         selectedItemColor: Colors.blue,

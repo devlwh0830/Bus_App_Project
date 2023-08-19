@@ -17,21 +17,6 @@ class Homes extends StatefulWidget {
 
 class _HomesState extends State<Homes> {
 
-  void getLocation() async{
-    PermissionStatus status = await Permission.location.request();
-    // 결과 확인
-    if(!status.isGranted) { // 허용이 안된 경우
-      // ignore: use_build_context_synchronously
-      FlutterDialog(context);
-    } else{
-      Position position = await Geolocator.getCurrentPosition(
-          desiredAccuracy: LocationAccuracy.high);
-      var result = await gpsStationSearch(position.longitude, position.latitude);
-      Navigator.push(
-          context, MaterialPageRoute(builder: (_) => KakaoMapTest(x:position.latitude,y:position.longitude)));
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -48,54 +33,34 @@ class _HomesState extends State<Homes> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Container(
-                    width: 70,
-                    child: Padding(
-                      padding: EdgeInsets.only(left: 5,right: 5),
-                      child: IconButton(
-                          onPressed: (){
-                            // FlutterDialog();
-                            getLocation();
-                          },
-                          icon: Image.network("https://media.discordapp.net/attachments/905797523363483659/1116528450434506772/pngwing.com_1.png?width=590&height=590",scale:1),
-                          iconSize: 40
-                      ),
-                    ),
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width-120,
-                    child: Hero(
-                      tag: "Search_Page",
-                      child: Material(
-                        type: MaterialType.transparency,
-                        child: Container(
-                          child: TextField(
-                            onTap: (){
-                              Navigator.push(context,
-                                  MaterialPageRoute(builder: (context) => Search()));
-                            },
-                            keyboardType: TextInputType.none,
-                            decoration: InputDecoration(
-                              hintText: "노선 번호 또는 정류장 검색",
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(20),
-                                ),
-                              ),
-                              suffixIcon: Padding(
-                                  padding: EdgeInsets.only(right: 5),
-                                  child: Icon(Icons.search_outlined,size: 35,)
-                              ),
+              Container(
+                child: Hero(
+                  tag: "Search_Page",
+                  child: Material(
+                    type: MaterialType.transparency,
+                    child: Container(
+                      child: TextField(
+                        onTap: (){
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) => Search()));
+                        },
+                        keyboardType: TextInputType.none,
+                        decoration: InputDecoration(
+                          hintText: "노선 번호 또는 정류장 검색",
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(20),
                             ),
+                          ),
+                          suffixIcon: Padding(
+                              padding: EdgeInsets.only(right: 5),
+                              child: Icon(Icons.search_outlined,size: 35,)
                           ),
                         ),
                       ),
                     ),
-                  )
-                ],
+                  ),
+                ),
               ),
               Container(
                 margin: EdgeInsets.only(top: 20,bottom: 5),

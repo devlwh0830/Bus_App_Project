@@ -33,6 +33,9 @@ void FlutterDialog(context) {
                 textAlign: TextAlign.center,style: TextStyle(color: Colors.white),),
             )
         ),
+        titlePadding: EdgeInsets.only(left: 15,bottom: 15,top: 15,right: 50),
+        contentPadding: EdgeInsets.only(left: 10,right: 10,bottom: 5),
+        actionsPadding: EdgeInsets.only(right: 10,bottom: 5),
         actions: [
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
