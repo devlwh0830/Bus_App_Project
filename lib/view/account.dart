@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:kakaomap_webview/kakaomap_webview.dart';
 import 'package:permission_handler/permission_handler.dart';
 import '../apis/api.dart';
 import '../view/popup.dart';
@@ -19,6 +19,67 @@ class _AccountState extends State<Account> {
   var lat;
   var result = [];
   var a = 0;
+  var statuss = false;
+
+  void FlutterDialogs(context) {
+    showDialog(
+      context: context,
+      //barrierDismissible - Dialog를 제외한 다른 화면 터치 x
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          // RoundedRectangleBorder - Dialog 화면 모서리 둥글게 조절
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.0)
+          ),
+          //Dialog Main Title
+          title: Column(
+            children: <Widget>[
+              Text("귀하의 위치 정보가 필요 합니다."),
+            ],
+          ),
+          //
+          content: Container(
+              height: 100,
+              width: double.infinity,
+              padding: EdgeInsets.only(left: 10,right: 10),
+              decoration: BoxDecoration(
+                color: Colors.blueGrey,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Center(
+                child: Text(
+                  "귀하의 주변 정류장을 검색 합니다.\n\n수집목적 : 주변 정류장 조회\n보관방법 : 조회 후 저장하지 않음.",
+                  textAlign: TextAlign.left,style: TextStyle(color: Colors.white),),
+              )
+          ),
+          titlePadding: EdgeInsets.only(left: 15,bottom: 15,top: 15,right: 50),
+          contentPadding: EdgeInsets.only(left: 10,right: 10,bottom: 5),
+          actionsPadding: EdgeInsets.only(right: 10,bottom: 5),
+          actions: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                TextButton(
+                  onPressed: (){
+                    Navigator.pop(context);
+                  },
+                  child: Text("거부"),
+                ),
+                TextButton(
+                  onPressed: ()async{
+                    Navigator.pop(context);
+                    getLocation();
+                  },
+                  child: Text("허용"),
+                )
+              ],
+            )
+          ],
+        );
+      },
+    );
+  }
 
   void getLocation() async{
     PermissionStatus status = await Permission.location.request();
@@ -39,10 +100,14 @@ class _AccountState extends State<Account> {
   }
 
   @override
-  void initState() {
+  void initState(){
     // TODO: implement initState
     super.initState();
-    getLocation();
+    SchedulerBinding.instance.addPostFrameCallback((_) async{
+      if(!await Permission.location.isGranted){
+        FlutterDialogs(context);
+      };
+    });
   }
 
   @override
