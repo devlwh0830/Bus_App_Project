@@ -49,7 +49,7 @@ class _AccountState extends State<Account> {
               ),
               child: Center(
                 child: Text(
-                  "귀하의 주변 정류장을 검색 합니다.\n\n수집목적 : 주변 정류장 조회\n보관방법 : 조회 후 저장하지 않음.",
+                  "주변 정류장 조회는 위치 데이터를\n수집하여 기능을 가용 설정합니다.\n따로 저장하지 않으며 백그라운드에서 작동하지 않습니다.",
                   textAlign: TextAlign.left,style: TextStyle(color: Colors.white),),
               )
           ),
