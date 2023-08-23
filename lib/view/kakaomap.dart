@@ -30,7 +30,7 @@ void KakaoDialog(context,station_info) {
         ),
         title: Container(
           width: 500,
-          child: Text("정류장 위치를 확인하세요.\n${station_info['stationName']} (${station_info['distance']}m)"),
+          child: Text("정류장 위치를 확인하세요.\n${station_info['stationName']} (${station_info['distance']}m)",style: TextStyle(fontSize: 15),),
         ),
         content: Container(
             height: 500,

@@ -174,7 +174,7 @@ class _Result_viewState extends State<Result_view> {
                                 }catch(e){
                                   result3 = null;
                                 }
-
+                                Navigator.pop(context);
                                 Navigator.push(
                                     context, MaterialPageRoute(builder: (_) => BusLine_Result_view(stationlist:result,lineName:widget.station_info[i]['routeName'],turnYn:result2,routeId:widget.station_info[i]['routeId'],seachroute:true,staOrder:widget.station_info[i]['staOrder'],busposition: result3,routeTypeName: widget.station_info[i]['routeTypeName'].toString(),regionName:widget.station_info[i]['regionName'])));
                               },
@@ -266,7 +266,7 @@ class _Result_viewState extends State<Result_view> {
                                               busType(arrival['${widget.station_info[i]['routeId']}${widget.station_info[i]['staOrder']}'][0][0]),
                                               style: TextStyle(
                                                 color: busType(arrival['${widget.station_info[i]['routeId']}${widget.station_info[i]['staOrder']}'][0][0]).toString().substring(0,2) == "저상" ?  Colors.blue : Colors.black,
-                                                fontSize: 20
+                                                fontSize: 15
                                               ),
                                             ),
                                             Container(
@@ -280,7 +280,7 @@ class _Result_viewState extends State<Result_view> {
                                                 time(arrival['${widget.station_info[i]['routeId']}${widget.station_info[i]['staOrder']}'][0][0]['predictTime1'],arrival['${widget.station_info[i]['routeId']}${widget.station_info[i]['staOrder']}'][0][0]['locationNo1']),
                                                 style: TextStyle(
                                                     color: Colors.black,
-                                                    fontSize: 20
+                                                    fontSize: 15
                                                 ),
                                               ),
                                             )
@@ -303,7 +303,7 @@ class _Result_viewState extends State<Result_view> {
                                               busType1(arrival['${widget.station_info[i]['routeId']}${widget.station_info[i]['staOrder']}'][0][0]),
                                               style: TextStyle(
                                                   color: busType1(arrival['${widget.station_info[i]['routeId']}${widget.station_info[i]['staOrder']}'][0][0]).toString().substring(0,2) == "저상" ?  Colors.blue : Colors.black,
-                                                  fontSize: 20
+                                                  fontSize: 15
                                               ),
                                             ),
                                             Container(
@@ -317,7 +317,7 @@ class _Result_viewState extends State<Result_view> {
                                                 time(arrival['${widget.station_info[i]['routeId']}${widget.station_info[i]['staOrder']}'][0][0]['predictTime2'],arrival['${widget.station_info[i]['routeId']}${widget.station_info[i]['staOrder']}'][0][0]['locationNo2']),
                                                 style: TextStyle(
                                                     color: Colors.black,
-                                                    fontSize: 20
+                                                    fontSize: 15
                                                 ),
                                               ),
                                             )

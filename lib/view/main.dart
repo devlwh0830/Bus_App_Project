@@ -94,7 +94,7 @@ class _HomesState extends State<Homes> {
                   ),
                   Container(
                     margin: EdgeInsets.only(top: 50),
-                    child: Text("🚨 완성되지 않은 앱으로 버그가 발생할 수 있습니다.",style: TextStyle(fontSize: 15),)
+                    child: Text("🚨 완성되지 않은 앱으로 버그가 발생할 수 있음.",style: TextStyle(fontSize: 15),)
                   ),
                 ],
               ),

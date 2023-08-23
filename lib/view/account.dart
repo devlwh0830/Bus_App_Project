@@ -35,7 +35,7 @@ class _AccountState extends State<Account> {
           //Dialog Main Title
           title: Column(
             children: <Widget>[
-              Text("귀하의 위치 정보가 필요 합니다."),
+              Text("귀하의 위치 정보가 필요 합니다.",style: TextStyle(fontSize: 16),),
             ],
           ),
           //
@@ -49,8 +49,8 @@ class _AccountState extends State<Account> {
               ),
               child: Center(
                 child: Text(
-                  "GPS를 기반으로 정류장을 조회 합니다.\n귀하의 위치 정보는 외부로\n저장 또는 유출되지 않습니다.",
-                  textAlign: TextAlign.center,style: TextStyle(color: Colors.white),),
+                  "GPS 기반으로 정류장을 조회 합니다.\n귀하의 위치 정보는 외부로\n저장 또는 유출되지 않습니다.",
+                  textAlign: TextAlign.center,style: TextStyle(color: Colors.white,fontSize: 15),),
               )
           ),
           titlePadding: EdgeInsets.only(left: 15,bottom: 15,top: 15,right: 50),
@@ -136,6 +136,7 @@ class _AccountState extends State<Account> {
             ),
             Container(
               height: MediaQuery.of(context).size.height - 225,
+              width: double.infinity,
               child: FutureBuilder(
                 future: _fetch1(),
                 builder: (context, snapshot) {
@@ -180,7 +181,7 @@ class _AccountState extends State<Account> {
                                         children: [
                                           Container(
                                             padding: EdgeInsets.only(top: 10,right: 10),
-                                            width: 250,
+                                            width: MediaQuery.of(context).size.width - 150,
                                             child: Text(
                                               "${result[i]['stationName']}",
                                               style: TextStyle(color: Colors.white,fontSize: 20),

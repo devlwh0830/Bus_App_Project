@@ -308,7 +308,7 @@ class _SearchState extends State<Search>  with TickerProviderStateMixin{
                                               children: [
                                                 Container(
                                                   padding: EdgeInsets.only(top: 10,right: 10),
-                                                  width: 250,
+                                                  width: MediaQuery.of(context).size.width - 140,
                                                   child: Text(
                                                     "${stationdatas[i]['stationName']}",
                                                     style: TextStyle(color: Colors.white,fontSize: 20),

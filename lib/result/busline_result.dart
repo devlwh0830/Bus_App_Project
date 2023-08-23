@@ -137,26 +137,26 @@ class _BusLine_Result_viewState extends State<BusLine_Result_view> with SingleTi
                       Container(
                         margin: EdgeInsets.only(right: 5),
                         height: double.infinity,
-                        width: 190,
+                        width: MediaQuery.of(context).size.width - 220,
                         child: ElevatedButton(
-                          onPressed: (){
-                            moveScroll(0.0);
-                          },
-                          child: Text("상행노선",style: TextStyle(fontSize: 15),),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.black38,
-                            elevation: 0.0,
-                          )
+                            onPressed: (){
+                              moveScroll(0.0);
+                            },
+                            child: Text("상행노선",style: TextStyle(fontSize: 15),),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.black38,
+                              elevation: 0.0,
+                            )
                         ),
                       ),
                       Container(
                         margin: EdgeInsets.only(left: 5),
                         height: double.infinity,
-                        width: 190,
+                        width: MediaQuery.of(context).size.width - 220,
                         child: ElevatedButton(
-                          onPressed: (){
-                            moveScroll(double.parse((widget.turnYn+1).toString()));
-                          },
+                            onPressed: (){
+                              moveScroll(double.parse((widget.turnYn+1).toString()));
+                            },
                             child: Text("하행노선",style: TextStyle(fontSize: 15),),
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.black38,
@@ -297,7 +297,7 @@ class _BusLine_Result_viewState extends State<BusLine_Result_view> with SingleTi
                               Container(
                                   height: 40,
                                   margin: EdgeInsets.only(left: 10),
-                                  width: 250,
+                                  width: MediaQuery.of(context).size.width - 150,
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
