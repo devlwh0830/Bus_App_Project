@@ -49,8 +49,8 @@ class _AccountState extends State<Account> {
               ),
               child: Center(
                 child: Text(
-                  "주변 정류장 조회는 위치 데이터를\n수집하여 기능을 가용 설정합니다.\n따로 저장하지 않으며 백그라운드에서 작동하지 않습니다.",
-                  textAlign: TextAlign.left,style: TextStyle(color: Colors.white),),
+                  "GPS를 기반으로 정류장을 조회 합니다.\n귀하의 위치 정보는 외부로\n저장 또는 유출되지 않습니다.",
+                  textAlign: TextAlign.center,style: TextStyle(color: Colors.white),),
               )
           ),
           titlePadding: EdgeInsets.only(left: 15,bottom: 15,top: 15,right: 50),
@@ -63,6 +63,9 @@ class _AccountState extends State<Account> {
                 TextButton(
                   onPressed: (){
                     Navigator.pop(context);
+                    setState(() {
+                      result = [{"stationName":"위치 권한을 허용해 주세요."}];
+                    });
                   },
                   child: Text("거부"),
                 ),
@@ -106,6 +109,8 @@ class _AccountState extends State<Account> {
     SchedulerBinding.instance.addPostFrameCallback((_) async{
       if(!await Permission.location.isGranted){
         FlutterDialogs(context);
+      }else{
+        getLocation();
       };
     });
   }
@@ -144,9 +149,11 @@ class _AccountState extends State<Account> {
                       itemBuilder: (c, i){
                         return TextButton(
                           onPressed: (){
-                            setState(() {
-                              KakaoDialog(c,result[i]);
-                            });
+                            if(result[i]['stationName'] != "위치 권한을 허용해 주세요."){
+                              setState(() {
+                                KakaoDialog(c,result[i]);
+                              });
+                            }
                           },
                           style: TextButton.styleFrom(
                             foregroundColor: Colors.white,
@@ -183,7 +190,7 @@ class _AccountState extends State<Account> {
                                           Container(
                                             padding: EdgeInsets.only(right: 10),
                                             child: Text(
-                                              "${result[i]['distance']}m |${result[i]['mobileNo']} (${result[i]['regionName']})",
+                                              "${result[i]['distance']??"0"}m |${result[i]['mobileNo']??"위치확인불가"} (${result[i]['regionName']??"위치확인불가"})",
                                               style: TextStyle(color: Colors.white,fontSize: 15),
                                               overflow: TextOverflow.ellipsis,
                                             ),
@@ -207,7 +214,7 @@ class _AccountState extends State<Account> {
     );
   }
   Future<String> _fetch1() async {
-    await Future.delayed(Duration(seconds: 1));
+    await Future.delayed(Duration(seconds: 2));
     return "call";
   }
 }

@@ -187,22 +187,24 @@ class _SearchState extends State<Search>  with TickerProviderStateMixin{
                             itemBuilder: (c,i){
                               return TextButton(
                                 onPressed: () async{
-                                  var result;
-                                  var result2;
-                                  var result3;
-                                  try{
-                                    result = await busStationList(data[i]['routeId']);
-                                    result2 = await turnBus(data[i]['routeId']);
-                                  }catch(e){
-                                    result = [{'routeId':'000000','routeName':"정보를 찾을 수 없음","routeTypeName":"정보가 없습니다."}];
+                                  if(data[i]['routeName'].toString() != "00"){
+                                    var result;
+                                    var result2;
+                                    var result3;
+                                    try{
+                                      result = await busStationList(data[i]['routeId']);
+                                      result2 = await turnBus(data[i]['routeId']);
+                                    }catch(e){
+                                      result = [{'routeId':'000000','routeName':"정보를 찾을 수 없음","routeTypeName":"정보가 없습니다."}];
+                                    }
+                                    try{
+                                      result3 = await busLocationList(data[i]['routeId']);
+                                    }catch(e){
+                                      result3 = null;
+                                    }
+                                    Navigator.push(
+                                        context, MaterialPageRoute(builder: (_) => BusLine_Result_view(stationlist:result,lineName:data[i]['routeName'],turnYn:result2,routeId:data[i]['routeId'],seachroute: false, staOrder:"0",busposition:result3,regionName:data[i]['regionName'].toString(),routeTypeName:data[i]['routeTypeName'].toString())));
                                   }
-                                  try{
-                                    result3 = await busLocationList(data[i]['routeId']);
-                                  }catch(e){
-                                    result3 = null;
-                                  }
-                                  Navigator.push(
-                                      context, MaterialPageRoute(builder: (_) => BusLine_Result_view(stationlist:result,lineName:data[i]['routeName'],turnYn:result2,routeId:data[i]['routeId'],seachroute: false, staOrder:"0",busposition:result3,regionName:data[i]['regionName'].toString(),routeTypeName:data[i]['routeTypeName'].toString())));
                                 },
                                 style: TextButton.styleFrom(
                                   foregroundColor: Colors.white,
@@ -272,13 +274,15 @@ class _SearchState extends State<Search>  with TickerProviderStateMixin{
                             itemBuilder: (c,i){
                               return TextButton(
                                 onPressed: () async{
-                                  var result;
-                                  try{
-                                    result = await busArrivalInfo(stationdatas[i]['stationId']);
-                                  }catch(e){
-                                    result = [{'routeId':'000000','routeName':"정보를 찾을 수 없음","routeTypeName":"정보가 없습니다."}];
+                                  if(stationdatas[i]['stationName'] != "검색 결과 없음"){
+                                    var result;
+                                    try{
+                                      result = await busArrivalInfo(stationdatas[i]['stationId']);
+                                    }catch(e){
+                                      result = [{'routeId':'000000','routeName':"정보를 찾을 수 없음","routeTypeName":"정보가 없습니다."}];
+                                    }
+                                    Navigator.push(context, MaterialPageRoute(builder: (_) => Result_view(displayId:stationdatas[i]['stationId'],station_name: stationdatas[i]['stationName'],station_id:stationdatas[i]['mobileNo'],station_info:result)));
                                   }
-                                  Navigator.push(context, MaterialPageRoute(builder: (_) => Result_view(displayId:stationdatas[i]['stationId'],station_name: stationdatas[i]['stationName'],station_id:stationdatas[i]['mobileNo'],station_info:result)));
                                 },
                                 style: TextButton.styleFrom(
                                   foregroundColor: Colors.white,

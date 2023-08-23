@@ -132,9 +132,10 @@ class _BusLine_Result_viewState extends State<BusLine_Result_view> with SingleTi
                   height: 45,
                   width: double.infinity,
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Container(
+                        margin: EdgeInsets.only(right: 5),
                         height: double.infinity,
                         width: 190,
                         child: ElevatedButton(
@@ -149,6 +150,7 @@ class _BusLine_Result_viewState extends State<BusLine_Result_view> with SingleTi
                         ),
                       ),
                       Container(
+                        margin: EdgeInsets.only(left: 5),
                         height: double.infinity,
                         width: 190,
                         child: ElevatedButton(

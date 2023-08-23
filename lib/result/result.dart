@@ -5,6 +5,8 @@ import 'package:busapp/result/arival_popup.dart';
 import 'package:busapp/result/error_report.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+import 'busline_result.dart';
+
 class Result_view extends StatefulWidget {
   Result_view({super.key, this.displayId, this.station_name, this.station_id,this.station_info});
   final displayId;
@@ -24,6 +26,7 @@ class _Result_viewState extends State<Result_view> {
   var lineName;
   var datas;
   Map<String,String> data = {};
+  Map<String,dynamic> arrival = {};
 
   flutterToast(String a) {
     Fluttertoast.showToast(
@@ -64,6 +67,42 @@ class _Result_viewState extends State<Result_view> {
       colors = Image.network("https://media.discordapp.net/attachments/905797523363483659/1139894619291799562/green_bus.png?width=460&height=460");
     }
     return colors;
+  }
+
+  time(a,b){
+    if(a != null){
+      if(int.parse(a)<=2){
+        return "잠시 후 도착 ($b번째 전)";
+      }else{
+        return "$a분 ($b번째 전)";
+      }
+    }else{
+      return "도착정보없음";
+    }
+  }
+
+  busType(a){
+    if(a['plateNo1'] != null){
+      if(a['lowPlate1'] == "0"){
+        return "일반 ${a['plateNo1'].toString().substring(a['plateNo1'].toString().length-4,a['plateNo1'].toString().length)}";
+      }else{
+        return "저상 ${a['plateNo1'].toString().substring(a['plateNo1'].toString().length-4,a['plateNo1'].toString().length)}";
+      }
+    }else{
+      return "  ";
+    }
+  }
+
+  busType1(a){
+    if(a['plateNo2'] != null){
+      if(a['lowPlate2'] == "0"){
+        return "일반 ${a['plateNo2'].toString().substring(a['plateNo2'].toString().length-4,a['plateNo2'].toString().length)}";
+      }else{
+        return "저상 ${a['plateNo2'].toString().substring(a['plateNo2'].toString().length-4,a['plateNo2'].toString().length)}";
+      }
+    }else{
+      return "  ";
+    }
   }
 
   @override
@@ -119,12 +158,31 @@ class _Result_viewState extends State<Result_view> {
                           itemCount: widget.station_info.length,
                           itemBuilder: (c, i) {
                             return TextButton(
-                              onPressed: () => setState(() => FlutterDialog(context,widget.station_info[i]['routeName'],widget.displayId,widget.station_info[i]['routeId'],widget.station_info[i]['staOrder'],widget.station_info[i]['routeTypeName'],widget.station_info[i]['regionName'])),
+                              onPressed: ()async{
+                                var result;
+                                var result2;
+                                var result3;
+                                try{
+                                  result = await busStationList(widget.station_info[i]['routeId']);
+                                  result2 = await turnBus(widget.station_info[i]['routeId']);
+                                }catch(e){
+                                  result = [{'routeId':'000000','routeName':"정보를 찾을 수 없음","routeTypeName":"정보가 없습니다."}];
+                                }
+
+                                try{
+                                  result3 = await busLocationList(widget.station_info[i]['routeId']);
+                                }catch(e){
+                                  result3 = null;
+                                }
+
+                                Navigator.push(
+                                    context, MaterialPageRoute(builder: (_) => BusLine_Result_view(stationlist:result,lineName:widget.station_info[i]['routeName'],turnYn:result2,routeId:widget.station_info[i]['routeId'],seachroute:true,staOrder:widget.station_info[i]['staOrder'],busposition: result3,routeTypeName: widget.station_info[i]['routeTypeName'].toString(),regionName:widget.station_info[i]['regionName'])));
+                              },
                               style: TextButton.styleFrom(
                                 foregroundColor: Colors.white,
                               ),
                               child: Container(
-                                  height: 60,
+                                  height: 150,
                                   width: double.infinity,
                                   margin: EdgeInsets.fromLTRB(
                                       10, 0, 10, 0),
@@ -142,50 +200,129 @@ class _Result_viewState extends State<Result_view> {
                                         )
                                       ]
                                   ),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      Container(
-                                          padding: EdgeInsets.only(
-                                              left: 20, right: 30),
-                                          child: InkWell(
-                                            child: getColor(widget.station_info[i]['routeTypeName'].toString()),
-                                            onTap: (){
-                                              flutterToast(widget.station_info[i]['routeTypeName'].toString());
-                                            },
+                                      Row(
+                                        children: [
+                                          Container(
+                                            padding: EdgeInsets.only(
+                                                left: 20, right: 30),
+                                            height: 70,
+                                            child: InkWell(
+                                              child: getColor(widget.station_info[i]['routeTypeName'].toString()),
+                                              onTap: (){
+                                                flutterToast(widget.station_info[i]['routeTypeName'].toString());
+                                              },
+                                            ),
                                           ),
+                                          Container(
+                                              child: Column(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  Container(
+                                                      alignment: Alignment.centerLeft,
+                                                      padding: EdgeInsets.only(right: 10),
+                                                      width: 200,
+                                                      child: Column(
+                                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                                        children: [
+                                                          Text(
+                                                            "",
+                                                            style: TextStyle(color: Colors.black, fontSize: 2),
+                                                            overflow: TextOverflow.ellipsis,
+                                                          ),
+                                                          Text(
+                                                            "${widget.station_info[i]['routeName']}번",
+                                                            style: TextStyle(color: Colors.black, fontSize: 20),
+                                                            overflow: TextOverflow.ellipsis,
+                                                          ),
+                                                          Text(
+                                                            "${data['${widget.station_info[i]['routeId']}${widget.station_info[i]['staOrder']}']}방면",
+                                                            style: TextStyle(color: Colors.black, fontSize: 15),
+                                                            overflow: TextOverflow.ellipsis,
+                                                          ),
+                                                        ],
+                                                      )
+                                                  )
+                                                ],
+                                              )
+                                          ),
+                                        ],
                                       ),
                                       Container(
-                                          child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              Container(
-                                                alignment: Alignment.centerLeft,
-                                                padding: EdgeInsets.only(top:8, right: 10),
-                                                width: 200,
-                                                child: Column(
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      "",
-                                                      style: TextStyle(color: Colors.black, fontSize: 2),
-                                                      overflow: TextOverflow.ellipsis,
-                                                    ),
-                                                    Text(
-                                                      "${widget.station_info[i]['routeName']}번",
-                                                      style: TextStyle(color: Colors.black, fontSize: 20),
-                                                      overflow: TextOverflow.ellipsis,
-                                                    ),
-                                                    Text(
-                                                      "${data['${widget.station_info[i]['routeId']}${widget.station_info[i]['staOrder']}']}방면",
-                                                      style: TextStyle(color: Colors.black, fontSize: 15),
-                                                      overflow: TextOverflow.ellipsis,
-                                                    ),
-                                                  ],
-                                                )
-                                              )
-                                            ],
-                                          )
+                                        margin: EdgeInsets.only(left: 15,right: 15),
+                                        height: 0.5,
+                                        color: Colors.grey,
+                                      ),
+                                      Container(
+                                        margin: EdgeInsets.only(left: 15,right: 15,top: 5,bottom: 5),
+                                        width: double.infinity,
+                                        height: 30,
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              busType(arrival['${widget.station_info[i]['routeId']}${widget.station_info[i]['staOrder']}'][0][0]),
+                                              style: TextStyle(
+                                                color: busType(arrival['${widget.station_info[i]['routeId']}${widget.station_info[i]['staOrder']}'][0][0]).toString().substring(0,2) == "저상" ?  Colors.blue : Colors.black,
+                                                fontSize: 20
+                                              ),
+                                            ),
+                                            Container(
+                                              padding: EdgeInsets.only(left: 10,right: 10),
+                                              alignment: Alignment.centerRight,
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.circular(5),
+                                                color: time(arrival['${widget.station_info[i]['routeId']}${widget.station_info[i]['staOrder']}'][0][0]['predictTime1'],arrival['${widget.station_info[i]['routeId']}${widget.station_info[i]['staOrder']}'][0][0]['locationNo1']) == "도착정보없음" ?Colors.grey.shade300 : Colors.blue.shade100,
+                                              ),
+                                              child: Text(
+                                                time(arrival['${widget.station_info[i]['routeId']}${widget.station_info[i]['staOrder']}'][0][0]['predictTime1'],arrival['${widget.station_info[i]['routeId']}${widget.station_info[i]['staOrder']}'][0][0]['locationNo1']),
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 20
+                                                ),
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                      Container(
+                                        margin: EdgeInsets.only(left: 15,right: 15),
+                                        height: 0.5,
+                                        color: Colors.grey,
+                                      ),
+                                      Container(
+                                        margin: EdgeInsets.only(left: 15,right: 15,top: 5),
+                                        width: double.infinity,
+                                        height: 30,
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              busType1(arrival['${widget.station_info[i]['routeId']}${widget.station_info[i]['staOrder']}'][0][0]),
+                                              style: TextStyle(
+                                                  color: busType1(arrival['${widget.station_info[i]['routeId']}${widget.station_info[i]['staOrder']}'][0][0]).toString().substring(0,2) == "저상" ?  Colors.blue : Colors.black,
+                                                  fontSize: 20
+                                              ),
+                                            ),
+                                            Container(
+                                              padding: EdgeInsets.only(left: 10,right: 10),
+                                              alignment: Alignment.centerRight,
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.circular(5),
+                                                color: time(arrival['${widget.station_info[i]['routeId']}${widget.station_info[i]['staOrder']}'][0][0]['predictTime2'],arrival['${widget.station_info[i]['routeId']}${widget.station_info[i]['staOrder']}'][0][0]['locationNo2']) == "도착정보없음" ?Colors.grey.shade300 : Colors.blue.shade100,
+                                              ),
+                                              child: Text(
+                                                time(arrival['${widget.station_info[i]['routeId']}${widget.station_info[i]['staOrder']}'][0][0]['predictTime2'],arrival['${widget.station_info[i]['routeId']}${widget.station_info[i]['staOrder']}'][0][0]['locationNo2']),
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 20
+                                                ),
+                                              ),
+                                            )
+                                          ],
+                                        ),
                                       ),
                                     ],
                                   )
@@ -199,18 +336,27 @@ class _Result_viewState extends State<Result_view> {
               ),
             ]
         ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: (){
-          error_reports(context);
+      floatingActionButton: FloatingActionButton(
+        onPressed: ()async{
+          widget.station_info.forEach((i) async{
+            var c;
+            try{
+              c = await busArrivalInfo2(widget.displayId,i['routeId'],i['staOrder']);
+            }catch(e){
+              c = [{"flag": null, "locationNo1": null, "locationNo2": null, "lowPlate1": null, "lowPlate2": null, "plateNo1": null, "plateNo2": null, "predictTime1": null, "predictTime2": null, "remainSeatCnt1": null, "remainSeatCnt2": null, "routeId": null, "staOrder": null, "stationId": null}];
+            }
+            setState(() {
+              arrival.update(i['routeId'].toString() + i['staOrder'].toString(), (value) => [c]);
+            });
+          });
         },
-        icon: Icon(Icons.message),
-        backgroundColor: Colors.red,
-        label: Text('오류신고'),
+        child: Icon(Icons.refresh_sharp,size: 40,),
       ),
     );
   }
   Future<String> _fetch1() async {
     widget.station_info.forEach((i) async{
+      var c;
       var a = await busRouteName(i['routeId']);
       var b = await turnBus(i['routeId']);
       if(int.parse(i['staOrder'])<=b){
@@ -220,6 +366,12 @@ class _Result_viewState extends State<Result_view> {
         data.addAll(
             {"${i['routeId']}${i['staOrder']}": "${a['startStationName']}"});
       }
+      try{
+        c = await busArrivalInfo2(widget.displayId,i['routeId'],i['staOrder']);
+      }catch(e){
+        c = [{"flag": null, "locationNo1": null, "locationNo2": null, "lowPlate1": null, "lowPlate2": null, "plateNo1": null, "plateNo2": null, "predictTime1": null, "predictTime2": null, "remainSeatCnt1": null, "remainSeatCnt2": null, "routeId": null, "staOrder": null, "stationId": null}];
+      }
+      arrival.addAll({"${i['routeId']}${i['staOrder']}": [c]});
     });
     await Future.delayed(Duration(seconds: 1));
     return 'Call Data';
