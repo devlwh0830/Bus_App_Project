@@ -3,6 +3,8 @@
 - 플러터를 활용한 앱 만들기 프로젝트<br>
 - 2023.06.06 ~ 2023.06.21 (1차 제작기간)
 - 2023.08.07 ~ 2023.08.20 (프로젝트 완성)
+
+- https://play.google.com/store/apps/details?id=com.legendaryoctopus.busapp
 <br>
 
 - 작업노트
