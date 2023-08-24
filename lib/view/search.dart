@@ -24,6 +24,7 @@ class _SearchState extends State<Search>  with TickerProviderStateMixin{
   var colors;
   var storage;
   var list = [];
+  var _isChecked = false;
 
   flutterToast(String a) {
     Fluttertoast.showToast(
@@ -104,39 +105,130 @@ class _SearchState extends State<Search>  with TickerProviderStateMixin{
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(100.0),
+        preferredSize: Size.fromHeight(130.0),
         child: Hero(
           tag: "Search_Page",
           child: Material(
             type: MaterialType.transparency,
-            child: Container(
-              width:double.infinity,
-              padding: EdgeInsets.only(right: 20,top: 60, bottom: 20),
-              child: TextField(
-                onChanged: (c){
-                  getData(c);
-                  getStationData(c);
-                },
-                autofocus: true,
-                keyboardType: TextInputType.text,
-                decoration: InputDecoration(
-                  hintText: "노선번호 또는 정류장명으로 검색하세요.",
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(20),
+            child: Column(
+              children: [
+                Container(
+                  width:double.infinity,
+                  margin: EdgeInsets.zero,
+                  padding: EdgeInsets.only(right: 20,top: 60, bottom: 20),
+                  child: TextField(
+                    onChanged: (c){
+                      getData(c);
+                      getStationData(c);
+                    },
+                    autofocus: true,
+                    keyboardType: TextInputType.text,
+                    decoration: InputDecoration(
+                        hintText: "노선번호 또는 정류장명으로 검색하세요.",
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(20),
+                          ),
+                        ),
+                        icon: IconButton(
+                          padding: EdgeInsets.only(left: 20),
+                          color: Colors.black,
+                          icon: Icon(Icons.close,size: 30,),
+                          onPressed: (){
+                            Navigator.pop(context);
+                          },
+                        )
                     ),
                   ),
-                  icon: IconButton(
-                    padding: EdgeInsets.only(left: 20),
-                    color: Colors.black,
-                    icon: Icon(Icons.close,size: 30,),
-                    onPressed: (){
-                      Navigator.pop(context);
-                    },
-                  )
                 ),
-              ),
-            ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(left: 10,right: 5,top: 1),
+                      child: Text(
+                        "광역버스",
+                        style: TextStyle(
+                          fontSize: 20,
+                        ),
+                      ),
+                    ),
+                    Transform.scale(
+                      scale: 1.2,
+                      child: Container(
+                        width: 25,
+                        height: 25,
+                        child: Checkbox(
+                          value: _isChecked,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          onChanged: (value){
+                            setState(() {
+                              _isChecked = value!;
+                            });
+                          },
+                        ),
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(left: 10,right: 5,top: 1),
+                      child: Text(
+                        "직행버스",
+                        style: TextStyle(
+                          fontSize: 20,
+                        ),
+                      ),
+                    ),
+                    Transform.scale(
+                      scale: 1.2,
+                      child: Container(
+                        width: 25,
+                        height: 25,
+                        child: Checkbox(
+                          value: _isChecked,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          onChanged: (value){
+                            setState(() {
+                              _isChecked = value!;
+                            });
+                          },
+                        ),
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(left: 10,right: 5,top: 1),
+                      child: Text(
+                        "일반버스",
+                        style: TextStyle(
+                          fontSize: 20,
+                        ),
+                      ),
+                    ),
+                    Transform.scale(
+                      scale: 1.2,
+                      child: Container(
+                        width: 25,
+                        height: 25,
+                        child: Checkbox(
+                          value: _isChecked,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          onChanged: (value){
+                            setState(() {
+                              _isChecked = value!;
+                            });
+                          },
+                        ),
+                      ),
+                    )
+                  ],
+                )
+              ],
+            )
           ),
         ),
       ),
