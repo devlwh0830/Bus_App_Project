@@ -2,7 +2,7 @@ import 'package:http/http.dart' as http;
 import 'package:xml2json/xml2json.dart';
 import 'dart:convert';
 
-busLineSearch(String number) async { // 버스 노선 조회 API
+busLineSearch(String number,check1,check2,check3,check4,check5) async { // 버스 노선 조회 API
   var data = {};
   var datas = [];
   var result = await http.get(
@@ -14,8 +14,24 @@ busLineSearch(String number) async { // 버스 노선 조회 API
     data = jsonDecode(jsonData); //JSON 형식으로 디코딩
     data = data['response']['msgBody']; // 필터링
     try{
-      datas = data['busRouteList'];
-    }catch (e){
+        for(var i in data['busRouteList']){
+          if(i['routeTypeName'].toString().contains("광역") && check1){
+            datas.add(i);
+          }
+          if(i['routeTypeName'].toString().contains("직행") && check2){
+            datas.add(i);
+          }
+          if(i['routeTypeName'].toString().contains("일반") && check3){
+            datas.add(i);
+          }
+          if(i['routeTypeName'].toString().contains("마을") && check4){
+            datas.add(i);
+          }
+          if(!i['routeTypeName'].toString().contains("광역") && !i['routeTypeName'].toString().contains("직행") && !i['routeTypeName'].toString().contains("일반") && !i['routeTypeName'].toString().contains("마을") && check5){
+            datas.add(i);
+          }
+        }
+    }catch(e){
       datas.add(data['busRouteList']);
     }
     return datas; // 값 반환

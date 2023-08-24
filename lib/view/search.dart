@@ -16,7 +16,9 @@ class _SearchState extends State<Search>  with TickerProviderStateMixin{
 
   late TabController _result_viewState;
 
+  var search;
   var data;
+  var data_list;
   var datas;
   var stationdata;
   var stationdatas;
@@ -41,7 +43,7 @@ class _SearchState extends State<Search>  with TickerProviderStateMixin{
   }
 
   getData(String c) async {
-    datas = await busLineSearch(c);
+    datas = await busLineSearch(c,_isChecked1,_isChecked2,_isChecked3,_isChecked4,_isChecked5);
     setState((){
       data = datas;
     });
@@ -109,304 +111,453 @@ class _SearchState extends State<Search>  with TickerProviderStateMixin{
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(120.0),
+        preferredSize: Size.fromHeight(100.0),
         child: Hero(
           tag: "Search_Page",
           child: Material(
             type: MaterialType.transparency,
-            child: Column(
-              children: [
-                Container(
-                  width:double.infinity,
-                  margin: EdgeInsets.zero,
-                  padding: EdgeInsets.only(right: 20,top: 60, bottom: 10),
-                  child: TextField(
-                    onChanged: (c){
-                      getData(c);
-                      getStationData(c);
-                    },
-                    autofocus: true,
-                    keyboardType: TextInputType.text,
-                    decoration: InputDecoration(
-                        hintText: "노선번호 또는 정류장명으로 검색하세요.",
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(20),
-                          ),
-                        ),
-                        icon: IconButton(
-                          padding: EdgeInsets.only(left: 20),
-                          color: Colors.black,
-                          icon: Icon(Icons.close,size: 30,),
-                          onPressed: (){
-                            Navigator.pop(context);
-                          },
-                        )
+            child: Container(
+              width:double.infinity,
+              margin: EdgeInsets.zero,
+              padding: EdgeInsets.only(right: 20,top: 60, bottom: 10),
+              child: TextField(
+                onChanged: (c){
+                  setState(() {
+                    search = c;
+                  });
+                  getData(search);
+                  getStationData(search);
+                },
+                onEditingComplete: (){
+                  FocusScope.of(context).unfocus();
+                  getData(search.toString());
+                  getStationData(search.toString());
+                },
+                onTap: (){
+                  FocusScope.of(context).unfocus();
+                },
+                autofocus: true,
+                keyboardType: TextInputType.text,
+                decoration: InputDecoration(
+                    hintText: "노선번호 또는 정류장명으로 검색하세요.",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(20),
+                      ),
                     ),
-                  ),
+                    icon: IconButton(
+                      padding: EdgeInsets.only(left: 20),
+                      color: Colors.black,
+                      icon: Icon(Icons.close,size: 30,),
+                      onPressed: (){
+                        Navigator.pop(context);
+                      },
+                    )
                 ),
-                Container(
-                  width: double.infinity,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        margin: EdgeInsets.only(right: 5,top: 1),
-                        child: Text(
-                          "광역",
-                          style: TextStyle(
-                            fontSize: 20,
-                          ),
-                        ),
-                      ),
-                      Transform.scale(
-                        scale: 1.2,
-                        child: Container(
-                          width: 20,
-                          height: 20,
-                          child: Checkbox(
-                            value: _isChecked1,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                            onChanged: (value){
-                              setState(() {
-                                _isChecked1 = value!;
-                              });
-                            },
-                          ),
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(left: 15,right: 5,top: 1),
-                        child: Text(
-                          "직행",
-                          style: TextStyle(
-                            fontSize: 20,
-                          ),
-                        ),
-                      ),
-                      Transform.scale(
-                        scale: 1.2,
-                        child: Container(
-                          width: 20,
-                          height: 20,
-                          child: Checkbox(
-                            value: _isChecked2,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                            onChanged: (value){
-                              setState(() {
-                                _isChecked2 = value!;
-                              });
-                            },
-                          ),
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(left: 15,right: 5,top: 1),
-                        child: Text(
-                          "일반",
-                          style: TextStyle(
-                            fontSize: 20,
-                          ),
-                        ),
-                      ),
-                      Transform.scale(
-                        scale: 1.2,
-                        child: Container(
-                          width: 20,
-                          height: 20,
-                          child: Checkbox(
-                            value: _isChecked3,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                            onChanged: (value){
-                              setState(() {
-                                _isChecked3 = value!;
-                              });
-                            },
-                          ),
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(left: 15,right: 5,top: 1),
-                        child: Text(
-                          "마을",
-                          style: TextStyle(
-                            fontSize: 20,
-                          ),
-                        ),
-                      ),
-                      Transform.scale(
-                        scale: 1.2,
-                        child: Container(
-                          width: 20,
-                          height: 20,
-                          child: Checkbox(
-                            value: _isChecked4,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                            onChanged: (value){
-                              setState(() {
-                                _isChecked4 = value!;
-                              });
-                            },
-                          ),
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(left: 15,right: 5,top: 1),
-                        child: Text(
-                          "기타",
-                          style: TextStyle(
-                            fontSize: 20,
-                          ),
-                        ),
-                      ),
-                      Transform.scale(
-                        scale: 1.2,
-                        child: Container(
-                          width: 20,
-                          height: 20,
-                          child: Checkbox(
-                            value: _isChecked5,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                            onChanged: (value){
-                              setState(() {
-                                _isChecked5 = value!;
-                              });
-                            },
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                )
-              ],
-            )
+              ),
+            ),
           ),
         ),
       ),
-      body: Column(
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(color: Colors.white, width: 2),
-                    ),
-                  ),
-                child: TabBar(
-                  tabs: [
-                    Container(
-                      height: 40,
-                      alignment: Alignment.center,
-                      child: Text(
-                        '버스노선',
-                        style: TextStyle(fontSize: 17),),
-                    ),
-                    Container(
-                      height: 40,
-                      alignment: Alignment.center,
-                      child: Text(
-                        '정류장',
-                        style: TextStyle(fontSize: 17),),
-                    ),
-                  ],
-                  indicator: BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(color: Colors.black, width: 2),
-                    ),
-                  ),
-                  labelColor: Colors.black,
-                  unselectedLabelColor: Colors.black,
-                  controller: _result_viewState,
+      body:Column(
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(color: Colors.white, width: 2),
                 ),
               ),
-                Expanded(
-                  child: TabBarView(
-                    controller: _result_viewState,
-                    children: [
-                      Container(
-                        width: double.infinity,
-                        height: 350,
-                        child: ListView.builder(
-                            itemCount: data.length,
-                            itemBuilder: (c,i){
-                              return TextButton(
-                                onPressed: () async{
-                                  if(data[i]['routeName'].toString() != "00"){
-                                    var result;
-                                    var result2;
-                                    var result3;
-                                    try{
-                                      result = await busStationList(data[i]['routeId']);
-                                      result2 = await turnBus(data[i]['routeId']);
-                                    }catch(e){
-                                      result = [{'routeId':'000000','routeName':"정보를 찾을 수 없음","routeTypeName":"정보가 없습니다."}];
-                                    }
-                                    try{
-                                      result3 = await busLocationList(data[i]['routeId']);
-                                    }catch(e){
-                                      result3 = null;
-                                    }
-                                    Navigator.push(
-                                        context, MaterialPageRoute(builder: (_) => BusLine_Result_view(stationlist:result,lineName:data[i]['routeName'],turnYn:result2,routeId:data[i]['routeId'],seachroute: false, staOrder:"0",busposition:result3,regionName:data[i]['regionName'].toString(),routeTypeName:data[i]['routeTypeName'].toString())));
-                                  }
-                                },
-                                style: TextButton.styleFrom(
-                                  foregroundColor: Colors.white,
+              child: TabBar(
+                tabs: [
+                  Container(
+                    height: 40,
+                    alignment: Alignment.center,
+                    child: Text(
+                      '버스노선',
+                      style: TextStyle(fontSize: 17),),
+                  ),
+                  Container(
+                    height: 40,
+                    alignment: Alignment.center,
+                    child: Text(
+                      '정류장',
+                      style: TextStyle(fontSize: 17),),
+                  ),
+                ],
+                indicator: BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(color: Colors.black, width: 2),
+                  ),
+                ),
+                labelColor: Colors.black,
+                unselectedLabelColor: Colors.black,
+                controller: _result_viewState,
+              ),
+            ),
+            Expanded(
+                child: TabBarView(
+                  controller: _result_viewState,
+                  children: [
+                    Column(
+                      children: [
+                        Container(
+                          width: double.infinity,
+                          height: 40,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Container(
+                                width: 75,
+                                height: 30,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.vertical(bottom: Radius.circular(15),top: Radius.circular(15)),
+                                    color: Colors.black12
                                 ),
-                                child: Container(
-                                  height: 70,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      margin: EdgeInsets.only(right: 3),
+                                      child: Text(
+                                        "광역",
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                        ),
+                                      ),
+                                    ),
+                                    Transform.scale(
+                                      scale: 1.1,
+                                      child: Container(
+                                        width: 20,
+                                        height: 20,
+                                        child: Checkbox(
+                                          value: _isChecked1,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(5),
+                                          ),
+                                          onChanged: (value){
+                                            setState(() {
+                                              _isChecked1 = value!;
+                                            });
+                                            getData(search);
+                                          },
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                width: 75,
+                                height: 30,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.vertical(bottom: Radius.circular(15),top: Radius.circular(15)),
+                                    color: Colors.black12
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      margin: EdgeInsets.only(right: 3),
+                                      child: Text(
+                                        "직행",
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                        ),
+                                      ),
+                                    ),
+                                    Transform.scale(
+                                      scale: 1.1,
+                                      child: Container(
+                                        width: 20,
+                                        height: 20,
+                                        child: Checkbox(
+                                          value: _isChecked2,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(5),
+                                          ),
+                                          onChanged: (value){
+                                            setState(() {
+                                              _isChecked2 = value!;
+                                            });
+                                            getData(search);
+                                          },
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                width: 75,
+                                height: 30,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.vertical(bottom: Radius.circular(15),top: Radius.circular(15)),
+                                    color: Colors.black12
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      margin: EdgeInsets.only(right: 3),
+                                      child: Text(
+                                        "일반",
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                        ),
+                                      ),
+                                    ),
+                                    Transform.scale(
+                                      scale: 1.1,
+                                      child: Container(
+                                        width: 20,
+                                        height: 20,
+                                        child: Checkbox(
+                                          value: _isChecked3,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(5),
+                                          ),
+                                          onChanged: (value){
+                                            setState(() {
+                                              _isChecked3 = value!;
+                                            });
+                                            getData(search);
+                                          },
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                width: 75,
+                                height: 30,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.vertical(bottom: Radius.circular(15),top: Radius.circular(15)),
+                                    color: Colors.black12
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      margin: EdgeInsets.only(right: 3),
+                                      child: Text(
+                                        "마을",
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                        ),
+                                      ),
+                                    ),
+                                    Transform.scale(
+                                      scale: 1.1,
+                                      child: Container(
+                                        width: 20,
+                                        height: 20,
+                                        child: Checkbox(
+                                          value: _isChecked4,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(5),
+                                          ),
+                                          onChanged: (value){
+                                            setState(() {
+                                              _isChecked4 = value!;
+                                            });
+                                            getData(search);
+                                          },
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                width: 75,
+                                height: 30,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.vertical(bottom: Radius.circular(15),top: Radius.circular(15)),
+                                    color: Colors.black12
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      margin: EdgeInsets.only(right: 3),
+                                      child: Text(
+                                        "기타",
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                        ),
+                                      ),
+                                    ),
+                                    Transform.scale(
+                                      scale: 1.1,
+                                      child: Container(
+                                        width: 20,
+                                        height: 20,
+                                        child: Checkbox(
+                                          value: _isChecked5,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(5),
+                                          ),
+                                          onChanged: (value){
+                                            setState(() {
+                                              _isChecked5 = value!;
+                                            });
+                                            getData(search);
+                                          },
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          height: MediaQuery.of(context).size.height - 240,
+                          width: double.infinity,
+                          child: ListView.builder(
+                              itemCount: data.length,
+                              itemBuilder: (c,i){
+                                return TextButton(
+                                  onPressed: () async{
+                                    if(data[i]['routeName'].toString() != "00"){
+                                      var result;
+                                      var result2;
+                                      var result3;
+                                      try{
+                                        result = await busStationList(data[i]['routeId']);
+                                        result2 = await turnBus(data[i]['routeId']);
+                                      }catch(e){
+                                        result = [{'routeId':'000000','routeName':"정보를 찾을 수 없음","routeTypeName":"정보가 없습니다."}];
+                                      }
+                                      try{
+                                        result3 = await busLocationList(data[i]['routeId']);
+                                      }catch(e){
+                                        result3 = null;
+                                      }
+                                      Navigator.push(
+                                          context, MaterialPageRoute(builder: (_) => BusLine_Result_view(stationlist:result,lineName:data[i]['routeName'],turnYn:result2,routeId:data[i]['routeId'],seachroute: false, staOrder:"0",busposition:result3,regionName:data[i]['regionName'].toString(),routeTypeName:data[i]['routeTypeName'].toString())));
+                                    }
+                                  },
+                                  style: TextButton.styleFrom(
+                                    foregroundColor: Colors.white,
+                                  ),
+                                  child: Container(
+                                      height: 70,
+                                      width: double.infinity,
+                                      margin:EdgeInsets.fromLTRB(10,0, 10, 0),
+                                      decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.vertical(bottom: Radius.circular(15),top: Radius.circular(15)),
+                                          color: Colors.white,
+                                          boxShadow:[
+                                            BoxShadow(
+                                              color: Colors.grey.withOpacity(0.7),
+                                              blurRadius: 1.0,
+                                              spreadRadius: 0.0,
+                                              offset: const Offset(0,5),
+                                            )
+                                          ]
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        children: [
+                                          Container(
+                                              padding: EdgeInsets.only(left: 20),
+                                              child: InkWell(
+                                                child: getColor(data[i]['routeTypeName'].toString()),
+                                                onTap: (){
+                                                  flutterToast(data[i]['routeTypeName'].toString());
+                                                },
+                                              )
+                                          ),
+                                          Container(
+                                              width: MediaQuery.of(context).size.width-135,
+                                              child:Column(
+                                                crossAxisAlignment: CrossAxisAlignment.end,
+                                                children: [
+                                                  Container(
+                                                    padding: EdgeInsets.only(top: 9,right: 10),
+                                                    child: Text(
+                                                      "${data[i]['routeName'].toString()}번",
+                                                      style: TextStyle(color: Colors.black,fontSize: 30),
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                    padding: EdgeInsets.only(right: 10),
+                                                    child: Text(
+                                                      "${data[i]['regionName'].toString()} 버스",
+                                                      style: TextStyle(color: Colors.black,fontSize: 15),
+                                                    ),
+                                                  )
+                                                ],
+                                              )
+                                          ),
+                                        ],
+                                      )
+                                  ),
+                                );
+                              }
+                          ),
+                        )
+                      ],
+                    ),
+                    Container(
+                      width: double.infinity,
+                      height: 300,
+                      child: ListView.builder(
+                          itemCount: stationdatas.length,
+                          itemBuilder: (c,i){
+                            return TextButton(
+                              onPressed: () async{
+                                if(stationdatas[i]['stationName'] != "검색 결과 없음"){
+                                  var result;
+                                  try{
+                                    result = await busArrivalInfo(stationdatas[i]['stationId']);
+                                  }catch(e){
+                                    result = [{'routeId':'000000','routeName':"정보를 찾을 수 없음","routeTypeName":"정보가 없습니다."}];
+                                  }
+                                  Navigator.push(context, MaterialPageRoute(builder: (_) => Result_view(displayId:stationdatas[i]['stationId'],station_name: stationdatas[i]['stationName'],station_id:stationdatas[i]['mobileNo'],station_info:result)));
+                                }
+                              },
+                              style: TextButton.styleFrom(
+                                foregroundColor: Colors.white,
+                              ),
+                              child: Container(
+                                  height: 60,
                                   width: double.infinity,
                                   margin:EdgeInsets.fromLTRB(10,0, 10, 0),
                                   decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.vertical(bottom: Radius.circular(15),top: Radius.circular(15)),
-                                      color: Colors.white,
-                                      boxShadow:[
-                                        BoxShadow(
-                                          color: Colors.grey.withOpacity(0.7),
-                                          blurRadius: 1.0,
-                                          spreadRadius: 0.0,
-                                          offset: const Offset(0,5),
-                                        )
-                                      ]
+                                    borderRadius: BorderRadius.vertical(bottom: Radius.circular(15),top: Radius.circular(15)),
+                                    color: Colors.blueGrey,
                                   ),
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       Container(
-                                          padding: EdgeInsets.only(left: 20),
-                                          child: InkWell(
-                                            child: getColor(data[i]['routeTypeName'].toString()),
-                                            onTap: (){
-                                              flutterToast(data[i]['routeTypeName'].toString());
-                                            },
-                                          )
+                                        padding: EdgeInsets.only(left: 20,right: 30),
+                                        child: Image.network("https://media.discordapp.net/attachments/905797523363483659/1116527200972308560/bus-stop.png?width=432&height=432",scale: 10,),
                                       ),
                                       Container(
-                                          width: MediaQuery.of(context).size.width-135,
                                           child:Column(
-                                            crossAxisAlignment: CrossAxisAlignment.end,
+                                            crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
                                               Container(
-                                                padding: EdgeInsets.only(top: 9,right: 10),
+                                                padding: EdgeInsets.only(top: 10,right: 10),
+                                                width: MediaQuery.of(context).size.width - 140,
                                                 child: Text(
-                                                  "${data[i]['routeName'].toString()}번",
-                                                  style: TextStyle(color: Colors.black,fontSize: 30),
+                                                  "${stationdatas[i]['stationName']}",
+                                                  style: TextStyle(color: Colors.white,fontSize: 20),
+                                                  overflow: TextOverflow.ellipsis,
                                                 ),
                                               ),
                                               Container(
                                                 padding: EdgeInsets.only(right: 10),
                                                 child: Text(
-                                                  "${data[i]['regionName'].toString()} 버스",
-                                                  style: TextStyle(color: Colors.black,fontSize: 15),
+                                                  "정류장코드 : ${stationdatas[i]['mobileNo']} (${stationdatas[i]['regionName']})",
+                                                  style: TextStyle(color: Colors.white,fontSize: 15),
+                                                  overflow: TextOverflow.ellipsis,
                                                 ),
                                               )
                                             ],
@@ -414,83 +565,16 @@ class _SearchState extends State<Search>  with TickerProviderStateMixin{
                                       ),
                                     ],
                                   )
-                                ),
-                              );
-                            }
-                        ),
+                              ),
+                            );
+                          }
                       ),
-                      Container(
-                        width: double.infinity,
-                        height: 300,
-                        child: ListView.builder(
-                            itemCount: stationdatas.length,
-                            itemBuilder: (c,i){
-                              return TextButton(
-                                onPressed: () async{
-                                  if(stationdatas[i]['stationName'] != "검색 결과 없음"){
-                                    var result;
-                                    try{
-                                      result = await busArrivalInfo(stationdatas[i]['stationId']);
-                                    }catch(e){
-                                      result = [{'routeId':'000000','routeName':"정보를 찾을 수 없음","routeTypeName":"정보가 없습니다."}];
-                                    }
-                                    Navigator.push(context, MaterialPageRoute(builder: (_) => Result_view(displayId:stationdatas[i]['stationId'],station_name: stationdatas[i]['stationName'],station_id:stationdatas[i]['mobileNo'],station_info:result)));
-                                  }
-                                },
-                                style: TextButton.styleFrom(
-                                  foregroundColor: Colors.white,
-                                ),
-                                child: Container(
-                                    height: 60,
-                                    width: double.infinity,
-                                    margin:EdgeInsets.fromLTRB(10,0, 10, 0),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.vertical(bottom: Radius.circular(15),top: Radius.circular(15)),
-                                      color: Colors.blueGrey,
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      children: [
-                                        Container(
-                                          padding: EdgeInsets.only(left: 20,right: 30),
-                                          child: Image.network("https://media.discordapp.net/attachments/905797523363483659/1116527200972308560/bus-stop.png?width=432&height=432",scale: 10,),
-                                        ),
-                                        Container(
-                                            child:Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: [
-                                                Container(
-                                                  padding: EdgeInsets.only(top: 10,right: 10),
-                                                  width: MediaQuery.of(context).size.width - 140,
-                                                  child: Text(
-                                                    "${stationdatas[i]['stationName']}",
-                                                    style: TextStyle(color: Colors.white,fontSize: 20),
-                                                    overflow: TextOverflow.ellipsis,
-                                                  ),
-                                                ),
-                                                Container(
-                                                  padding: EdgeInsets.only(right: 10),
-                                                  child: Text(
-                                                    "정류장코드 : ${stationdatas[i]['mobileNo']} (${stationdatas[i]['regionName']})",
-                                                    style: TextStyle(color: Colors.white,fontSize: 15),
-                                                    overflow: TextOverflow.ellipsis,
-                                                  ),
-                                                )
-                                              ],
-                                            )
-                                        ),
-                                      ],
-                                    )
-                                ),
-                              );
-                            }
-                        ),
-                      ),
-                    ],
-                  )
+                    ),
+                  ],
                 )
-            ]
-        ),
+            )
+          ]
+      ),
     );
   }
 }

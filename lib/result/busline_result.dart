@@ -132,12 +132,11 @@ class _BusLine_Result_viewState extends State<BusLine_Result_view> with SingleTi
                   height: 45,
                   width: double.infinity,
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Container(
-                        margin: EdgeInsets.only(right: 5),
                         height: double.infinity,
-                        width: MediaQuery.of(context).size.width - 220,
+                        width: 200,
                         child: ElevatedButton(
                             onPressed: (){
                               moveScroll(0.0);
@@ -150,9 +149,8 @@ class _BusLine_Result_viewState extends State<BusLine_Result_view> with SingleTi
                         ),
                       ),
                       Container(
-                        margin: EdgeInsets.only(left: 5),
                         height: double.infinity,
-                        width: MediaQuery.of(context).size.width - 220,
+                        width: 200,
                         child: ElevatedButton(
                             onPressed: (){
                               moveScroll(double.parse((widget.turnYn+1).toString()));
