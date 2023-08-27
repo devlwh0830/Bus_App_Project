@@ -248,7 +248,7 @@ class _BusLine_Result_viewState extends State<BusLine_Result_view> with SingleTi
                     onPressed: () async {
                       if (!widget.stationlist[i]['stationName'].toString().contains("(경유)")) {
                         var storage = await SharedPreferences.getInstance();
-                        var results = storage.getString('정차${widget.stationlist[i]['mobileNo']}');
+                        var results = storage.getStringList('정차${widget.stationlist[i]['mobileNo']}');
                         var star_check = results == null ? false : true;
                         var result;
                         try {

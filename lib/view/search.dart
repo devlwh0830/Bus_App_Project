@@ -516,7 +516,7 @@ class _SearchState extends State<Search>  with TickerProviderStateMixin{
                               onPressed: () async{
                                 if(stationdatas[i]['stationName'] != "검색 결과 없음"){
                                   var storage = await SharedPreferences.getInstance();
-                                  var results = storage.getString('정차${stationdatas[i]['mobileNo']}');
+                                  var results = storage.getStringList('정차${stationdatas[i]['mobileNo']}');
                                   var star_check = results == null ? false : true;
                                   var result;
                                   try{

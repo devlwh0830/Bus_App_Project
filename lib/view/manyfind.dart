@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../apis/api.dart';
 import '../result/busline_result.dart';
+import '../result/result.dart';
 
 class ManyFind extends StatefulWidget {
   const ManyFind({super.key});
@@ -16,6 +17,7 @@ class ManyFind extends StatefulWidget {
 class _ManyFindState extends State<ManyFind> with TickerProviderStateMixin{
 
   var data = [];
+  var datas = [];
   var colors;
 
   late final TabController _tabController = TabController(
@@ -33,7 +35,7 @@ class _ManyFindState extends State<ManyFind> with TickerProviderStateMixin{
     );
   }
 
-  getdata() async{
+  getlinedata() async{
     var storage = await SharedPreferences.getInstance();
     var results = storage.getKeys();
     results.forEach((i) {
@@ -41,6 +43,19 @@ class _ManyFindState extends State<ManyFind> with TickerProviderStateMixin{
         setState(() {
           var resultss = storage.getStringList(i.toString());
           data.add(resultss);
+        });
+      }
+    });
+  }
+
+  getstationdata() async{
+    var storage = await SharedPreferences.getInstance();
+    var results = storage.getKeys();
+    results.forEach((i) {
+      if(i.substring(0,2) == "정차"){
+        setState(() {
+          var resultss = storage.getStringList(i.toString());
+          datas.add(resultss);
         });
       }
     });
@@ -81,7 +96,8 @@ class _ManyFindState extends State<ManyFind> with TickerProviderStateMixin{
   void initState() {
     // TODO: implement initState
     super.initState();
-    getdata();
+    getlinedata();
+    getstationdata();
   }
 
   @override
@@ -129,136 +145,241 @@ class _ManyFindState extends State<ManyFind> with TickerProviderStateMixin{
               child: TabBarView(
                 controller: _tabController,
                 children: [
-                  Container(
-                    alignment: Alignment.center,
-                    child: FutureBuilder(
-                      future: _fetch1(),
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData == false) {
-                          return Center(
-                            child: Container(
-                              child: CircularProgressIndicator(),
-                            ),
-                          );
-                        }else {
-                          return ListView.builder(
-                              itemCount: data.length,
-                              itemBuilder: (c, i) {
-                                return TextButton(
-                                  onPressed: () async{
-                                    var storage = await SharedPreferences.getInstance();
-                                    var results = storage.getStringList('노선${data[i][1].toString()}');
-                                    var star_check = results == null ? false : true;
-                                    var result;
-                                    var result2;
-                                    var result3;
-                                    try{
-                                      result = await busStationList(data[i][1]);
-                                      result2 = await turnBus(data[i][1]);
-                                    }catch(e){
-                                      result = [{'routeId':'000000','routeName':"정보를 찾을 수 없음","routeTypeName":"정보가 없습니다."}];
-                                    }
-                                    try{
-                                      result3 = await busLocationList(data[i][1]);
-                                    }catch(e){
-                                      result3 = null;
-                                    }
-                                    Navigator.push(
-                                        context, MaterialPageRoute(builder: (_) => BusLine_Result_view(stationlist:result,lineName:data[i][2],turnYn:result2,routeId:data[i][1],seachroute: false, staOrder:"0",busposition:result3,regionName:data[i][0].toString(),routeTypeName:data[i][4].toString(),star_check:star_check,line_info:data[i])));
-                                  },
-                                  style: TextButton.styleFrom(
-                                    foregroundColor: Colors.white,
-                                  ),
-                                  child: Container(
-                                      height: 70,
-                                      width: double.infinity,
-                                      margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                                      decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.vertical(
-                                              bottom: Radius.circular(15),
-                                              top: Radius.circular(15)),
-                                          color: Colors.white,
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color: Colors.grey.withOpacity(
-                                                  0.7),
-                                              blurRadius: 1.0,
-                                              spreadRadius: 0.0,
-                                              offset: const Offset(0, 5),
-                                            )
-                                          ]
-                                      ),
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment
-                                            .start,
-                                        children: [
-                                          Container(
-                                              padding: EdgeInsets.only(
-                                                  left: 20),
-                                              child: InkWell(
-                                                child: getColor(
-                                                    data[i][4]
-                                                        .toString()),
-                                                onTap: () {
-                                                  flutterToast(
-                                                      data[i][4]
-                                                          .toString());
-                                                },
-                                              )
-                                          ),
-                                          Container(
-                                              width: MediaQuery
-                                                  .of(context)
-                                                  .size
-                                                  .width - 135,
-                                              child: Column(
-                                                crossAxisAlignment: CrossAxisAlignment
-                                                    .end,
-                                                children: [
-                                                  Container(
-                                                    padding: EdgeInsets.only(
-                                                        top: 9, right: 10),
-                                                    child: Text(
-                                                      "${data[i][2]
-                                                          .toString()}번",
-                                                      style: TextStyle(
-                                                          color: Colors.black,
-                                                          fontSize: 30),
-                                                    ),
-                                                  ),
-                                                  Container(
-                                                    padding: EdgeInsets.only(
-                                                        right: 10),
-                                                    child: Text(
-                                                      "${data[i][0]
-                                                          .toString()} 버스",
-                                                      style: TextStyle(
-                                                          color: Colors.black,
-                                                          fontSize: 15),
-                                                    ),
-                                                  )
-                                                ],
-                                              )
-                                          ),
-                                        ],
-                                      )
-                                  ),
-                                );
-                              }
-                          );
-                        }
-                      },
+                  if(data.isEmpty)...[
+                    Center(
+                      child: Text("😢 등록된 즐겨찾기가 없습니다.",style: TextStyle(fontSize: 20),),
                     )
-                  ),
-                  Container(
-                    alignment: Alignment.center,
-                    child: Text(
-                      'Tab2 View',
-                      style: TextStyle(
-                        fontSize: 30,
-                      ),
+                  ]else...[
+                    Container(
+                        alignment: Alignment.center,
+                        child: FutureBuilder(
+                          future: _fetch1(),
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData == false) {
+                              return Center(
+                                child: Container(
+                                  child: CircularProgressIndicator(),
+                                ),
+                              );
+                            }else {
+                              return ListView.builder(
+                                  itemCount: data.length,
+                                  itemBuilder: (c, i) {
+                                    return TextButton(
+                                      onPressed: () async{
+                                        var storage = await SharedPreferences.getInstance();
+                                        var results = storage.getStringList('노선${data[i][1].toString()}');
+                                        var star_check = results == null ? false : true;
+                                        var result;
+                                        var result2;
+                                        var result3;
+                                        var line_info;
+                                        try{
+                                          line_info = await busRouteName(data[i][1]);
+                                          result = await busStationList(data[i][1]);
+                                          result2 = await turnBus(data[i][1]);
+                                        }catch(e){
+                                          result = [{'routeId':'000000','routeName':"정보를 찾을 수 없음","routeTypeName":"정보가 없습니다."}];
+                                        }
+                                        try{
+                                          result3 = await busLocationList(data[i][1]);
+                                        }catch(e){
+                                          result3 = null;
+                                        }
+                                        Navigator.push(
+                                            context, MaterialPageRoute(builder: (_) => BusLine_Result_view(stationlist:result,lineName:data[i][2],turnYn:result2,routeId:data[i][1],seachroute: false, staOrder:"0",busposition:result3,regionName:data[i][0].toString(),routeTypeName:data[i][4].toString(),star_check:star_check,line_info:line_info)));
+                                      },
+                                      style: TextButton.styleFrom(
+                                        foregroundColor: Colors.white,
+                                      ),
+                                      child: Container(
+                                          height: 70,
+                                          width: double.infinity,
+                                          margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                          decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.vertical(
+                                                  bottom: Radius.circular(15),
+                                                  top: Radius.circular(15)),
+                                              color: Colors.white,
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  color: Colors.grey.withOpacity(
+                                                      0.7),
+                                                  blurRadius: 1.0,
+                                                  spreadRadius: 0.0,
+                                                  offset: const Offset(0, 5),
+                                                )
+                                              ]
+                                          ),
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment
+                                                .start,
+                                            children: [
+                                              Container(
+                                                  padding: EdgeInsets.only(
+                                                      left: 20),
+                                                  child: InkWell(
+                                                    child: getColor(
+                                                        data[i][4]
+                                                            .toString()),
+                                                    onTap: () {
+                                                      flutterToast(
+                                                          data[i][4]
+                                                              .toString());
+                                                    },
+                                                  )
+                                              ),
+                                              Container(
+                                                  width: MediaQuery
+                                                      .of(context)
+                                                      .size
+                                                      .width - 135,
+                                                  child: Column(
+                                                    crossAxisAlignment: CrossAxisAlignment
+                                                        .end,
+                                                    children: [
+                                                      Container(
+                                                        padding: EdgeInsets.only(
+                                                            top: 9, right: 10),
+                                                        child: Text(
+                                                          "${data[i][2]
+                                                              .toString()}번",
+                                                          style: TextStyle(
+                                                              color: Colors.black,
+                                                              fontSize: 30),
+                                                        ),
+                                                      ),
+                                                      Container(
+                                                        padding: EdgeInsets.only(
+                                                            right: 10),
+                                                        child: Text(
+                                                          "${data[i][0]
+                                                              .toString()} 버스",
+                                                          style: TextStyle(
+                                                              color: Colors.black,
+                                                              fontSize: 15),
+                                                        ),
+                                                      )
+                                                    ],
+                                                  )
+                                              ),
+                                            ],
+                                          )
+                                      ),
+                                    );
+                                  }
+                              );
+                            }
+                          },
+                        )
                     ),
-                  ),
+                  ],
+                  if(datas.isEmpty)...[
+                    Center(
+                      child: Text("😢 등록된 즐겨찾기가 없습니다.",style: TextStyle(fontSize: 20),),
+                    )
+                  ]else...[
+                    Container(
+                        alignment: Alignment.center,
+                        child: FutureBuilder(
+                          future: _fetch2(),
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData == false) {
+                              return Center(
+                                child: Container(
+                                  child: CircularProgressIndicator(),
+                                ),
+                              );
+                            } else {
+                              return ListView.builder(
+                                  itemCount: datas.length,
+                                  itemBuilder: (c, i) {
+                                    return TextButton(
+                                      onPressed: () async {
+                                        var storage = await SharedPreferences.getInstance();
+                                        var results = storage.getStringList('정차${datas[i][1]}');
+                                        var star_check = results == null ? false : true;
+                                        var result;
+                                        try {
+                                          result = await busArrivalInfo(datas[i][2]);
+                                        } catch (e) {
+                                          result = [{'routeId': '000000', 'routeName': "정보를 찾을 수 없음", "routeTypeName": "정보가 없습니다."}];
+                                        }
+                                        Navigator.push(context, MaterialPageRoute(
+                                            builder: (_) => Result_view(displayId: datas[i][2], station_name: datas[i][0], station_id: datas[i][1], station_info: result, star_check: star_check)));
+
+                                      },
+                                      style: TextButton.styleFrom(
+                                        foregroundColor: Colors.white,
+                                      ),
+                                      child: Container(
+                                          height: 60,
+                                          width: double.infinity,
+                                          margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.vertical(
+                                                bottom: Radius.circular(15),
+                                                top: Radius.circular(15)),
+                                            color: Colors.blueGrey,
+                                          ),
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment
+                                                .start,
+                                            children: [
+                                              Container(
+                                                padding: EdgeInsets.only(
+                                                    left: 20, right: 30),
+                                                child: Image.network(
+                                                  "https://media.discordapp.net/attachments/905797523363483659/1116527200972308560/bus-stop.png?width=432&height=432",
+                                                  scale: 10,),
+                                              ),
+                                              Container(
+                                                  child: Column(
+                                                    crossAxisAlignment: CrossAxisAlignment
+                                                        .start,
+                                                    children: [
+                                                      Container(
+                                                        padding: EdgeInsets.only(
+                                                            top: 10, right: 10),
+                                                        width: MediaQuery
+                                                            .of(context)
+                                                            .size
+                                                            .width - 140,
+                                                        child: Text(
+                                                          "${datas[i][0]}",
+                                                          style: TextStyle(
+                                                              color: Colors.white,
+                                                              fontSize: 20),
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                        ),
+                                                      ),
+                                                      Container(
+                                                        padding: EdgeInsets.only(
+                                                            right: 10),
+                                                        child: Text(
+                                                          "정류장코드 : ${datas[i][1]}",
+                                                          style: TextStyle(
+                                                              color: Colors.white,
+                                                              fontSize: 15),
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                        ),
+                                                      )
+                                                    ],
+                                                  )
+                                              ),
+                                            ],
+                                          )
+                                      ),
+                                    );
+                                  }
+                              );
+                            }
+                          },
+                        )
+                    ),
+                  ]
                 ],
               ),
             ),
@@ -268,6 +389,10 @@ class _ManyFindState extends State<ManyFind> with TickerProviderStateMixin{
     );
   }
   Future<String> _fetch1() async {
+    await Future.delayed(Duration(milliseconds: 1));
+    return 'Call Data';
+  }
+  Future<String> _fetch2() async {
     await Future.delayed(Duration(milliseconds: 1));
     return 'Call Data';
   }
