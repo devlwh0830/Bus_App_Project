@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kakaomap_webview/kakaomap_webview.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../apis/api.dart';
 import '../result/result.dart';
@@ -100,13 +101,16 @@ void KakaoDialog(context,station_info) {
           ),
           TextButton(
             onPressed: () async{
+              var storage = await SharedPreferences.getInstance();
+              var results = storage.getString('정차${station_info['mobileNo']}');
+              var star_check = results == null ? false : true;
               var result;
               try{
                 result = await busArrivalInfo(station_info['stationId']);
               }catch(e){
                 result = [{'routeId':'000000','routeName':"정보를 찾을 수 없음","routeTypeName":"정보가 없습니다."}];
               }
-              Navigator.push(context, MaterialPageRoute(builder: (_) => Result_view(displayId:station_info['stationId'],station_name: station_info['stationName'],station_id:station_info['mobileNo'],station_info:result)));
+              Navigator.push(context, MaterialPageRoute(builder: (_) => Result_view(displayId:station_info['stationId'],station_name: station_info['stationName'],station_id:station_info['mobileNo'],station_info:result,star_check:star_check)));
             },
             child: Text("정류장조회"),
           ),

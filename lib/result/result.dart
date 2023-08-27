@@ -1,18 +1,19 @@
-import 'package:busapp/main.dart';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:busapp/apis/api.dart';
 import 'package:busapp/result/arival_popup.dart';
-import 'package:busapp/result/error_report.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-
 import 'busline_result.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Result_view extends StatefulWidget {
-  Result_view({super.key, this.displayId, this.station_name, this.station_id,this.station_info});
+  Result_view({super.key, this.displayId, this.station_name, this.station_id,this.station_info,this.star_check});
   final displayId;
   final station_name;
   final station_id;
   final station_info;
+  final star_check;
 
   @override
   State<Result_view> createState() => _Result_viewState();
@@ -25,12 +26,23 @@ class _Result_viewState extends State<Result_view> {
   var result;
   var lineName;
   var datas;
+  var stars  = Icon(Icons.star_border,color: Colors.yellow,size: 30,);
   Map<String,String> data = {};
   Map<String,dynamic> arrival = {};
 
   flutterToast(String a) {
     Fluttertoast.showToast(
         msg: "이 버스는 ${a} 입니다.",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
+        fontSize: 15.0
+    );
+  }
+
+  manyfind(String a) {
+    Fluttertoast.showToast(
+        msg: "즐겨찾기가 $a 되었습니다.",
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.CENTER,
         timeInSecForIosWeb: 1,
@@ -106,9 +118,14 @@ class _Result_viewState extends State<Result_view> {
   }
 
   @override
-  void initState() {
+  void initState(){
     // TODO: implement initState
     super.initState();
+    if(widget.star_check){
+      stars  = Icon(Icons.star,color: Colors.yellow,size: 30,);
+    }else{
+      stars  = Icon(Icons.star_border,color: Colors.yellow,size: 30,);
+    }
   }
 
   @override
@@ -116,10 +133,32 @@ class _Result_viewState extends State<Result_view> {
     return Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
-            centerTitle: true,
-            elevation: 0.0,
-            backgroundColor: Colors.blueAccent,
-            title: Text("정류장 검색 결과"),
+          centerTitle: true,
+          elevation: 0.0,
+          backgroundColor: Colors.blueAccent,
+          title: Text("정류장 검색 결과"),
+          actions: [
+            IconButton(
+                onPressed: ()async{
+                  var storage = await SharedPreferences.getInstance();
+                  var result = storage.getString('정차${widget.station_id}');
+                  if(result == null){
+                    storage.setString('정차${widget.station_id}', jsonEncode(widget.station_info) );
+                    manyfind("설정");
+                    setState(() {
+                      stars = Icon(Icons.star,color: Colors.yellow,size: 30,);
+                    });
+                  }else{
+                    storage.remove('정차${widget.station_id}');
+                    manyfind("해제");
+                    setState(() {
+                      stars = Icon(Icons.star_border,color: Colors.yellow,size: 30,);
+                    });
+                  }
+                },
+                icon: stars
+            )
+          ],
         ),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -159,6 +198,9 @@ class _Result_viewState extends State<Result_view> {
                           itemBuilder: (c, i) {
                             return TextButton(
                               onPressed: ()async{
+                                var storage = await SharedPreferences.getInstance();
+                                var results = storage.getString('노선${widget.station_info[i]['routeId']}');
+                                var star_check = results == null ? false : true;
                                 var result;
                                 var result2;
                                 var result3;
@@ -174,9 +216,8 @@ class _Result_viewState extends State<Result_view> {
                                 }catch(e){
                                   result3 = null;
                                 }
-                                Navigator.pop(context);
                                 Navigator.push(
-                                    context, MaterialPageRoute(builder: (_) => BusLine_Result_view(stationlist:result,lineName:widget.station_info[i]['routeName'],turnYn:result2,routeId:widget.station_info[i]['routeId'],seachroute:true,staOrder:widget.station_info[i]['staOrder'],busposition: result3,routeTypeName: widget.station_info[i]['routeTypeName'].toString(),regionName:widget.station_info[i]['regionName'])));
+                                    context, MaterialPageRoute(builder: (_) => BusLine_Result_view(stationlist:result,lineName:widget.station_info[i]['routeName'],turnYn:result2,routeId:widget.station_info[i]['routeId'],seachroute:true,staOrder:widget.station_info[i]['staOrder'],busposition: result3,routeTypeName: widget.station_info[i]['routeTypeName'].toString(),regionName:widget.station_info[i]['regionName'],star_check:star_check)));
                               },
                               style: TextButton.styleFrom(
                                 foregroundColor: Colors.white,

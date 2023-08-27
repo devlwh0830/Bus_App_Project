@@ -1,5 +1,5 @@
-import 'package:busapp/result/arival_popup.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '/apis/api.dart';
 import 'package:busapp/result/result.dart';
 import 'package:busapp/result/busline_result.dart';
@@ -423,6 +423,9 @@ class _SearchState extends State<Search>  with TickerProviderStateMixin{
                                 return TextButton(
                                   onPressed: () async{
                                     if(data[i]['routeName'].toString() != "00"){
+                                      var storage = await SharedPreferences.getInstance();
+                                      var results = storage.getStringList('노선${data[i]['routeId']}');
+                                      var star_check = results == null ? false : true;
                                       var result;
                                       var result2;
                                       var result3;
@@ -438,7 +441,7 @@ class _SearchState extends State<Search>  with TickerProviderStateMixin{
                                         result3 = null;
                                       }
                                       Navigator.push(
-                                          context, MaterialPageRoute(builder: (_) => BusLine_Result_view(stationlist:result,lineName:data[i]['routeName'],turnYn:result2,routeId:data[i]['routeId'],seachroute: false, staOrder:"0",busposition:result3,regionName:data[i]['regionName'].toString(),routeTypeName:data[i]['routeTypeName'].toString())));
+                                          context, MaterialPageRoute(builder: (_) => BusLine_Result_view(stationlist:result,lineName:data[i]['routeName'],turnYn:result2,routeId:data[i]['routeId'],seachroute: false, staOrder:"0",busposition:result3,regionName:data[i]['regionName'].toString(),routeTypeName:data[i]['routeTypeName'].toString(),star_check:star_check,line_info:data[i])));
                                     }
                                   },
                                   style: TextButton.styleFrom(
@@ -512,13 +515,16 @@ class _SearchState extends State<Search>  with TickerProviderStateMixin{
                             return TextButton(
                               onPressed: () async{
                                 if(stationdatas[i]['stationName'] != "검색 결과 없음"){
+                                  var storage = await SharedPreferences.getInstance();
+                                  var results = storage.getString('정차${stationdatas[i]['mobileNo']}');
+                                  var star_check = results == null ? false : true;
                                   var result;
                                   try{
                                     result = await busArrivalInfo(stationdatas[i]['stationId']);
                                   }catch(e){
                                     result = [{'routeId':'000000','routeName':"정보를 찾을 수 없음","routeTypeName":"정보가 없습니다."}];
                                   }
-                                  Navigator.push(context, MaterialPageRoute(builder: (_) => Result_view(displayId:stationdatas[i]['stationId'],station_name: stationdatas[i]['stationName'],station_id:stationdatas[i]['mobileNo'],station_info:result)));
+                                  Navigator.push(context, MaterialPageRoute(builder: (_) => Result_view(displayId:stationdatas[i]['stationId'],station_name: stationdatas[i]['stationName'],station_id:stationdatas[i]['mobileNo'],station_info:result,star_check:star_check)));
                                 }
                               },
                               style: TextButton.styleFrom(

@@ -1,12 +1,15 @@
+import 'dart:convert';
+
 import 'package:flutter/scheduler.dart' show SchedulerBinding;
 import 'package:flutter/material.dart';
 import 'package:busapp/bus_line_info/bus_line_info.dart';
 import 'package:busapp/result/result.dart';
 import 'package:busapp/apis/api.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class BusLine_Result_view extends StatefulWidget {
-  const BusLine_Result_view({super.key,this.stationlist,this.lineName,this.turnYn,this.routeId,this.seachroute,this.staOrder,this.busposition,this.regionName,this.routeTypeName});
+  const BusLine_Result_view({super.key,this.stationlist,this.lineName,this.turnYn,this.routeId,this.seachroute,this.staOrder,this.busposition,this.regionName,this.routeTypeName,this.star_check,this.line_info});
   final stationlist;
   final lineName;
   final turnYn;
@@ -16,6 +19,8 @@ class BusLine_Result_view extends StatefulWidget {
   final busposition;
   final regionName;
   final routeTypeName;
+  final star_check;
+  final line_info;
 
   @override
   State<BusLine_Result_view> createState() => _BusLine_Result_viewState();
@@ -29,6 +34,7 @@ class _BusLine_Result_viewState extends State<BusLine_Result_view> with SingleTi
   Map<String,String> bus_position_update = {};
   var turn_number;
   var colors;
+  var stars = Icon(Icons.star_border,color: Colors.yellow,size: 30,);
 
   flutterToast() {
     Fluttertoast.showToast(
@@ -40,10 +46,25 @@ class _BusLine_Result_viewState extends State<BusLine_Result_view> with SingleTi
     );
   }
 
+  manyfind(String a) {
+    Fluttertoast.showToast(
+        msg: "즐겨찾기가 $a 되었습니다.",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
+        fontSize: 15.0
+    );
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    if(widget.star_check){
+      stars  = Icon(Icons.star,color: Colors.yellow,size: 30,);
+    }else{
+      stars  = Icon(Icons.star_border,color: Colors.yellow,size: 30,);
+    }
     if(widget.routeTypeName == "직행좌석형시내버스"){
       colors = Colors.redAccent;
     }else if(widget.routeTypeName == "좌석형시내버스"){
@@ -182,6 +203,26 @@ class _BusLine_Result_viewState extends State<BusLine_Result_view> with SingleTi
                 size: 30,
               )
           ),
+          IconButton(
+              onPressed: ()async{
+                var storage = await SharedPreferences.getInstance();
+                var result = storage.getStringList('노선${widget.routeId}');
+                if(result == null){
+                  storage.setStringList('노선${widget.routeId}', [widget.line_info['regionName'],widget.line_info['routeId'],widget.line_info['routeName'],widget.line_info['routeTypeCd'],widget.line_info['routeTypeName']]);
+                  manyfind("설정");
+                  setState(() {
+                    stars = Icon(Icons.star,color: Colors.yellow,size: 30,);
+                  });
+                }else{
+                  storage.remove('노선${widget.routeId}');
+                  manyfind("해제");
+                  setState(() {
+                    stars = Icon(Icons.star_border,color: Colors.yellow,size: 30,);
+                  });
+                }
+              },
+              icon: stars
+          )
         ],
       ),
       body: FutureBuilder(
@@ -205,31 +246,18 @@ class _BusLine_Result_viewState extends State<BusLine_Result_view> with SingleTi
                         padding: EdgeInsets.zero
                     ),
                     onPressed: () async {
-                      if (!widget.stationlist[i]['stationName']
-                          .toString()
-                          .contains("(경유)")) {
+                      if (!widget.stationlist[i]['stationName'].toString().contains("(경유)")) {
+                        var storage = await SharedPreferences.getInstance();
+                        var results = storage.getString('정차${widget.stationlist[i]['mobileNo']}');
+                        var star_check = results == null ? false : true;
                         var result;
                         try {
                           result = await busArrivalInfo(
                               widget.stationlist[i]['stationId']);
                         } catch (e) {
-                          result = [{
-                            'routeId': '000000',
-                            'routeName': "정보를 찾을 수 없음",
-                            "routeTypeName": "정보가 없습니다."
-                          }
-                          ];
+                          result = [{'routeId': '000000', 'routeName': "정보를 찾을 수 없음", "routeTypeName": "정보가 없습니다."}];
                         }
-                        if((i+1)==int.parse(widget.staOrder) && widget.seachroute){
-                          Navigator.pop(context);
-                        }else{
-                          Navigator.pop(context);
-                          Navigator.push(context, MaterialPageRoute(builder: (_) =>
-                              Result_view(displayId: widget.stationlist[i]['stationId'],
-                                  station_name: widget.stationlist[i]['stationName'],
-                                  station_id: widget.stationlist[i]['mobileNo']==null ? data['${widget.stationlist[i]['stationId']}'] : widget.stationlist[i]['mobileNo'],
-                                  station_info: result)));
-                        }
+                        Navigator.push(context, MaterialPageRoute(builder: (_) => Result_view(displayId: widget.stationlist[i]['stationId'], station_name: widget.stationlist[i]['stationName'], station_id: widget.stationlist[i]['mobileNo']==null ? data['${widget.stationlist[i]['stationId']}'] : widget.stationlist[i]['mobileNo'], station_info: result,star_check:star_check)));
                       }
                     },
                     child: Stack(
