@@ -157,7 +157,7 @@ class _BusLine_Result_viewState extends State<BusLine_Result_view> with SingleTi
                     children: [
                       Container(
                         height: double.infinity,
-                        width: 200,
+                        width: 150,
                         child: ElevatedButton(
                             onPressed: (){
                               moveScroll(0.0);
@@ -171,7 +171,7 @@ class _BusLine_Result_viewState extends State<BusLine_Result_view> with SingleTi
                       ),
                       Container(
                         height: double.infinity,
-                        width: 200,
+                        width: 150,
                         child: ElevatedButton(
                             onPressed: (){
                               moveScroll(double.parse((widget.turnYn+1).toString()));
