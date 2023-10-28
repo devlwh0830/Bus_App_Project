@@ -1,12 +1,8 @@
-import 'package:busapp/view/kakaomap.dart';
-import 'package:busapp/result/busline_result.dart';
-import 'package:busapp/result/result.dart';
 import 'package:flutter/material.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:busapp/apis/api.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:url_launcher/url_launcher_string.dart';
+import 'package:busapp/result/info_popup.dart';
 import 'search.dart';
-import 'popup.dart';
 
 class Homes extends StatefulWidget {
   const Homes({super.key});
@@ -19,6 +15,27 @@ class _HomesState extends State<Homes> {
 
   @override
   Widget build(BuildContext context) {
+
+    onButtonTap() async {
+      await launchUrlString("https://www.gg.go.kr/contents/contents.do?ciIdx=1003&menuId=2287",mode: LaunchMode.platformDefault);
+    }
+
+    onButtonTap2() async {
+      await launchUrlString("https://www.gg.go.kr/contents/contents.do?ciIdx=629&menuId=2344",mode: LaunchMode.platformDefault);
+    }
+
+    void toast(){
+      Fluttertoast.showToast(
+          msg: "외부 사이트로 이동 합니다.",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.black12,
+          textColor: Colors.white,
+          fontSize: 16.0
+      );
+    }
+
     return Container(
       color: Color.fromRGBO(221, 236, 202, 1),
       child: Container(
@@ -66,38 +83,113 @@ class _HomesState extends State<Homes> {
                 margin: EdgeInsets.only(top: 20,bottom: 5),
                 width: double.infinity,
                 height: 30,
-                child: Text("최근 노선 검색기록",style: TextStyle(fontSize: 20),),
+                child: Text("오늘도 좋은 하루 되세요!",style: TextStyle(fontSize: 20),),
               ),
-              Column(
-                children: [
-                  Container(
-                    height: 200,
+              Flexible(
+                  fit: FlexFit.tight,
+                  flex: 4,
+                  child: Container(
+                    alignment: Alignment.bottomCenter,
+                    width: double.infinity,
+                    height: 500,
+                    margin: EdgeInsets.only(bottom: 5),
+                    decoration: BoxDecoration(
+                        color: Colors.grey.shade50,
+                        borderRadius: BorderRadius.circular(10),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(
+                                0.7),
+                            blurRadius: 1.0,
+                            spreadRadius: 0.0,
+                            offset: const Offset(0, 5),
+                          )
+                        ]
+                    ),
                     child: Center(
-                      child: Text("🛠️ 다음 버전에서 업데이트 됩니다.",style: TextStyle(fontSize: 20),),
-                    )
+                      child: Text("업데이트 예정",style: TextStyle(fontSize: 20),),
+                    ),
+                  ),
+              ),
+              Flexible(
+                  child: Container(
+                    alignment: Alignment.bottomCenter,
+                    width: double.infinity,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Flexible(
+                          child:InkWell(
+                            child: Container(
+                              height: 100,
+                              width: 200,
+                              margin: EdgeInsets.only(top: 5,right: 5,bottom: 5),
+                              decoration: BoxDecoration(
+                                  color: Colors.green.shade50,
+                                  borderRadius: BorderRadius.circular(10),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withOpacity(
+                                          0.7),
+                                      blurRadius: 1.0,
+                                      spreadRadius: 0.0,
+                                      offset: const Offset(0, 5),
+                                    )
+                                  ]
+                              ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Icon(Icons.report_gmailerrorred_rounded,size: 40,),
+                                  Text("무정차신고",style: TextStyle(fontSize: 20),)
+                                ],
+                              ),
+                            ),
+                            onTap: (){
+                              onButtonTap();
+                              toast();
+                            },
+                          )
+                        ),
+                        Flexible(
+                            child:InkWell(
+                              child: Container(
+                                height: 100,
+                                width: 200,
+                                margin: EdgeInsets.only(top: 5,left: 5,bottom: 5),
+                                decoration: BoxDecoration(
+                                    color: Colors.green.shade50,
+                                    borderRadius: BorderRadius.circular(10),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(
+                                            0.7),
+                                        blurRadius: 1.0,
+                                        spreadRadius: 0.0,
+                                        offset: const Offset(0, 5),
+                                      )
+                                    ]
+                                ),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Icon(Icons.monetization_on_rounded,size: 40,),
+                                    Text("버스요금",style: TextStyle(fontSize: 20),)
+                                  ],
+                                ),
+                              ),
+                              onTap: (){
+                                onButtonTap2();
+                                toast();
+                              },
+                            )
+                        )
+                      ],
+                    ),
                   )
-                ],
-              ),
-              Container(
-                margin: EdgeInsets.only(top: 10,bottom: 5),
-                width: double.infinity,
-                height: 30,
-                child: Text("최근 정류장 검색기록",style: TextStyle(fontSize: 20),),
-              ),
-              Column(
-                children: [
-                  Container(
-                      height: 170,
-                      child: Center(
-                        child: Text("🛠️ 다음 버전에서 업데이트 됩니다.",style: TextStyle(fontSize: 20),),
-                      )
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(top: 50),
-                    child: Text("🚨 완성되지 않은 앱으로 버그가 발생할 수 있음.",style: TextStyle(fontSize: 15),)
-                  ),
-                ],
-              ),
+              )
             ],
           )
         )

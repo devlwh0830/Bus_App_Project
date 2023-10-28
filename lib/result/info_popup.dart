@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-void error_reports(context) {
+void money_info(context) {
   showDialog(
     context: context,
     //barrierDismissible - Dialog를 제외한 다른 화면 터치 x
@@ -15,20 +15,11 @@ void error_reports(context) {
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text("사용자 불편 신고하기"),
+            Text("경기도 버스 요금표"),
           ],
         ),
         //
-        content: Container(
-            height: 20,
-            width: double.infinity,
-            padding: EdgeInsets.only(left: 5,right: 5),
-            child: Center(
-              child: Text(
-                "구현 예정",
-                textAlign: TextAlign.center,style: TextStyle(color: Colors.black,fontSize: 20),),
-            )
-        ),
+        content: Image.network("https://media.discordapp.net/attachments/905797523363483659/1167686088429670460/image.png?ex=654f076a&is=653c926a&hm=614a3c3f6c25cfa081ed1bec9c6547d1ca472364bc28e4f827229ce34c58dad8&=&width=1919&height=493"),
         actions: [
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
