@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:flutter/foundation.dart' as foundation;
 import '../apis/api.dart';
 import '../view/popup.dart';
 import 'kakaomap.dart';
@@ -130,14 +131,13 @@ class _AccountState extends State<Account> {
         child: Column(
           children: [
             Container(
-              height:50,
+              height:30,
               margin: EdgeInsets.only(bottom: 5),
               child: Text("귀하의 주변에 있는 버스 정류장 입니다.",style: TextStyle(fontSize: 20),),
             ),
             Container(
               width: double.infinity,
-              color: Colors.yellow,
-              height: MediaQuery.of(context).size.height - 310,
+              height: foundation.defaultTargetPlatform == foundation.TargetPlatform.iOS ? MediaQuery.of(context).size.height - 281 : MediaQuery.of(context).size.height - 300,
               child: FutureBuilder(
                 future: _fetch1(),
                 builder: (context, snapshot) {
@@ -162,7 +162,7 @@ class _AccountState extends State<Account> {
                             padding: EdgeInsets.only(top: 10),
                           ),
                           child: Container(
-                              height: 60,
+                              height: foundation.defaultTargetPlatform == foundation.TargetPlatform.iOS ? 70 : 60,
                               width: double.infinity,
                               margin:EdgeInsets.fromLTRB(10,0, 10, 0),
                               decoration: BoxDecoration(

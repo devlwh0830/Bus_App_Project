@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:url_launcher/url_launcher_string.dart';
-import 'package:busapp/result/info_popup.dart';
 import 'search.dart';
 
 class Homes extends StatefulWidget {

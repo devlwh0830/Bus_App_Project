@@ -1,6 +1,7 @@
+import '/apis/api.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '/apis/api.dart';
+import 'package:flutter/foundation.dart' as foundation;
 import 'package:busapp/result/result.dart';
 import 'package:busapp/result/busline_result.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -448,7 +449,7 @@ class _SearchState extends State<Search>  with TickerProviderStateMixin{
                                     foregroundColor: Colors.white,
                                   ),
                                   child: Container(
-                                      height: 70,
+                                      height: foundation.defaultTargetPlatform == foundation.TargetPlatform.iOS ? 80 : 70,
                                       width: double.infinity,
                                       margin:EdgeInsets.fromLTRB(10,0, 10, 0),
                                       decoration: BoxDecoration(
@@ -467,7 +468,7 @@ class _SearchState extends State<Search>  with TickerProviderStateMixin{
                                         mainAxisAlignment: MainAxisAlignment.start,
                                         children: [
                                           Container(
-                                              padding: EdgeInsets.only(left: 20),
+                                              padding: EdgeInsets.only(left: 10),
                                               child: InkWell(
                                                 child: getColor(data[i]['routeTypeName'].toString()),
                                                 onTap: (){
@@ -531,7 +532,7 @@ class _SearchState extends State<Search>  with TickerProviderStateMixin{
                                 foregroundColor: Colors.white,
                               ),
                               child: Container(
-                                  height: 60,
+                                  height: 70,
                                   width: double.infinity,
                                   margin:EdgeInsets.fromLTRB(10,0, 10, 0),
                                   decoration: BoxDecoration(
