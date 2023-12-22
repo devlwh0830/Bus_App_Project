@@ -86,7 +86,7 @@ class _HomesState extends State<Homes> {
               ),
               Flexible(
                   fit: FlexFit.tight,
-                  flex: 4,
+                  flex: 5,
                   child: Container(
                     alignment: Alignment.bottomCenter,
                     width: double.infinity,
@@ -120,7 +120,7 @@ class _HomesState extends State<Homes> {
                         Flexible(
                           child:InkWell(
                             child: Container(
-                              height: 100,
+                              height: 90,
                               width: 200,
                               margin: EdgeInsets.only(top: 5,right: 5,bottom: 5),
                               decoration: BoxDecoration(
@@ -140,8 +140,8 @@ class _HomesState extends State<Homes> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  Icon(Icons.report_gmailerrorred_rounded,size: 40,),
-                                  Text("무정차신고",style: TextStyle(fontSize: 20),)
+                                  Icon(Icons.report_gmailerrorred_rounded,size: 35,color: Colors.redAccent,),
+                                  Text("무정차신고",style: TextStyle(fontSize: 18),)
                                 ],
                               ),
                             ),
@@ -154,7 +154,7 @@ class _HomesState extends State<Homes> {
                         Flexible(
                             child:InkWell(
                               child: Container(
-                                height: 100,
+                                height: 90,
                                 width: 200,
                                 margin: EdgeInsets.only(top: 5,left: 5,bottom: 5),
                                 decoration: BoxDecoration(
@@ -174,8 +174,8 @@ class _HomesState extends State<Homes> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                    Icon(Icons.monetization_on_rounded,size: 40,),
-                                    Text("버스요금",style: TextStyle(fontSize: 20),)
+                                    Icon(Icons.monetization_on_rounded,size: 35,),
+                                    Text("버스요금",style: TextStyle(fontSize: 18),)
                                   ],
                                 ),
                               ),

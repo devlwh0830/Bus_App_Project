@@ -15,7 +15,7 @@ void FlutterDialog(context) {
         //Dialog Main Title
         title: Column(
           children: <Widget>[
-            Text("위치 권한을 먼저 허용해 주세요."),
+            Text("위치 권한을 먼저 허용해 주세요.",style: TextStyle(fontSize: 20),),
           ],
         ),
         //
@@ -29,7 +29,7 @@ void FlutterDialog(context) {
             ),
             child: Center(
               child: Text(
-                "위치 권한이 없는 경우 주변 정류장\n검색 서비스를 사용할 수 없습니다.",
+                "위치 권한을 제공 받지 못할 경우 주변 정류장\n검색 서비스를 사용할 수 없습니다.",
                 textAlign: TextAlign.center,style: TextStyle(color: Colors.white),),
             )
         ),

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:kakaomap_webview/kakaomap_webview.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../apis/api.dart';
 import '../result/result.dart';
 

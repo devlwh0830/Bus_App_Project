@@ -1,10 +1,9 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:busapp/apis/api.dart';
 import 'package:busapp/result/arival_popup.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'busline_result.dart';
+import 'package:flutter/foundation.dart' as foundation;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Result_view extends StatefulWidget {
@@ -191,7 +190,7 @@ class _Result_viewState extends State<Result_view> {
               ),
               Container(
                 width: double.infinity,
-                height: MediaQuery.of(context).size.height - 205,
+                height: foundation.defaultTargetPlatform == foundation.TargetPlatform.iOS ? 710 : 710,
                 child: FutureBuilder(
                   future: _fetch1(),
                   builder: (context, snapshot) {

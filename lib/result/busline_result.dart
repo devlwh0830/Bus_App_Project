@@ -1,5 +1,4 @@
-import 'dart:convert';
-
+import 'package:flutter/foundation.dart' as foundation;
 import 'package:flutter/scheduler.dart' show SchedulerBinding;
 import 'package:flutter/material.dart';
 import 'package:busapp/bus_line_info/bus_line_info.dart';
@@ -136,7 +135,7 @@ class _BusLine_Result_viewState extends State<BusLine_Result_view> with SingleTi
           preferredSize: Size(double.infinity,110),
           child: Container(
             width: double.infinity,
-            height: 110,
+            height: foundation.defaultTargetPlatform == foundation.TargetPlatform.iOS ? 120 : 110,
             alignment: Alignment.topCenter,
             child: Column(
               children: [
@@ -162,7 +161,7 @@ class _BusLine_Result_viewState extends State<BusLine_Result_view> with SingleTi
                             onPressed: (){
                               moveScroll(0.0);
                             },
-                            child: Text("상행노선",style: TextStyle(fontSize: 15),),
+                            child: Text("상행노선",style: TextStyle(fontSize: 15, color: Colors.white),),
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.black38,
                               elevation: 0.0,
@@ -176,7 +175,7 @@ class _BusLine_Result_viewState extends State<BusLine_Result_view> with SingleTi
                             onPressed: (){
                               moveScroll(double.parse((widget.turnYn+1).toString()));
                             },
-                            child: Text("하행노선",style: TextStyle(fontSize: 15),),
+                            child: Text("하행노선",style: TextStyle(fontSize: 15, color: Colors.white),),
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.black38,
                               elevation: 0.0,
@@ -321,7 +320,7 @@ class _BusLine_Result_viewState extends State<BusLine_Result_view> with SingleTi
                                   ),
                                 ],
                               Container(
-                                  height: 40,
+                                  height: foundation.defaultTargetPlatform == foundation.TargetPlatform.iOS ? 50 : 40,
                                   margin: EdgeInsets.only(left: 10),
                                   width: MediaQuery.of(context).size.width - 150,
                                   child: Column(
