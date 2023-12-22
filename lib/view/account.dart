@@ -130,13 +130,14 @@ class _AccountState extends State<Account> {
         child: Column(
           children: [
             Container(
-              height: 20,
+              height:50,
               margin: EdgeInsets.only(bottom: 5),
               child: Text("귀하의 주변에 있는 버스 정류장 입니다.",style: TextStyle(fontSize: 20),),
             ),
             Container(
-              height: MediaQuery.of(context).size.height - 225,
               width: double.infinity,
+              color: Colors.yellow,
+              height: MediaQuery.of(context).size.height - 310,
               child: FutureBuilder(
                 future: _fetch1(),
                 builder: (context, snapshot) {
