@@ -62,6 +62,24 @@ class _BusLine_Result_viewState extends State<BusLine_Result_view> with SingleTi
   void initState() {
     // TODO: implement initState
     super.initState();
+
+    timer = Timer.periodic(Duration(seconds: 30), (Timer timer) async{
+        bus_position.clear();
+        var result;
+        try{
+          result = await busLocationList(widget.routeId);
+        }catch(e){
+          result = null;
+        }
+        if(result != null) {
+          result.forEach((i) {
+            setState(() {
+              bus_position.addAll({"${i['stationSeq']}${i['plateNo']}": "${i['stationSeq']}"});
+            });
+          });
+        } // 30초마다 데이터 다시 가져오기
+      });
+
     if(widget.star_check){
       stars  = Icon(Icons.star,color: Colors.yellow,size: 30,);
     }else{
@@ -106,28 +124,6 @@ class _BusLine_Result_viewState extends State<BusLine_Result_view> with SingleTi
       });
     }else{
       flutterToast();
-    }
-
-    if(widget.busposition != null){
-      timer = Timer.periodic(Duration(seconds: 10), (Timer timer) {
-        setState(() async{
-          bus_position.clear();
-          var result;
-          try{
-            result = await busLocationList(widget.routeId);
-          }catch(e){
-            result = null;
-          }
-          if(result != null) {
-            result.forEach((i) {
-              setState(() {
-                bus_position.addAll({"${i['stationSeq']}${i['plateNo']}": "${i['stationSeq']}"});
-              });
-            });
-          } // 30초마다 데이터 다시 가져오기
-          print("가져옴!");
-        });
-      });
     }
   }
 
