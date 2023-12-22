@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart' as foundation;
 import 'package:flutter/scheduler.dart' show SchedulerBinding;
 import 'package:flutter/material.dart';
@@ -31,6 +33,7 @@ class _BusLine_Result_viewState extends State<BusLine_Result_view> with SingleTi
   ScrollController scrollController = ScrollController();
   Map<String,String> bus_position = {};
   Map<String,String> bus_position_update = {};
+  late Timer timer;
   var turn_number;
   var colors;
   var stars = Icon(Icons.star_border,color: Colors.yellow,size: 30,);
@@ -103,6 +106,20 @@ class _BusLine_Result_viewState extends State<BusLine_Result_view> with SingleTi
     }else{
       flutterToast();
     }
+    if(widget.busposition != null){
+      timer = Timer.periodic(Duration(seconds: 30), (Timer timer) {
+        setState(() {
+          _fetch1(); // 30초마다 데이터 다시 가져오기
+          print("가져옴!");
+        });
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    timer.cancel(); // 화면이 나가면 타이머 중지
+    super.dispose();
   }
 
   void moveScroll(double a){
@@ -447,7 +464,7 @@ class _BusLine_Result_viewState extends State<BusLine_Result_view> with SingleTi
   }
   void fetchDataAndPerformAction(staOrder) async{
     // 여기에 원하는 작업 수행
-    await Future.delayed(Duration(seconds: 1));
+    await Future.delayed(Duration(seconds: 2));
     moveScroll(double.parse(staOrder));
   }
 }

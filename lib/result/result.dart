@@ -22,6 +22,7 @@ class Result_view extends StatefulWidget {
 }
 
 class _Result_viewState extends State<Result_view> {
+
   late Timer timer;
   var colors;
   var storage;
@@ -137,10 +138,9 @@ class _Result_viewState extends State<Result_view> {
       stars  = Icon(Icons.star_border,color: Colors.yellow,size: 30,);
     }
 
-    timer = Timer.periodic(Duration(seconds: 10), (Timer timer) {
+    timer = Timer.periodic(Duration(seconds: 30), (Timer timer) {
       setState(() {
-        _fetch1(); // 10초마다 데이터 다시 가져오기
-        print("가져옴!");
+        _fetch1(); // 30초마다 데이터 다시 가져오기
       });
     });
   }
