@@ -97,6 +97,7 @@ class _BusLine_Result_viewState extends State<BusLine_Result_view> with SingleTi
     SchedulerBinding.instance!.addPostFrameCallback((_) {
       fetchDataAndPerformAction(widget.staOrder); // 모든 작업이 완료되면 함수 호출
     });
+
     if(widget.busposition != null){
       widget.busposition.forEach((i){
         setState(() {
@@ -106,10 +107,24 @@ class _BusLine_Result_viewState extends State<BusLine_Result_view> with SingleTi
     }else{
       flutterToast();
     }
+
     if(widget.busposition != null){
-      timer = Timer.periodic(Duration(seconds: 30), (Timer timer) {
-        setState(() {
-          _fetch1(); // 30초마다 데이터 다시 가져오기
+      timer = Timer.periodic(Duration(seconds: 10), (Timer timer) {
+        setState(() async{
+          bus_position.clear();
+          var result;
+          try{
+            result = await busLocationList(widget.routeId);
+          }catch(e){
+            result = null;
+          }
+          if(result != null) {
+            result.forEach((i) {
+              setState(() {
+                bus_position.addAll({"${i['stationSeq']}${i['plateNo']}": "${i['stationSeq']}"});
+              });
+            });
+          } // 30초마다 데이터 다시 가져오기
           print("가져옴!");
         });
       });
