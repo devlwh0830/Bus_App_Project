@@ -190,7 +190,7 @@ class _Result_viewState extends State<Result_view> {
               ),
               Container(
                 width: double.infinity,
-                height: foundation.defaultTargetPlatform == foundation.TargetPlatform.iOS ? 710 : 710,
+                height: foundation.defaultTargetPlatform == foundation.TargetPlatform.iOS ? 710 : 660,
                 child: FutureBuilder(
                   future: _fetch1(),
                   builder: (context, snapshot) {
