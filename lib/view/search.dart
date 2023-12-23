@@ -562,7 +562,7 @@ class _SearchState extends State<Search>  with TickerProviderStateMixin{
                                               Container(
                                                 padding: EdgeInsets.only(right: 10),
                                                 child: Text(
-                                                  "정류장코드 : ${stationdatas[i]['mobileNo']} (${stationdatas[i]['regionName']})",
+                                                  "정류장코드 : ${stationdatas[i]['mobileNo'] ?? "정보없음"} (${stationdatas[i]['regionName']})",
                                                   style: TextStyle(color: Colors.white,fontSize: 15),
                                                   overflow: TextOverflow.ellipsis,
                                                 ),

@@ -23,6 +23,10 @@ class _HomesState extends State<Homes> {
       await launchUrlString("https://www.gg.go.kr/contents/contents.do?ciIdx=629&menuId=2344",mode: LaunchMode.platformDefault);
     }
 
+    onButtonTap3() async {
+      await launchUrlString("http://www.gbis.go.kr/gbis2014/bbs.action?cmd=routeChange",mode: LaunchMode.platformDefault);
+    }
+
     void toast(){
       Fluttertoast.showToast(
           msg: "외부 사이트로 이동 합니다.",
@@ -82,11 +86,11 @@ class _HomesState extends State<Homes> {
                 margin: EdgeInsets.only(top: 20,bottom: 5),
                 width: double.infinity,
                 height: 30,
-                child: Text("오늘도 좋은 하루 되세요!",style: TextStyle(fontSize: 20),),
+                child: Text("경기도 버스 유형",style: TextStyle(fontSize: 20),),
               ),
               Flexible(
                   fit: FlexFit.tight,
-                  flex: 5,
+                  flex: 4,
                   child: Container(
                     alignment: Alignment.bottomCenter,
                     width: double.infinity,
@@ -105,10 +109,102 @@ class _HomesState extends State<Homes> {
                           )
                         ]
                     ),
-                    child: Center(
-                      child: Text("업데이트 예정",style: TextStyle(fontSize: 20),),
+                    child: Column(
+                      children: [
+                        Expanded(
+                            child: Container(
+                              width: double.infinity,
+                              child: Row(
+                                children: [
+                                  Container(
+                                    margin: EdgeInsets.only(left: 20,right: 15),
+                                    child: Image.network("https://media.discordapp.net/attachments/905797523363483659/1139884238708146236/green_bus.png?width=460&height=460",scale: 5,),
+                                  ),
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text("광역,직행 급행 버스",style: TextStyle(fontSize: 20),),
+                                      Text("장거리를 이동하며 정차하는\n정류장이 적습니다.")
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ),
+                        ),
+                        Expanded(
+                          child: Container(
+                            width: double.infinity,
+                            child: Row(
+                              children: [
+                                Container(
+                                  margin: EdgeInsets.only(left: 20,right: 15),
+                                  child: Image.network("https://media.discordapp.net/attachments/905797523363483659/1116366006969962626/green_bus.png?width=432&height=432",scale: 5,),
+                                ),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text("일반형 시내버스    ",
+                                      style: TextStyle(fontSize: 20),
+                                      textAlign: TextAlign.left,
+                                    ),
+                                    Text("정차하는 정류장이 많으며 \n시내를 통과 합니다. ")
+                                  ],
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Container(
+                            width: double.infinity,
+                            child: Row(
+                              children: [
+                                Container(
+                                  margin: EdgeInsets.only(left: 20,right: 15),
+                                  child: Image.network("https://media.discordapp.net/attachments/905797523363483659/1139884388683886623/green_bus.png?width=460&height=460",scale: 5,),
+                                ),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text("마을버스               ",style: TextStyle(fontSize: 20),),
+                                    Text("주로 작은 도시 단위로 다니며\n요금이 저렴 합니다.")
+                                  ],
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
+                  )
+              ),
+              Flexible(
+                  child:InkWell(
+                    child: Container(
+                      padding: EdgeInsets.all(5),
+                      height: 90,
+                      width: double.infinity,
+                      margin: EdgeInsets.only(top: 5,right: 5,bottom: 5),
+                      decoration: BoxDecoration(
+                          color: Color.fromRGBO(221, 236, 202, 1),
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(
+                                  0.7),
+                              blurRadius: 1.0,
+                              spreadRadius: 0.0,
+                              offset: const Offset(0, 5),
+                            )
+                          ]
+                      ),
+                      child: Image.asset("assets/banner.png")
+                    ),
+                    onTap: (){
+                      onButtonTap3();
+                      toast();
+                    },
+                  )
               ),
               Flexible(
                   child: Container(

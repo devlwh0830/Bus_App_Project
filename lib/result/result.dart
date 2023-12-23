@@ -199,7 +199,7 @@ class _Result_viewState extends State<Result_view> {
                         fontSize: 20, color: Colors.white)),
                     Text("", style: TextStyle(
                         fontSize: 5, color: Colors.white)),
-                    Text("${widget.station_id}", style: TextStyle(
+                    Text("${widget.station_id ?? "정보없음"}", style: TextStyle(
                         fontSize: 20, color: Colors.white))
                   ],
                 ),
@@ -332,8 +332,8 @@ class _Result_viewState extends State<Result_view> {
                                             Text(
                                               busType(arrival['${widget.station_info[i]['routeId']}${widget.station_info[i]['staOrder']}'][0][0]),
                                               style: TextStyle(
-                                                color: busType(arrival['${widget.station_info[i]['routeId']}${widget.station_info[i]['staOrder']}'][0][0]).toString().substring(0,2) == "저상" ?  Colors.blue : Colors.black,
-                                                fontSize: 15
+                                                  color: busType(arrival['${widget.station_info[i]['routeId']}${widget.station_info[i]['staOrder']}'][0][0]).toString().substring(0,2) == "저상" ?  Colors.blue : Colors.black,
+                                                  fontSize: 15
                                               ),
                                             ),
                                             Container(
