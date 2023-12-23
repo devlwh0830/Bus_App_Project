@@ -184,7 +184,7 @@ class _HomesState extends State<Homes> {
                       padding: EdgeInsets.all(5),
                       height: 90,
                       width: double.infinity,
-                      margin: EdgeInsets.only(top: 5,right: 5,bottom: 5),
+                      margin: EdgeInsets.only(top: 5,bottom: 5),
                       decoration: BoxDecoration(
                           color: Color.fromRGBO(221, 236, 202, 1),
                           borderRadius: BorderRadius.circular(10),
