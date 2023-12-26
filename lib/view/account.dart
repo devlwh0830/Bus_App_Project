@@ -68,14 +68,14 @@ class _AccountState extends State<Account> {
                       result = [{"stationName":"위치 권한을 허용해 주세요."}];
                     });
                   },
-                  child: Text("거부"),
+                  child: Text("취소"),
                 ),
                 TextButton(
                   onPressed: ()async{
                     Navigator.pop(context);
                     getLocation();
                   },
-                  child: Text("허용"),
+                  child: Text("계속"),
                 )
               ],
             )

@@ -50,7 +50,7 @@ void FlutterDialog(context) {
                 onPressed: (){
                   Navigator.pop(context);
                 },
-                child: Text("닫기"),
+                child: Text("계속"),
               )
             ],
           )
