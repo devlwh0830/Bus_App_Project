@@ -64,7 +64,7 @@
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
         <meta-data
             android:name="com.kakao.sdk.AppKey"
-            android:value="016155f0a21b854d5aa5c5c9a61d7a8b" /> <!-- 네이티브 앱 키 설정 -->
+            android:value="카카오API 키" /> <!-- 네이티브 앱 키 설정 -->
 
         <meta-data
             android:name="flutterEmbedding"
