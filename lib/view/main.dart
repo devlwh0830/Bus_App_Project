@@ -112,13 +112,13 @@ class _HomesState extends State<Homes> {
                     child: Column(
                       children: [
                         Expanded(
-                            child: Container(
+                            child: SizedBox(
                               width: double.infinity,
                               child: Row(
                                 children: [
                                   Container(
                                     margin: EdgeInsets.only(left: 20,right: 15),
-                                    child: Image.network("https://media.discordapp.net/attachments/905797523363483659/1139884238708146236/green_bus.png?width=460&height=460",scale: 5,),
+                                    child: Image.asset("assets/red_bus.png",scale: 5,),
                                   ),
                                   Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -132,13 +132,13 @@ class _HomesState extends State<Homes> {
                             ),
                         ),
                         Expanded(
-                          child: Container(
+                          child: SizedBox(
                             width: double.infinity,
                             child: Row(
                               children: [
                                 Container(
                                   margin: EdgeInsets.only(left: 20,right: 15),
-                                  child: Image.network("https://media.discordapp.net/attachments/905797523363483659/1116366006969962626/green_bus.png?width=432&height=432",scale: 5,),
+                                  child: Image.asset("assets/green_bus.png",scale: 5,),
                                 ),
                                 Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -155,13 +155,13 @@ class _HomesState extends State<Homes> {
                           ),
                         ),
                         Expanded(
-                          child: Container(
+                          child: SizedBox(
                             width: double.infinity,
                             child: Row(
                               children: [
                                 Container(
                                   margin: EdgeInsets.only(left: 20,right: 15),
-                                  child: Image.network("https://media.discordapp.net/attachments/905797523363483659/1139884388683886623/green_bus.png?width=460&height=460",scale: 5,),
+                                  child: Image.asset("assets/yellow_bus.png",scale: 5,),
                                 ),
                                 Column(
                                   mainAxisAlignment: MainAxisAlignment.center,

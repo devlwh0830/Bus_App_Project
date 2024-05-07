@@ -64,31 +64,31 @@ class _SearchState extends State<Search>  with TickerProviderStateMixin{
 
   getColor(String color){
     if(color == "직행좌석형시내버스"){
-      colors = Image.network("https://media.discordapp.net/attachments/905797523363483659/1139884238708146236/green_bus.png?width=460&height=460");
+      colors = Image.asset("assets/red_bus.png");
     }else if(color == "좌석형시내버스"){
-      colors = Image.network("https://media.discordapp.net/attachments/905797523363483659/1139893877604618260/green_bus.png?width=460&height=460");
+      colors = Image.asset("assets/red_bus.png");
     }else if(color == "일반형시내버스"){
-      colors = Image.network("https://media.discordapp.net/attachments/905797523363483659/1116366006969962626/green_bus.png?width=432&height=432");
+      colors = Image.asset("assets/green_bus.png");
     }else if(color == "광역급행형시내버스"){
-      colors = Image.network("https://media.discordapp.net/attachments/905797523363483659/1139884238708146236/green_bus.png?width=460&height=460");
+      colors = Image.asset("assets/red_bus.png");
     }else if(color == "마을버스"){
-      colors = Image.network("https://media.discordapp.net/attachments/905797523363483659/1139884388683886623/green_bus.png?width=460&height=460");
+      colors = Image.asset("assets/yellow_bus.png");
     }else if(color == "따복형 시내버스"){
-      colors = Image.network("https://media.discordapp.net/attachments/905797523363483659/1116366006969962626/green_bus.png?width=432&height=432");
+      colors = Image.asset("assets/gray_bus.png");
     }else if(color == "직행좌석형농어촌버스"){
-      colors = Image.network("https://media.discordapp.net/attachments/905797523363483659/1139884238708146236/green_bus.png?width=460&height=460");
+      colors = Image.asset("assets/gray_bus.png");
     }else if(color == "좌석형농어촌버스"){
-      colors = Image.network("https://media.discordapp.net/attachments/905797523363483659/1116366006969962626/green_bus.png?width=432&height=432");
+      colors = Image.asset("assets/gray_bus.png");
     }else if(color == "일반형농어촌버스"){
-      colors = Image.network("https://media.discordapp.net/attachments/905797523363483659/1116366006969962626/green_bus.png?width=432&height=432");
+      colors = Image.asset("assets/gray_bus.png");
     }else if(color == "일반형시외버스"){
-      colors = Image.network("https://media.discordapp.net/attachments/905797523363483659/1116366006969962626/green_bus.png?width=432&height=432");
+      colors = Image.asset("assets/gray_bus.png");
     }else if(color == "리무진형 공항버스"){
-      colors = Image.network("https://media.discordapp.net/attachments/905797523363483659/1139894619291799562/green_bus.png?width=460&height=460");
+      colors = Image.asset("assets/gray_bus.png");
     }else if(color == "좌석형 공항버스"){
-      colors = Image.network("https://media.discordapp.net/attachments/905797523363483659/1139894619291799562/green_bus.png?width=460&height=460");
+      colors = Image.asset("assets/gray_bus.png");
     }else{
-      colors = Image.network("https://media.discordapp.net/attachments/905797523363483659/1139894619291799562/green_bus.png?width=460&height=460");
+      colors = Image.asset("assets/gray_bus.png");
     }
     return colors;
   }
@@ -544,31 +544,29 @@ class _SearchState extends State<Search>  with TickerProviderStateMixin{
                                     children: [
                                       Container(
                                         padding: EdgeInsets.only(left: 20,right: 30),
-                                        child: Image.network("https://media.discordapp.net/attachments/905797523363483659/1116527200972308560/bus-stop.png?width=432&height=432",scale: 10,),
+                                        child: Image.asset("assets/bus-stop.png",scale: 10,),
                                       ),
-                                      Container(
-                                          child:Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              Container(
-                                                padding: EdgeInsets.only(top: 10,right: 10),
-                                                width: MediaQuery.of(context).size.width - 140,
-                                                child: Text(
-                                                  "${stationdatas[i]['stationName']}",
-                                                  style: TextStyle(color: Colors.white,fontSize: 20),
-                                                  overflow: TextOverflow.ellipsis,
-                                                ),
-                                              ),
-                                              Container(
-                                                padding: EdgeInsets.only(right: 10),
-                                                child: Text(
-                                                  "정류장코드 : ${stationdatas[i]['mobileNo'] ?? "정보없음"} (${stationdatas[i]['regionName']})",
-                                                  style: TextStyle(color: Colors.white,fontSize: 15),
-                                                  overflow: TextOverflow.ellipsis,
-                                                ),
-                                              )
-                                            ],
+                                      Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Container(
+                                            padding: EdgeInsets.only(top: 10,right: 10),
+                                            width: MediaQuery.of(context).size.width - 140,
+                                            child: Text(
+                                              "${stationdatas[i]['stationName']}",
+                                              style: TextStyle(color: Colors.white,fontSize: 20),
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                          ),
+                                          Container(
+                                            padding: EdgeInsets.only(right: 10),
+                                            child: Text(
+                                              "정류장코드 : ${stationdatas[i]['mobileNo'] ?? "정보없음"} (${stationdatas[i]['regionName']})",
+                                              style: TextStyle(color: Colors.white,fontSize: 15),
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
                                           )
+                                        ],
                                       ),
                                     ],
                                   )

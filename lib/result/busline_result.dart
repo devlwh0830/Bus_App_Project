@@ -63,7 +63,8 @@ class _BusLine_Result_viewState extends State<BusLine_Result_view> with SingleTi
     // TODO: implement initState
     super.initState();
 
-    timer = Timer.periodic(Duration(seconds: 30), (Timer timer) async{
+    timer = Timer.periodic(Duration(seconds: 10), (Timer timer) async{
+      print("10초마다 데이터 다시 가져오기");
         bus_position.clear();
         var result;
         try{
@@ -301,8 +302,8 @@ class _BusLine_Result_viewState extends State<BusLine_Result_view> with SingleTi
                                     margin: EdgeInsets.only(left: 60),
                                     padding: EdgeInsets.zero,
                                     child: Image(
-                                      image: NetworkImage(
-                                          "https://media.discordapp.net/attachments/905797523363483659/1140636007180542062/-001_4.png?width=460&height=460"
+                                      image: AssetImage(
+                                          'assets/start.png'
                                       ),
                                       fit: BoxFit.fill,
                                     )
@@ -314,8 +315,8 @@ class _BusLine_Result_viewState extends State<BusLine_Result_view> with SingleTi
                                     margin: EdgeInsets.only(left: 60),
                                     padding: EdgeInsets.zero,
                                     child: Image(
-                                      image: NetworkImage(
-                                          "https://media.discordapp.net/attachments/905797523363483659/1140636006903722095/-001_5.png?width=460&height=460"
+                                      image: AssetImage(
+                                          'assets/last.png'
                                       ),
                                       fit: BoxFit.fill,
                                     )
@@ -327,8 +328,8 @@ class _BusLine_Result_viewState extends State<BusLine_Result_view> with SingleTi
                                     margin: EdgeInsets.only(left: 60),
                                     padding: EdgeInsets.zero,
                                     child: Image(
-                                      image: NetworkImage(
-                                          "https://media.discordapp.net/attachments/905797523363483659/1140636824918831205/-001_6.png?width=460&height=460"
+                                      image: AssetImage(
+                                          'assets/turn.png'
                                       ),
                                       fit: BoxFit.fill,
                                     )
@@ -340,8 +341,8 @@ class _BusLine_Result_viewState extends State<BusLine_Result_view> with SingleTi
                                       margin: EdgeInsets.only(left: 60),
                                       padding: EdgeInsets.zero,
                                       child: Image(
-                                        image: NetworkImage(
-                                            "https://media.discordapp.net/attachments/905797523363483659/1140625711326048346/-001_1.png?width=460&height=460"
+                                        image: AssetImage(
+                                            'assets/line.png'
                                         ),
                                         fit: BoxFit.fill,
                                       )
@@ -417,7 +418,7 @@ class _BusLine_Result_viewState extends State<BusLine_Result_view> with SingleTi
                                 alignment: Alignment.centerLeft,
                                 width: 40,
                                 height: 65,
-                                child: Image.network("https://media.discordapp.net/attachments/905797523363483659/1141336135893798964/-001_1.png?width=460&height=460"),
+                                child: Image.asset("assets/bus_icon.png"),
                               ),
                             ],
                           )

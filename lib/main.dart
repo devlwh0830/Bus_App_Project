@@ -54,7 +54,7 @@ class _MyAppState extends State<MyApp> {
               padding: EdgeInsets.fromLTRB(0, 26, 0, 0),
               width:250,
               height: 200,
-              child: Image.network("https://media.discordapp.net/attachments/905797523363483659/1116317186177368064/header_logo.png?width=500&height=125"),
+              child: Image.asset('assets/header_logo.png'),
             ),
           ),
       ),

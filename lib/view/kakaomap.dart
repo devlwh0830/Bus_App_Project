@@ -55,7 +55,7 @@ void KakaoDialog(context,station_info) {
                 showZoomControl: true,
                 zoomLevel: 3,
                 overlayText: "Text",
-                markerImageURL: 'https://media.discordapp.net/attachments/905797523363483659/1139879005844160622/-001.png',
+                markerImageURL: 'https://media.discordapp.net/attachments/905797523363483659/1237417461356298393/-001.png?ex=663b9250&is=663a40d0&hm=a0d78da21a3b9c22b768fddc9fc9c51fb7f41f0626dc1a168fa135c8ec7bd35b&=&format=webp&quality=lossless&width=424&height=424',
                 customScript: '''
                 var markers = [];
             
