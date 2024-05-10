@@ -285,7 +285,7 @@ class _BusLine_Result_viewState extends State<BusLine_Result_view> with SingleTi
                         } catch (e) {
                           result = [{'routeId': '000000', 'routeName': "정보를 찾을 수 없음", "routeTypeName": "정보가 없습니다."}];
                         }
-                        Navigator.push(context, MaterialPageRoute(builder: (_) => Result_view(displayId: widget.stationlist[i]['stationId'], station_name: widget.stationlist[i]['stationName'], station_id: widget.stationlist[i]['mobileNo']==null ? data['${widget.stationlist[i]['stationId']}'] : widget.stationlist[i]['mobileNo'], station_info: result,star_check:star_check)));
+                        Navigator.push(context, MaterialPageRoute(builder: (_) => Result_view(displayId: widget.stationlist[i]['stationId'], stationName: widget.stationlist[i]['stationName'], stationId: widget.stationlist[i]['mobileNo']==null ? data['${widget.stationlist[i]['stationId']}'] : widget.stationlist[i]['mobileNo'], stationInfo: result,starCheck:star_check)));
                       }
                     },
                     child: Stack(

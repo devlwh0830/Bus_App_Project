@@ -109,7 +109,7 @@ void KakaoDialog(context,station_info) {
               }catch(e){
                 result = [{'routeId':'000000','routeName':"정보를 찾을 수 없음","routeTypeName":"정보가 없습니다."}];
               }
-              Navigator.push(context, MaterialPageRoute(builder: (_) => Result_view(displayId:station_info['stationId'],station_name: station_info['stationName'],station_id:station_info['mobileNo'],station_info:result,star_check:star_check)));
+              Navigator.push(context, MaterialPageRoute(builder: (_) => Result_view(displayId:station_info['stationId'],stationName: station_info['stationName'],stationId:station_info['mobileNo'],stationInfo:result,starCheck:star_check)));
             },
             child: Text("정류장조회"),
           ),

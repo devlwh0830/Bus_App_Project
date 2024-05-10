@@ -524,7 +524,7 @@ class _SearchState extends State<Search>  with TickerProviderStateMixin{
                                   }catch(e){
                                     result = [{'routeId':'000000','routeName':"정보를 찾을 수 없음","routeTypeName":"정보가 없습니다."}];
                                   }
-                                  Navigator.push(context, MaterialPageRoute(builder: (_) => Result_view(displayId:stationdatas[i]['stationId'],station_name: stationdatas[i]['stationName'],station_id:stationdatas[i]['mobileNo'],station_info:result,star_check:star_check)));
+                                  Navigator.push(context, MaterialPageRoute(builder: (_) => Result_view(displayId:stationdatas[i]['stationId'],stationName: stationdatas[i]['stationName'],stationId:stationdatas[i]['mobileNo'],stationInfo:result,starCheck:star_check)));
                                 }
                               },
                               style: TextButton.styleFrom(
