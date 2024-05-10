@@ -174,14 +174,14 @@ class _AccountState extends State<Account> {
                                 children: [
                                   Container(
                                     padding: EdgeInsets.only(left: 20,right: 30),
-                                    child: Image.network("https://media.discordapp.net/attachments/905797523363483659/1116527200972308560/bus-stop.png?width=432&height=432",scale: 10,),
+                                    child: Image.asset("assets/bus-stop.png",scale: 10,)
                                   ),
                                   Container(
                                       child:Column(
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Container(
-                                            padding: EdgeInsets.only(top: 10,right: 10),
+                                            padding: EdgeInsets.only(top: 5,right: 10),
                                             width: MediaQuery.of(context).size.width - 150,
                                             child: Text(
                                               "${result[i]['stationName']}",

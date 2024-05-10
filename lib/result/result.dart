@@ -159,7 +159,7 @@ class _Result_viewState extends State<Result_view> {
           centerTitle: true,
           elevation: 0.0,
           backgroundColor: Colors.blueAccent,
-          title: Text("정류장 검색 결과"),
+          title: Text("정류장 검색 결과",style: TextStyle(color: Colors.white,fontSize: 20)),
           actions: [
             IconButton(
                 onPressed: ()async{

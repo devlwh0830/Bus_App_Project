@@ -415,7 +415,7 @@ class _SearchState extends State<Search>  with TickerProviderStateMixin{
                             ],
                           ),
                         ),
-                        Container(
+                        SizedBox(
                           height: MediaQuery.of(context).size.height - 240,
                           width: double.infinity,
                           child: ListView.builder(
@@ -476,13 +476,14 @@ class _SearchState extends State<Search>  with TickerProviderStateMixin{
                                                 },
                                               )
                                           ),
-                                          Container(
+                                          SizedBox(
                                               width: MediaQuery.of(context).size.width-135,
                                               child:Column(
                                                 crossAxisAlignment: CrossAxisAlignment.end,
+                                                mainAxisAlignment: MainAxisAlignment.center,
                                                 children: [
                                                   Container(
-                                                    padding: EdgeInsets.only(top: 9,right: 10),
+                                                    padding: EdgeInsets.only(right: 10),
                                                     child: Text(
                                                       "${data[i]['routeName'].toString()}번",
                                                       style: TextStyle(color: Colors.black,fontSize: 30),
@@ -507,9 +508,7 @@ class _SearchState extends State<Search>  with TickerProviderStateMixin{
                         )
                       ],
                     ),
-                    Container(
-                      width: double.infinity,
-                      height: 300,
+                    Expanded(
                       child: ListView.builder(
                           itemCount: stationdatas.length,
                           itemBuilder: (c,i){
@@ -534,7 +533,6 @@ class _SearchState extends State<Search>  with TickerProviderStateMixin{
                               child: Container(
                                   height: 70,
                                   width: double.infinity,
-                                  margin:EdgeInsets.fromLTRB(10,0, 10, 0),
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.vertical(bottom: Radius.circular(15),top: Radius.circular(15)),
                                     color: Colors.blueGrey,
@@ -543,7 +541,7 @@ class _SearchState extends State<Search>  with TickerProviderStateMixin{
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       Container(
-                                        padding: EdgeInsets.only(left: 20,right: 30),
+                                        padding: EdgeInsets.only(left: 20,right: 10),
                                         child: Image.asset("assets/bus-stop.png",scale: 10,),
                                       ),
                                       Column(
@@ -574,7 +572,7 @@ class _SearchState extends State<Search>  with TickerProviderStateMixin{
                             );
                           }
                       ),
-                    ),
+                    )
                   ],
                 )
             )
