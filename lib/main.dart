@@ -49,6 +49,7 @@ class _MyAppState extends State<MyApp> {
         child: AppBar(
             centerTitle: true,
             elevation: 0.0,
+            scrolledUnderElevation: 0.0,
             backgroundColor: Color.fromRGBO(221, 236, 202, 1),
             title: Container(
               padding: EdgeInsets.fromLTRB(0, 26, 0, 0),
@@ -60,6 +61,7 @@ class _MyAppState extends State<MyApp> {
       ),
       body:[Homes(),ManyFind(),Account()][tab],
       bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Color.fromRGBO(221, 236, 202, 1),
         currentIndex: tab,
         onTap: (index) {
           setState(() {
@@ -83,7 +85,7 @@ class _MyAppState extends State<MyApp> {
             activeIcon: Icon(Icons.map)
           ),
         ],
-        selectedItemColor: Colors.blue,
+        selectedItemColor: Colors.green.shade700,
         unselectedItemColor: Colors.grey,
         showUnselectedLabels: true,
         showSelectedLabels: true,

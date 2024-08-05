@@ -36,7 +36,7 @@ class _BusLine_Result_viewState extends State<BusLine_Result_view> with SingleTi
   late Timer timer;
   var turn_number;
   var colors;
-  var stars = Icon(Icons.star_border,color: Colors.yellow,size: 30,);
+  var stars = Icon(Icons.star_border,color: Colors.yellow.shade900,size: 30,);
 
   flutterToast() {
     Fluttertoast.showToast(
@@ -82,9 +82,9 @@ class _BusLine_Result_viewState extends State<BusLine_Result_view> with SingleTi
       });
 
     if(widget.star_check){
-      stars  = Icon(Icons.star,color: Colors.yellow,size: 30,);
+      stars  = Icon(Icons.star,color: Colors.yellow.shade900,size: 30,);
     }else{
-      stars  = Icon(Icons.star_border,color: Colors.yellow,size: 30,);
+      stars  = Icon(Icons.star_border,color: Colors.yellow.shade900,size: 30,);
     }
     if(widget.routeTypeName == "직행좌석형시내버스"){
       colors = Colors.redAccent;
@@ -157,16 +157,19 @@ class _BusLine_Result_viewState extends State<BusLine_Result_view> with SingleTi
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         centerTitle: true,
-        elevation: 5.0,
+        elevation: 0.0,
+        scrolledUnderElevation: 0.0,
         backgroundColor: colors,
-        title: Text("실시간 버스 위치"),
+        title: Text("실시간 버스 위치",style: TextStyle(fontSize: 20,color: Colors.white)),
         bottom: PreferredSize(
-          preferredSize: Size(double.infinity,110),
+          preferredSize: Size(double.infinity,120),
           child: Container(
             width: double.infinity,
-            height: foundation.defaultTargetPlatform == foundation.TargetPlatform.iOS ? 120 : 110,
             alignment: Alignment.topCenter,
             child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
                   "${widget.lineName}번",
@@ -177,38 +180,40 @@ class _BusLine_Result_viewState extends State<BusLine_Result_view> with SingleTi
                   style: TextStyle(fontSize: 15,color: Colors.white),
                 ),
                 Container(
-                  margin: EdgeInsets.only(top: 10),
-                  height: 45,
+                  padding: EdgeInsets.all(10),
                   width: double.infinity,
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Container(
-                        height: double.infinity,
-                        width: 150,
+                      Expanded(
                         child: ElevatedButton(
                             onPressed: (){
                               moveScroll(0.0);
                             },
-                            child: Text("상행노선",style: TextStyle(fontSize: 15, color: Colors.white),),
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.black38,
                               elevation: 0.0,
-                            )
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
+                            child: Text("상행노선",style: TextStyle(fontSize: 15, color: Colors.white),)
                         ),
                       ),
-                      Container(
-                        height: double.infinity,
-                        width: 150,
+                      const SizedBox(width: 10),
+                      Expanded(
                         child: ElevatedButton(
                             onPressed: (){
                               moveScroll(double.parse((widget.turnYn+1).toString()));
                             },
-                            child: Text("하행노선",style: TextStyle(fontSize: 15, color: Colors.white),),
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.black38,
                               elevation: 0.0,
-                            )
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
+                            child: Text("하행노선",style: TextStyle(fontSize: 15, color: Colors.white),)
                         ),
                       )
                     ],
@@ -220,18 +225,6 @@ class _BusLine_Result_viewState extends State<BusLine_Result_view> with SingleTi
         ),
         actions: [
           IconButton(
-              onPressed: () async{
-                var result;
-                result = await busRouteName(widget.routeId);
-                Navigator.push(
-                    context, MaterialPageRoute(builder: (_) => bus_line_info(lineName:widget.lineName,result:result)));
-              },
-              icon: Icon(
-                Icons.info_outline_rounded,
-                size: 30,
-              )
-          ),
-          IconButton(
               onPressed: ()async{
                 var storage = await SharedPreferences.getInstance();
                 var result = storage.getStringList('노선${widget.routeId}');
@@ -239,13 +232,13 @@ class _BusLine_Result_viewState extends State<BusLine_Result_view> with SingleTi
                   storage.setStringList('노선${widget.routeId}', [widget.line_info['regionName'],widget.line_info['routeId'],widget.line_info['routeName'],widget.line_info['routeTypeCd'],widget.line_info['routeTypeName']]);
                   manyfind("설정");
                   setState(() {
-                    stars = Icon(Icons.star,color: Colors.yellow,size: 30,);
+                    stars = Icon(Icons.star,color: Colors.yellow.shade900,size: 30,);
                   });
                 }else{
                   storage.remove('노선${widget.routeId}');
                   manyfind("해제");
                   setState(() {
-                    stars = Icon(Icons.star_border,color: Colors.yellow,size: 30,);
+                    stars = Icon(Icons.star_border,color: Colors.yellow.shade900,size: 30,);
                   });
                 }
               },
@@ -258,12 +251,11 @@ class _BusLine_Result_viewState extends State<BusLine_Result_view> with SingleTi
         builder: (context, snapshot) {
           if (snapshot.hasData == false) {
             return Center(
-              child: Container(
-                child: CircularProgressIndicator(),
-              ),
+              child: CircularProgressIndicator(),
             );
             }else {
               return ListView.separated(
+                shrinkWrap: true,
                 controller: scrollController,
                 padding: EdgeInsets.zero,
                 itemCount: widget.stationlist.length,
@@ -294,12 +286,13 @@ class _BusLine_Result_viewState extends State<BusLine_Result_view> with SingleTi
                           color: getColor(i),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               if(i == 0)...[
                                 Container(
                                     width: 60,
                                     height: 65,
-                                    margin: EdgeInsets.only(left: 60),
+                                    margin: EdgeInsets.only(left: 20),
                                     padding: EdgeInsets.zero,
                                     child: Image(
                                       image: AssetImage(
@@ -312,7 +305,7 @@ class _BusLine_Result_viewState extends State<BusLine_Result_view> with SingleTi
                                 Container(
                                     width: 60,
                                     height: 65,
-                                    margin: EdgeInsets.only(left: 60),
+                                    margin: EdgeInsets.only(left: 20),
                                     padding: EdgeInsets.zero,
                                     child: Image(
                                       image: AssetImage(
@@ -325,7 +318,7 @@ class _BusLine_Result_viewState extends State<BusLine_Result_view> with SingleTi
                                 Container(
                                     width: 60,
                                     height: 65,
-                                    margin: EdgeInsets.only(left: 60),
+                                    margin: EdgeInsets.only(left: 20),
                                     padding: EdgeInsets.zero,
                                     child: Image(
                                       image: AssetImage(
@@ -338,7 +331,7 @@ class _BusLine_Result_viewState extends State<BusLine_Result_view> with SingleTi
                                   Container(
                                       width: 60,
                                       height: 65,
-                                      margin: EdgeInsets.only(left: 60),
+                                      margin: EdgeInsets.only(left: 20),
                                       padding: EdgeInsets.zero,
                                       child: Image(
                                         image: AssetImage(
@@ -348,80 +341,74 @@ class _BusLine_Result_viewState extends State<BusLine_Result_view> with SingleTi
                                       )
                                   ),
                                 ],
-                              Container(
-                                  height: foundation.defaultTargetPlatform == foundation.TargetPlatform.iOS ? 50 : 40,
-                                  margin: EdgeInsets.only(left: 10),
-                                  width: MediaQuery.of(context).size.width - 150,
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      if(widget.stationlist[i]['stationName']
-                                          .toString()
-                                          .contains("(경유)"))...[
-                                        Text(
-                                            "${widget.stationlist[i]['stationName']}",
-                                            style: TextStyle(
-                                                fontSize: 20, color: Colors.grey),
-                                            overflow: TextOverflow.ellipsis
-                                        ),
-                                        Text(
-                                            "미정차 | ${widget
-                                                .stationlist[i]['regionName']}",
-                                            style: TextStyle(
-                                                fontSize: 15, color: Colors.grey),
-                                            overflow: TextOverflow.ellipsis
-                                        ),
-                                      ] else
-                                        ...[
+                              Expanded(
+                                child: Container(
+                                    padding: EdgeInsets.only(left: 10),
+                                    margin: EdgeInsets.only(left: 10),
+                                    width: MediaQuery.of(context).size.width - 150,
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        if(widget.stationlist[i]['stationName']
+                                            .toString()
+                                            .contains("(경유)"))...[
                                           Text(
-                                              "${widget
-                                                  .stationlist[i]['stationName']}",
-                                              style: TextStyle(fontSize: 20,
-                                                  color: widget.turnYn > i ? Colors
-                                                      .blue : Colors.red),
+                                              "${widget.stationlist[i]['stationName']}",
+                                              style: TextStyle(
+                                                  fontSize: 20, color: Colors.grey),
                                               overflow: TextOverflow.ellipsis
                                           ),
-                                          if(widget.stationlist[i]['mobileNo']==null)...[
-                                            Text(
-                                                "${data['${widget.stationlist[i]['stationId']}']} | ${widget.stationlist[i]['regionName']}",
-                                                style: TextStyle(
-                                                    fontSize: 15, color: Colors.grey),
-                                                overflow: TextOverflow.ellipsis
-                                            ),
-                                          ]else...[
+                                          Text(
+                                              "미정차 | ${widget
+                                                  .stationlist[i]['regionName']}",
+                                              style: TextStyle(
+                                                  fontSize: 15, color: Colors.grey),
+                                              overflow: TextOverflow.ellipsis
+                                          ),
+                                        ] else
+                                          ...[
                                             Text(
                                                 "${widget
-                                                    .stationlist[i]['mobileNo']} | ${widget
-                                                    .stationlist[i]['regionName']}",
-                                                style: TextStyle(
-                                                    fontSize: 15, color: Colors.grey),
+                                                    .stationlist[i]['stationName']}",
+                                                style: TextStyle(fontSize: 20,
+                                                    color: widget.turnYn > i ? Colors
+                                                        .blue : Colors.red),
                                                 overflow: TextOverflow.ellipsis
                                             ),
-                                          ]
+                                            if(widget.stationlist[i]['mobileNo']==null)...[
+                                              Text(
+                                                  "${data['${widget.stationlist[i]['stationId']}']} | ${widget.stationlist[i]['regionName']}",
+                                                  style: TextStyle(
+                                                      fontSize: 15, color: Colors.grey),
+                                                  overflow: TextOverflow.ellipsis
+                                              ),
+                                            ]else...[
+                                              Text(
+                                                  "${widget
+                                                      .stationlist[i]['mobileNo']} | ${widget
+                                                      .stationlist[i]['regionName']}",
+                                                  style: TextStyle(
+                                                      fontSize: 15, color: Colors.grey),
+                                                  overflow: TextOverflow.ellipsis
+                                              ),
+                                            ]
 
-                                        ]
-                                    ],
-                                  )
-                              ),
+                                          ]
+                                      ],
+                                    )
+                                ),
+                              )
                             ],
                           ),
                         ),
                         if(bus_position.containsValue((i+1).toString()))...[
-                          Row(
-                            children: [
-                              Container(
-                                margin: EdgeInsets.only(left: 10),
-                                alignment: Alignment.center,
-                                child: Text("정차 또는\n    이동중",style: TextStyle(fontSize: 15),),
-                              ),
-                              Container(
-                                alignment: Alignment.centerLeft,
-                                width: 40,
-                                height: 65,
-                                child: Image.asset("assets/bus_icon.png"),
-                              ),
-                            ],
-                          )
+                          Container(
+                            alignment: Alignment.centerLeft,
+                            width: 40,
+                            height: 65,
+                            margin: EdgeInsets.only(left: 30),
+                            child: Image.asset("assets/bus_icon.png"),
+                          ),
                         ]
                       ],
                     )
@@ -439,6 +426,10 @@ class _BusLine_Result_viewState extends State<BusLine_Result_view> with SingleTi
         },
       ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Color.fromRGBO(221, 236, 202, 1),
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(40)
+        ),
         onPressed: ()async{
           bus_position.clear();
           var result;
@@ -456,6 +447,13 @@ class _BusLine_Result_viewState extends State<BusLine_Result_view> with SingleTi
           }else{
             flutterToast();
           }
+          Fluttertoast.showToast(
+              msg: "새로고침 완료",
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.CENTER,
+              timeInSecForIosWeb: 1,
+              fontSize: 15.0
+          );
         },
         child: Icon(Icons.refresh_outlined,size: 35,),
       ),

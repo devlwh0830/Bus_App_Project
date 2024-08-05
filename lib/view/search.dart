@@ -202,99 +202,93 @@ class _SearchState extends State<Search>  with TickerProviderStateMixin{
                     Column(
                       children: [
                         Container(
+                          padding: EdgeInsets.only(top: 10,bottom: 10),
                           width: double.infinity,
-                          height: 40,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               Container(
-                                width: 75,
-                                height: 30,
+                                padding: EdgeInsets.only(left: 10,right: 10,top: 5,bottom: 5),
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.vertical(bottom: Radius.circular(15),top: Radius.circular(15)),
-                                    color: Colors.black12
+                                    color: Color.fromRGBO(221, 236, 202, 1)
                                 ),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                    Container(
-                                      margin: EdgeInsets.only(right: 3),
-                                      child: Text(
-                                        "광역",
-                                        style: TextStyle(
-                                          fontSize: 18,
-                                        ),
+                                    Text(
+                                      "광역",
+                                      style: TextStyle(
+                                        fontSize: 15,
                                       ),
                                     ),
-                                    Transform.scale(
-                                      scale: 1.1,
-                                      child: Container(
-                                        width: 20,
-                                        height: 20,
-                                        child: Checkbox(
-                                          value: _isChecked1,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(5),
-                                          ),
-                                          onChanged: (value){
-                                            setState(() {
-                                              _isChecked1 = value!;
-                                            });
-                                            getData(search);
-                                          },
+                                    const SizedBox(width: 5,),
+                                    SizedBox(
+                                      width: 15,
+                                      height: 15,
+                                      child: Checkbox(
+                                        value: _isChecked1,
+                                        activeColor: Colors.green,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(5),
                                         ),
+                                        onChanged: (value){
+                                          setState(() {
+                                            _isChecked1 = value!;
+                                          });
+                                          getData(search);
+                                        },
                                       ),
                                     ),
                                   ],
                                 ),
                               ),
                               Container(
-                                width: 75,
-                                height: 30,
+                                padding: EdgeInsets.only(left: 10,right: 10,top: 5,bottom: 5),
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.vertical(bottom: Radius.circular(15),top: Radius.circular(15)),
-                                    color: Colors.black12
+                                    color: Color.fromRGBO(221, 236, 202, 1)
                                 ),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     Container(
                                       margin: EdgeInsets.only(right: 3),
                                       child: Text(
                                         "직행",
                                         style: TextStyle(
-                                          fontSize: 18,
+                                          fontSize: 15,
                                         ),
                                       ),
                                     ),
-                                    Transform.scale(
-                                      scale: 1.1,
-                                      child: Container(
-                                        width: 20,
-                                        height: 20,
-                                        child: Checkbox(
-                                          value: _isChecked2,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(5),
-                                          ),
-                                          onChanged: (value){
-                                            setState(() {
-                                              _isChecked2 = value!;
-                                            });
-                                            getData(search);
-                                          },
+                                    const SizedBox(width: 5,),
+                                    SizedBox(
+                                      width: 15,
+                                      height: 15,
+                                      child: Checkbox(
+                                        value: _isChecked2,
+                                        activeColor: Colors.green,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(5),
                                         ),
+                                        onChanged: (value){
+                                          setState(() {
+                                            _isChecked2 = value!;
+                                          });
+                                          getData(search);
+                                        },
                                       ),
                                     ),
                                   ],
                                 ),
                               ),
                               Container(
-                                width: 75,
-                                height: 30,
+                                padding: EdgeInsets.only(left: 10,right: 10,top: 5,bottom: 5),
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.vertical(bottom: Radius.circular(15),top: Radius.circular(15)),
-                                    color: Colors.black12
+                                    color: Color.fromRGBO(221, 236, 202, 1)
                                 ),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -304,38 +298,36 @@ class _SearchState extends State<Search>  with TickerProviderStateMixin{
                                       child: Text(
                                         "일반",
                                         style: TextStyle(
-                                          fontSize: 18,
+                                          fontSize: 15,
                                         ),
                                       ),
                                     ),
-                                    Transform.scale(
-                                      scale: 1.1,
-                                      child: Container(
-                                        width: 20,
-                                        height: 20,
-                                        child: Checkbox(
-                                          value: _isChecked3,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(5),
-                                          ),
-                                          onChanged: (value){
-                                            setState(() {
-                                              _isChecked3 = value!;
-                                            });
-                                            getData(search);
-                                          },
+                                    const SizedBox(width: 5,),
+                                    SizedBox(
+                                      width: 15,
+                                      height: 15,
+                                      child: Checkbox(
+                                        value: _isChecked3,
+                                        activeColor: Colors.green,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(5),
                                         ),
+                                        onChanged: (value){
+                                          setState(() {
+                                            _isChecked3 = value!;
+                                          });
+                                          getData(search);
+                                        },
                                       ),
                                     ),
                                   ],
                                 ),
                               ),
                               Container(
-                                width: 75,
-                                height: 30,
+                                padding: EdgeInsets.only(left: 10,right: 10,top: 5,bottom: 5),
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.vertical(bottom: Radius.circular(15),top: Radius.circular(15)),
-                                    color: Colors.black12
+                                    color: Color.fromRGBO(221, 236, 202, 1)
                                 ),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -345,38 +337,36 @@ class _SearchState extends State<Search>  with TickerProviderStateMixin{
                                       child: Text(
                                         "마을",
                                         style: TextStyle(
-                                          fontSize: 18,
+                                          fontSize: 15,
                                         ),
                                       ),
                                     ),
-                                    Transform.scale(
-                                      scale: 1.1,
-                                      child: Container(
-                                        width: 20,
-                                        height: 20,
-                                        child: Checkbox(
-                                          value: _isChecked4,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(5),
-                                          ),
-                                          onChanged: (value){
-                                            setState(() {
-                                              _isChecked4 = value!;
-                                            });
-                                            getData(search);
-                                          },
+                                    const SizedBox(width: 5,),
+                                    SizedBox(
+                                      width: 15,
+                                      height: 15,
+                                      child: Checkbox(
+                                        value: _isChecked4,
+                                        activeColor: Colors.green,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(5),
                                         ),
+                                        onChanged: (value){
+                                          setState(() {
+                                            _isChecked4 = value!;
+                                          });
+                                          getData(search);
+                                        },
                                       ),
                                     ),
                                   ],
                                 ),
                               ),
                               Container(
-                                width: 75,
-                                height: 30,
+                                padding: EdgeInsets.only(left: 10,right: 10,top: 5,bottom: 5),
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.vertical(bottom: Radius.circular(15),top: Radius.circular(15)),
-                                    color: Colors.black12
+                                    color: Color.fromRGBO(221, 236, 202, 1)
                                 ),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -386,41 +376,44 @@ class _SearchState extends State<Search>  with TickerProviderStateMixin{
                                       child: Text(
                                         "기타",
                                         style: TextStyle(
-                                          fontSize: 18,
+                                          fontSize: 15,
                                         ),
                                       ),
                                     ),
-                                    Transform.scale(
-                                      scale: 1.1,
-                                      child: Container(
-                                        width: 20,
-                                        height: 20,
-                                        child: Checkbox(
-                                          value: _isChecked5,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(5),
-                                          ),
-                                          onChanged: (value){
-                                            setState(() {
-                                              _isChecked5 = value!;
-                                            });
-                                            getData(search);
-                                          },
+                                    const SizedBox(width: 5,),
+                                    SizedBox(
+                                      width: 15,
+                                      height: 15,
+                                      child: Checkbox(
+                                        value: _isChecked5,
+                                        activeColor: Colors.green,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(5),
                                         ),
+                                        onChanged: (value){
+                                          setState(() {
+                                            _isChecked5 = value!;
+                                          });
+                                          getData(search);
+                                        },
                                       ),
-                                    )
+                                    ),
                                   ],
                                 ),
                               ),
                             ],
                           ),
                         ),
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height - 240,
-                          width: double.infinity,
+                        Expanded(
                           child: ListView.builder(
-                              itemCount: data.length,
-                              itemBuilder: (c,i){
+                            shrinkWrap: true,
+                            itemCount: data.length,
+                            itemBuilder: (c,i){
+                              if(data[i]['routeName'].toString() == "00"){
+                                return Center(
+                                  child: Text("검색 결과가 없습니다."),
+                                );
+                              }else{
                                 return TextButton(
                                   onPressed: () async{
                                     if(data[i]['routeName'].toString() != "00"){
@@ -449,61 +442,58 @@ class _SearchState extends State<Search>  with TickerProviderStateMixin{
                                     foregroundColor: Colors.white,
                                   ),
                                   child: Container(
-                                      height: foundation.defaultTargetPlatform == foundation.TargetPlatform.iOS ? 80 : 70,
+                                      padding: EdgeInsets.only(left: 15,right: 15,top: 5,bottom: 5),
                                       width: double.infinity,
-                                      margin:EdgeInsets.fromLTRB(10,0, 10, 0),
                                       decoration: BoxDecoration(
                                           borderRadius: BorderRadius.vertical(bottom: Radius.circular(15),top: Radius.circular(15)),
                                           color: Colors.white,
-                                          boxShadow:[
+                                          border: Border.all(color: Colors.black),
+                                          boxShadow: [
                                             BoxShadow(
-                                              color: Colors.grey.withOpacity(0.7),
-                                              blurRadius: 1.0,
-                                              spreadRadius: 0.0,
-                                              offset: const Offset(0,5),
-                                            )
+                                              color: Colors.grey.withOpacity(0.5),
+                                              spreadRadius: 1,
+                                              blurRadius: 7,
+                                              offset: Offset(0, 3), // changes position of shadow
+                                            ),
                                           ]
                                       ),
                                       child: Row(
                                         mainAxisAlignment: MainAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        mainAxisSize: MainAxisSize.max,
                                         children: [
-                                          Container(
-                                              padding: EdgeInsets.only(left: 10),
-                                              child: InkWell(
-                                                child: getColor(data[i]['routeTypeName'].toString()),
-                                                onTap: (){
-                                                  flutterToast(data[i]['routeTypeName'].toString());
-                                                },
-                                              )
+                                          InkWell(
+                                            child: SizedBox(
+                                              width: 60,
+                                              height: 60,
+                                              child: getColor(data[i]['routeTypeName'].toString()),
+                                            ),
+                                            onTap: (){
+                                              flutterToast(data[i]['routeTypeName'].toString());
+                                            },
                                           ),
-                                          SizedBox(
-                                              width: MediaQuery.of(context).size.width-135,
-                                              child:Column(
-                                                crossAxisAlignment: CrossAxisAlignment.end,
-                                                mainAxisAlignment: MainAxisAlignment.center,
-                                                children: [
-                                                  Container(
-                                                    padding: EdgeInsets.only(right: 10),
-                                                    child: Text(
-                                                      "${data[i]['routeName'].toString()}번",
-                                                      style: TextStyle(color: Colors.black,fontSize: 30),
-                                                    ),
-                                                  ),
-                                                  Container(
-                                                    padding: EdgeInsets.only(right: 10),
-                                                    child: Text(
-                                                      "${data[i]['regionName'].toString()} 버스",
-                                                      style: TextStyle(color: Colors.black,fontSize: 15),
-                                                    ),
-                                                  )
-                                                ],
-                                              )
-                                          ),
+                                          Expanded(
+                                            child: Column(
+                                              crossAxisAlignment: CrossAxisAlignment.end,
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              children: [
+                                                Text(
+                                                  "${data[i]['routeName'].toString()}번",
+                                                  style: TextStyle(color: Colors.black,fontSize: 30),
+                                                ),
+                                                Text(
+                                                  "${data[i]['regionName'].toString()} 버스",
+                                                  style: TextStyle(color: Colors.black,fontSize: 15),
+                                                ),
+                                              ],
+                                            ),
+                                          )
                                         ],
                                       )
                                   ),
                                 );
                               }
+                            }
                           ),
                         )
                       ],
@@ -512,64 +502,77 @@ class _SearchState extends State<Search>  with TickerProviderStateMixin{
                       child: ListView.builder(
                           itemCount: stationdatas.length,
                           itemBuilder: (c,i){
-                            return TextButton(
-                              onPressed: () async{
-                                if(stationdatas[i]['stationName'] != "검색 결과 없음"){
-                                  var storage = await SharedPreferences.getInstance();
-                                  var results = storage.getStringList('정차${stationdatas[i]['mobileNo']}');
-                                  var star_check = results == null ? false : true;
-                                  var result;
-                                  try{
-                                    result = await busArrivalInfo(stationdatas[i]['stationId']);
-                                  }catch(e){
-                                    result = [{'routeId':'000000','routeName':"정보를 찾을 수 없음","routeTypeName":"정보가 없습니다."}];
+                            if(stationdatas[i]['stationName'] == "검색 결과 없음"){
+                              return Container(
+                                alignment: Alignment.center,
+                                padding: EdgeInsets.only(top: 10),
+                                child: Text("검색 결과가 없습니다."),
+                              );
+                            }else{
+                              return TextButton(
+                                onPressed: () async{
+                                  if(stationdatas[i]['stationName'] != "검색 결과 없음"){
+                                    var storage = await SharedPreferences.getInstance();
+                                    var results = storage.getStringList('정차${stationdatas[i]['mobileNo']}');
+                                    var star_check = results == null ? false : true;
+                                    var result;
+                                    try{
+                                      result = await busArrivalInfo(stationdatas[i]['stationId']);
+                                    }catch(e){
+                                      result = [{'routeId':'000000','routeName':"정보를 찾을 수 없음","routeTypeName":"정보가 없습니다."}];
+                                    }
+                                    Navigator.push(context, MaterialPageRoute(builder: (_) => Result_view(displayId:stationdatas[i]['stationId'],stationName: stationdatas[i]['stationName'],stationId:stationdatas[i]['mobileNo'],stationInfo:result,starCheck:star_check)));
                                   }
-                                  Navigator.push(context, MaterialPageRoute(builder: (_) => Result_view(displayId:stationdatas[i]['stationId'],stationName: stationdatas[i]['stationName'],stationId:stationdatas[i]['mobileNo'],stationInfo:result,starCheck:star_check)));
-                                }
-                              },
-                              style: TextButton.styleFrom(
-                                foregroundColor: Colors.white,
-                              ),
-                              child: Container(
-                                  height: 70,
-                                  width: double.infinity,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.vertical(bottom: Radius.circular(15),top: Radius.circular(15)),
-                                    color: Colors.blueGrey,
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Container(
-                                        padding: EdgeInsets.only(left: 20,right: 10),
-                                        child: Image.asset("assets/bus-stop.png",scale: 10,),
-                                      ),
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Container(
-                                            padding: EdgeInsets.only(top: 10,right: 10),
-                                            width: MediaQuery.of(context).size.width - 140,
-                                            child: Text(
+                                },
+                                style: TextButton.styleFrom(
+                                  foregroundColor: Colors.white,
+                                ),
+                                child: Container(
+                                  padding: EdgeInsets.all(10),
+                                    width: double.infinity,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.vertical(bottom: Radius.circular(15),top: Radius.circular(15)),
+                                      color: Colors.white,
+                                      border: Border.all(color: Colors.black),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.grey.withOpacity(0.5),
+                                          spreadRadius: 1,
+                                          blurRadius: 7,
+                                          offset: Offset(0, 3), // changes position of shadow
+                                        ),
+                                      ]
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                        Container(
+                                          padding: EdgeInsets.only(left: 10),
+                                          child: Icon(Icons.directions_bus,color: Colors.green,size: 30,),
+                                        ),
+                                        SizedBox(width: 20,),
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: [
+                                            Text(
                                               "${stationdatas[i]['stationName']}",
-                                              style: TextStyle(color: Colors.white,fontSize: 20),
+                                              style: TextStyle(color: Colors.black,fontSize: 20),
                                               overflow: TextOverflow.ellipsis,
                                             ),
-                                          ),
-                                          Container(
-                                            padding: EdgeInsets.only(right: 10),
-                                            child: Text(
+                                            Text(
                                               "정류장코드 : ${stationdatas[i]['mobileNo'] ?? "정보없음"} (${stationdatas[i]['regionName']})",
-                                              style: TextStyle(color: Colors.white,fontSize: 15),
+                                              style: TextStyle(color: Colors.black,fontSize: 15),
                                               overflow: TextOverflow.ellipsis,
                                             ),
-                                          )
-                                        ],
-                                      ),
-                                    ],
-                                  )
-                              ),
-                            );
+                                          ],
+                                        ),
+                                      ],
+                                    )
+                                ),
+                              );
+                            }
                           }
                       ),
                     )

@@ -53,29 +53,27 @@ class _HomesState extends State<Homes> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Container(
-                child: Hero(
-                  tag: "Search_Page",
-                  child: Material(
-                    type: MaterialType.transparency,
-                    child: Container(
-                      child: TextField(
-                        onTap: (){
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) => Search()));
-                        },
-                        keyboardType: TextInputType.none,
-                        decoration: InputDecoration(
-                          hintText: "노선 번호 또는 정류장 검색",
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(20),
-                            ),
+              Hero(
+                tag: "Search_Page",
+                child: Material(
+                  type: MaterialType.transparency,
+                  child: Container(
+                    child: TextField(
+                      onTap: (){
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => Search()));
+                      },
+                      keyboardType: TextInputType.none,
+                      decoration: InputDecoration(
+                        hintText: "노선 번호 또는 정류장 검색",
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(20),
                           ),
-                          suffixIcon: Padding(
-                              padding: EdgeInsets.only(right: 5),
-                              child: Icon(Icons.search_outlined,size: 35,)
-                          ),
+                        ),
+                        suffixIcon: Padding(
+                            padding: EdgeInsets.only(right: 5),
+                            child: Icon(Icons.search_outlined,size: 35,)
                         ),
                       ),
                     ),

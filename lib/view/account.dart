@@ -121,7 +121,7 @@ class _AccountState extends State<Account> {
     return Container(
       color: Color.fromRGBO(221, 236, 202, 1),
       child: Container(
-        padding: EdgeInsets.only(top: 15),
+        padding: EdgeInsets.only(top: 15,left: 10,right: 10),
         width: double.infinity,
         height: double.infinity,
         decoration: BoxDecoration(
@@ -129,15 +129,15 @@ class _AccountState extends State<Account> {
           color: Colors.white,
         ),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Container(
-              height:30,
-              margin: EdgeInsets.only(bottom: 5),
+              alignment: Alignment.center,
+              width: double.infinity,
               child: Text("귀하의 주변에 있는 버스 정류장 입니다.",style: TextStyle(fontSize: 20),),
             ),
-            Container(
-              width: double.infinity,
-              height: foundation.defaultTargetPlatform == foundation.TargetPlatform.iOS ? MediaQuery.of(context).size.height - 281 : MediaQuery.of(context).size.height - 300,
+            Expanded(
               child: FutureBuilder(
                 future: _fetch1(),
                 builder: (context, snapshot) {
@@ -147,6 +147,7 @@ class _AccountState extends State<Account> {
                     );
                   }else{
                     return ListView.builder(
+                      shrinkWrap: true,
                       itemCount: result.length,
                       itemBuilder: (c, i){
                         return TextButton(
@@ -162,44 +163,45 @@ class _AccountState extends State<Account> {
                             padding: EdgeInsets.only(top: 10),
                           ),
                           child: Container(
-                              height: foundation.defaultTargetPlatform == foundation.TargetPlatform.iOS ? 70 : 60,
+                            padding: EdgeInsets.all(10),
                               width: double.infinity,
-                              margin:EdgeInsets.fromLTRB(10,0, 10, 0),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.vertical(bottom: Radius.circular(15),top: Radius.circular(15)),
-                                color: Colors.blueGrey,
+                                color: Colors.white,
+                                border: Border.all(color: Colors.black),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.withOpacity(0.5),
+                                    spreadRadius: 0,
+                                    blurRadius: 5,
+                                    offset: Offset(0, 3), // changes position of shadow
+                                  ),
+                                ],
                               ),
                               child: Row(
+                                mainAxisSize: MainAxisSize.max,
                                 mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  Container(
-                                    padding: EdgeInsets.only(left: 20,right: 30),
-                                    child: Image.asset("assets/bus-stop.png",scale: 10,)
-                                  ),
-                                  Container(
-                                      child:Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Container(
-                                            padding: EdgeInsets.only(top: 5,right: 10),
-                                            width: MediaQuery.of(context).size.width - 150,
-                                            child: Text(
-                                              "${result[i]['stationName']}",
-                                              style: TextStyle(color: Colors.white,fontSize: 20),
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                          ),
-                                          Container(
-                                            padding: EdgeInsets.only(right: 10),
-                                            child: Text(
-                                              "${result[i]['distance']??"0"}m |${result[i]['mobileNo']??"위치확인불가"} (${result[i]['regionName']??"위치확인불가"})",
-                                              style: TextStyle(color: Colors.white,fontSize: 15),
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                          )
-                                        ],
-                                      )
-                                  ),
+                                  Image.asset("assets/bus-stop.png",width: 40,height: 40,fit: BoxFit.fill,),
+                                  SizedBox(width: 10,),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "${result[i]['stationName']}",
+                                          style: TextStyle(color: Colors.black,fontSize: 20),
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                        Text(
+                                          "${result[i]['distance']??"0"}m |${result[i]['mobileNo']??"위치 확인불가"} (${result[i]['regionName']??"위치확인불가"})",
+                                          style: TextStyle(color: Colors.black,fontSize: 13),
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ],
+                                    ),
+                                  )
                                 ],
                               )
                           ),
