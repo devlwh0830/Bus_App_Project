@@ -500,80 +500,88 @@ class _SearchState extends State<Search>  with TickerProviderStateMixin{
                     ),
                     Expanded(
                       child: ListView.builder(
-                          itemCount: stationdatas.length,
-                          itemBuilder: (c,i){
-                            if(stationdatas[i]['stationName'] == "검색 결과 없음"){
-                              return Container(
-                                alignment: Alignment.center,
-                                padding: EdgeInsets.only(top: 10),
-                                child: Text("검색 결과가 없습니다."),
-                              );
-                            }else{
-                              return TextButton(
-                                onPressed: () async{
-                                  if(stationdatas[i]['stationName'] != "검색 결과 없음"){
-                                    var storage = await SharedPreferences.getInstance();
-                                    var results = storage.getStringList('정차${stationdatas[i]['mobileNo']}');
-                                    var star_check = results == null ? false : true;
-                                    var result;
-                                    try{
-                                      result = await busArrivalInfo(stationdatas[i]['stationId']);
-                                    }catch(e){
-                                      result = [{'routeId':'000000','routeName':"정보를 찾을 수 없음","routeTypeName":"정보가 없습니다."}];
-                                    }
-                                    Navigator.push(context, MaterialPageRoute(builder: (_) => Result_view(displayId:stationdatas[i]['stationId'],stationName: stationdatas[i]['stationName'],stationId:stationdatas[i]['mobileNo'],stationInfo:result,starCheck:star_check)));
+                        itemCount: stationdatas.length,
+                        itemBuilder: (c,i){
+                          if(stationdatas[i]['stationName'] == "검색 결과 없음"){
+                            return Container(
+                              alignment: Alignment.center,
+                              padding: EdgeInsets.only(top: 10),
+                              child: Text("검색 결과가 없습니다."),
+                            );
+                          }else{
+                            return TextButton(
+                              onPressed: () async{
+                                if(stationdatas[i]['stationName'] != "검색 결과 없음"){
+                                  var storage = await SharedPreferences.getInstance();
+                                  var results = storage.getStringList('정차${stationdatas[i]['mobileNo']}');
+                                  var star_check = results == null ? false : true;
+                                  var result;
+                                  try{
+                                    result = await busArrivalInfo(stationdatas[i]['stationId']);
+                                  }catch(e){
+                                    result = [{'routeId':'000000','routeName':"정보를 찾을 수 없음","routeTypeName":"정보가 없습니다."}];
                                   }
-                                },
-                                style: TextButton.styleFrom(
-                                  foregroundColor: Colors.white,
-                                ),
-                                child: Container(
-                                  padding: EdgeInsets.all(10),
-                                    width: double.infinity,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.vertical(bottom: Radius.circular(15),top: Radius.circular(15)),
-                                      color: Colors.white,
-                                      border: Border.all(color: Colors.black),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.grey.withOpacity(0.5),
-                                          spreadRadius: 1,
-                                          blurRadius: 7,
-                                          offset: Offset(0, 3), // changes position of shadow
-                                        ),
-                                      ]
+                                  Navigator.push(context, MaterialPageRoute(builder: (_) => Result_view(displayId:stationdatas[i]['stationId'],stationName: stationdatas[i]['stationName'],stationId:stationdatas[i]['mobileNo'],stationInfo:result,starCheck:star_check)));
+                                }
+                              },
+                              style: TextButton.styleFrom(
+                                foregroundColor: Colors.white,
+                              ),
+                              child: Container(
+                                padding: EdgeInsets.all(10),
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.vertical(bottom: Radius.circular(15),top: Radius.circular(15)),
+                                  color: Colors.white,
+                                  border: Border.all(color: Colors.black),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withOpacity(0.5),
+                                      spreadRadius: 1,
+                                      blurRadius: 7,
+                                      offset: Offset(0, 3), // changes position of shadow
                                     ),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      children: [
-                                        Container(
-                                          padding: EdgeInsets.only(left: 10),
-                                          child: Icon(Icons.directions_bus,color: Colors.green,size: 30,),
-                                        ),
-                                        SizedBox(width: 20,),
-                                        Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          children: [
-                                            Text(
-                                              "${stationdatas[i]['stationName']}",
-                                              style: TextStyle(color: Colors.black,fontSize: 20),
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                            Text(
-                                              "정류장코드 : ${stationdatas[i]['mobileNo'] ?? "정보없음"} (${stationdatas[i]['regionName']})",
-                                              style: TextStyle(color: Colors.black,fontSize: 15),
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    )
+                                  ]
                                 ),
-                              );
-                            }
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Expanded(
+                                      flex: 1,
+                                      child: Container(
+                                        padding: EdgeInsets.only(left: 10),
+                                        child: Icon(Icons.directions_bus,color: Colors.green,size: 30,),
+                                      ),
+                                    ),
+                                    SizedBox(width: 20,),
+                                    Expanded(
+
+                                      flex: 5,
+
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            "${stationdatas[i]['stationName']}",
+                                            style: TextStyle(color: Colors.black,fontSize: 20),
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                          Text(
+                                            "정류장코드 : ${stationdatas[i]['mobileNo'] ?? "정보없음"} (${stationdatas[i]['regionName']})",
+                                            style: TextStyle(color: Colors.black,fontSize: 15),
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                )
+                              ),
+                            );
                           }
+                        }
                       ),
                     )
                   ],
