@@ -61,31 +61,31 @@ class _ManyFindState extends State<ManyFind> with TickerProviderStateMixin{
 
   getColor(String color){
     if(color == "직행좌석형시내버스"){
-      colors = Image.network("https://media.discordapp.net/attachments/905797523363483659/1139884238708146236/gray_bus.png?width=460&height=460");
+      colors = Image.asset("assets/red_bus.png");
     }else if(color == "좌석형시내버스"){
-      colors = Image.network("https://media.discordapp.net/attachments/905797523363483659/1139893877604618260/gray_bus.png?width=460&height=460");
+      colors = Image.asset("assets/red_bus.png");
     }else if(color == "일반형시내버스"){
-      colors = Image.network("https://media.discordapp.net/attachments/905797523363483659/1116366006969962626/gray_bus.png?width=432&height=432");
+      colors = Image.asset("assets/green_bus.png");
     }else if(color == "광역급행형시내버스"){
-      colors = Image.network("https://media.discordapp.net/attachments/905797523363483659/1139884238708146236/gray_bus.png?width=460&height=460");
+      colors = Image.asset("assets/red_bus.png");
     }else if(color == "마을버스"){
-      colors = Image.network("https://media.discordapp.net/attachments/905797523363483659/1139884388683886623/gray_bus.png?width=460&height=460");
+      colors = Image.asset("assets/yellow_bus.png");
     }else if(color == "따복형 시내버스"){
-      colors = Image.network("https://media.discordapp.net/attachments/905797523363483659/1116366006969962626/gray_bus.png?width=432&height=432");
+      colors = Image.asset("assets/gray_bus.png");
     }else if(color == "직행좌석형농어촌버스"){
-      colors = Image.network("https://media.discordapp.net/attachments/905797523363483659/1139884238708146236/gray_bus.png?width=460&height=460");
+      colors = Image.asset("assets/gray_bus.png");
     }else if(color == "좌석형농어촌버스"){
-      colors = Image.network("https://media.discordapp.net/attachments/905797523363483659/1116366006969962626/gray_bus.png?width=432&height=432");
+      colors = Image.asset("assets/gray_bus.png");
     }else if(color == "일반형농어촌버스"){
-      colors = Image.network("https://media.discordapp.net/attachments/905797523363483659/1116366006969962626/gray_bus.png?width=432&height=432");
+      colors = Image.asset("assets/gray_bus.png");
     }else if(color == "일반형시외버스"){
-      colors = Image.network("https://media.discordapp.net/attachments/905797523363483659/1116366006969962626/gray_bus.png?width=432&height=432");
+      colors = Image.asset("assets/gray_bus.png");
     }else if(color == "리무진형 공항버스"){
-      colors = Image.network("https://media.discordapp.net/attachments/905797523363483659/1139894619291799562/gray_bus.png?width=460&height=460");
+      colors = Image.asset("assets/gray_bus.png");
     }else if(color == "좌석형 공항버스"){
-      colors = Image.network("https://media.discordapp.net/attachments/905797523363483659/1139894619291799562/gray_bus.png?width=460&height=460");
+      colors = Image.asset("assets/gray_bus.png");
     }else{
-      colors = Image.network("https://media.discordapp.net/attachments/905797523363483659/1139894619291799562/gray_bus.png?width=460&height=460");
+      colors = Image.asset("assets/gray_bus.png");
     }
     return colors;
   }
@@ -111,33 +111,31 @@ class _ManyFindState extends State<ManyFind> with TickerProviderStateMixin{
         ),
         child: Column(
           children: [
-            Container(
-              child: TabBar(
-                tabs: [
-                  Container(
-                    height: 50,
-                    alignment: Alignment.center,
-                    child: Text(
-                      '버스노선',
-                      style: TextStyle(fontSize: 17),),
-                  ),
-                  Container(
-                    height: 50,
-                    alignment: Alignment.center,
-                    child: Text(
-                      '정류장',
-                      style: TextStyle(fontSize: 17),),
-                  ),
-                ],
-                indicator: BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(color: Colors.black, width: 2),
-                  ),
+            TabBar(
+              tabs: [
+                Container(
+                  height: 50,
+                  alignment: Alignment.center,
+                  child: Text(
+                    '버스노선',
+                    style: TextStyle(fontSize: 17),),
                 ),
-                labelColor: Colors.black,
-                unselectedLabelColor: Colors.black,
-                controller: _tabController,
+                Container(
+                  height: 50,
+                  alignment: Alignment.center,
+                  child: Text(
+                    '정류장',
+                    style: TextStyle(fontSize: 17),),
+                ),
+              ],
+              indicator: BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(color: Colors.black, width: 2),
+                ),
               ),
+              labelColor: Colors.black,
+              unselectedLabelColor: Colors.black,
+              controller: _tabController,
             ),
             Expanded(
               child: TabBarView(
@@ -148,128 +146,106 @@ class _ManyFindState extends State<ManyFind> with TickerProviderStateMixin{
                       child: Text("😢 등록된 즐겨찾기가 없습니다.",style: TextStyle(fontSize: 20),),
                     )
                   ]else...[
-                    Container(
-                        alignment: Alignment.center,
-                        child: FutureBuilder(
-                          future: _fetch1(),
-                          builder: (context, snapshot) {
-                            if (snapshot.hasData == false) {
-                              return Center(
-                                child: Container(
-                                  child: CircularProgressIndicator(),
+                    FutureBuilder(
+                      future: _fetch1(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData == false) {
+                          return Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }else {
+                          return ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: data.length,
+                            itemBuilder: (c, i) {
+                              return TextButton(
+                                onPressed: () async{
+                                  var storage = await SharedPreferences.getInstance();
+                                  var results = storage.getStringList('노선${data[i][1].toString()}');
+                                  var star_check = results == null ? false : true;
+                                  var result;
+                                  var result2;
+                                  var result3;
+                                  var line_info;
+                                  try{
+                                    line_info = await busRouteName(data[i][1]);
+                                    result = await busStationList(data[i][1]);
+                                    result2 = await turnBus(data[i][1]);
+                                  }catch(e){
+                                    result = [{'routeId':'000000','routeName':"정보를 찾을 수 없음","routeTypeName":"정보가 없습니다."}];
+                                  }
+                                  try{
+                                    result3 = await busLocationList(data[i][1]);
+                                  }catch(e){
+                                    result3 = null;
+                                  }
+                                  Navigator.push(context, MaterialPageRoute(builder: (_) => BusLine_Result_view(stationlist:result,lineName:data[i][2],turnYn:result2,routeId:data[i][1],seachroute: false, staOrder:"0",busposition:result3,regionName:data[i][0].toString(),routeTypeName:data[i][4].toString(),star_check:star_check,line_info:line_info)));
+                                },
+                                style: TextButton.styleFrom(
+                                  foregroundColor: Colors.white,
                                 ),
-                              );
-                            }else {
-                              return ListView.builder(
-                                  itemCount: data.length,
-                                  itemBuilder: (c, i) {
-                                    return TextButton(
-                                      onPressed: () async{
-                                        var storage = await SharedPreferences.getInstance();
-                                        var results = storage.getStringList('노선${data[i][1].toString()}');
-                                        var star_check = results == null ? false : true;
-                                        var result;
-                                        var result2;
-                                        var result3;
-                                        var line_info;
-                                        try{
-                                          line_info = await busRouteName(data[i][1]);
-                                          result = await busStationList(data[i][1]);
-                                          result2 = await turnBus(data[i][1]);
-                                        }catch(e){
-                                          result = [{'routeId':'000000','routeName':"정보를 찾을 수 없음","routeTypeName":"정보가 없습니다."}];
-                                        }
-                                        try{
-                                          result3 = await busLocationList(data[i][1]);
-                                        }catch(e){
-                                          result3 = null;
-                                        }
-                                        Navigator.push(
-                                            context, MaterialPageRoute(builder: (_) => BusLine_Result_view(stationlist:result,lineName:data[i][2],turnYn:result2,routeId:data[i][1],seachroute: false, staOrder:"0",busposition:result3,regionName:data[i][0].toString(),routeTypeName:data[i][4].toString(),star_check:star_check,line_info:line_info)));
-                                      },
-                                      style: TextButton.styleFrom(
-                                        foregroundColor: Colors.white,
-                                      ),
-                                      child: Container(
-                                          height: 70,
-                                          width: double.infinity,
-                                          margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                                          decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.vertical(
-                                                  bottom: Radius.circular(15),
-                                                  top: Radius.circular(15)),
-                                              color: Colors.white,
-                                              boxShadow: [
-                                                BoxShadow(
-                                                  color: Colors.grey.withOpacity(
-                                                      0.7),
-                                                  blurRadius: 1.0,
-                                                  spreadRadius: 0.0,
-                                                  offset: const Offset(0, 5),
-                                                )
-                                              ]
+                                child: Container(
+                                    padding: EdgeInsets.only(left: 15,right: 20),
+                                    width: double.infinity,
+                                    margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.vertical(
+                                            bottom: Radius.circular(15),
+                                            top: Radius.circular(15)),
+                                        color: Colors.white,
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.grey.withOpacity(
+                                                0.7),
+                                            blurRadius: 1.0,
+                                            spreadRadius: 0.0,
+                                            offset: const Offset(0, 5),
                                           ),
-                                          child: Row(
-                                            mainAxisAlignment: MainAxisAlignment
-                                                .start,
+                                        ],
+                                        border: Border.all(color: Colors.black,width: 1)
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      children: [
+                                        SizedBox(
+                                            height: 70,
+                                            child: InkWell(
+                                              child: getColor(data[i][4].toString()),
+                                              onTap: () {
+                                                flutterToast(data[i][4].toString());
+                                              },
+                                            )
+                                        ),
+                                        Expanded(
+                                          child: Column(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            crossAxisAlignment: CrossAxisAlignment.end,
                                             children: [
-                                              Container(
-                                                  padding: EdgeInsets.only(
-                                                      left: 20),
-                                                  child: InkWell(
-                                                    child: getColor(
-                                                        data[i][4]
-                                                            .toString()),
-                                                    onTap: () {
-                                                      flutterToast(
-                                                          data[i][4]
-                                                              .toString());
-                                                    },
-                                                  )
+                                              Text(
+                                                "${data[i][2].toString()}번",
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 25
+                                                ),
                                               ),
-                                              Container(
-                                                  width: MediaQuery
-                                                      .of(context)
-                                                      .size
-                                                      .width - 135,
-                                                  child: Column(
-                                                    crossAxisAlignment: CrossAxisAlignment
-                                                        .end,
-                                                    children: [
-                                                      Container(
-                                                        padding: EdgeInsets.only(
-                                                            top: 9, right: 10),
-                                                        child: Text(
-                                                          "${data[i][2]
-                                                              .toString()}번",
-                                                          style: TextStyle(
-                                                              color: Colors.black,
-                                                              fontSize: 30),
-                                                        ),
-                                                      ),
-                                                      Container(
-                                                        padding: EdgeInsets.only(
-                                                            right: 10),
-                                                        child: Text(
-                                                          "${data[i][0]
-                                                              .toString()} 버스",
-                                                          style: TextStyle(
-                                                              color: Colors.black,
-                                                              fontSize: 15),
-                                                        ),
-                                                      )
-                                                    ],
-                                                  )
+                                              Text(
+                                                "${data[i][0].toString()} 버스",
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 13
+                                                ),
                                               ),
                                             ],
-                                          )
-                                      ),
-                                    );
-                                  }
+                                          ),
+                                        )
+                                      ],
+                                    )
+                                ),
                               );
                             }
-                          },
-                        )
+                          );
+                        }
+                      },
                     ),
                   ],
                   if(datas.isEmpty)...[
@@ -277,110 +253,105 @@ class _ManyFindState extends State<ManyFind> with TickerProviderStateMixin{
                       child: Text("😢 등록된 즐겨찾기가 없습니다.",style: TextStyle(fontSize: 20),),
                     )
                   ]else...[
-                    Container(
-                        alignment: Alignment.center,
-                        child: FutureBuilder(
-                          future: _fetch2(),
-                          builder: (context, snapshot) {
-                            if (snapshot.hasData == false) {
-                              return Center(
-                                child: Container(
-                                  child: CircularProgressIndicator(),
-                                ),
-                              );
-                            } else {
-                              return ListView.builder(
-                                  itemCount: datas.length,
-                                  itemBuilder: (c, i) {
-                                    return TextButton(
-                                      onPressed: () async {
-                                        var storage = await SharedPreferences.getInstance();
-                                        var results = storage.getStringList('정차${datas[i][1]}');
-                                        var star_check = results == null ? false : true;
-                                        var result;
-                                        try {
-                                          result = await busArrivalInfo(datas[i][2]);
-                                        } catch (e) {
-                                          result = [{'routeId': '000000', 'routeName': "정보를 찾을 수 없음", "routeTypeName": "정보가 없습니다."}];
-                                        }
-                                        Navigator.push(context, MaterialPageRoute(
-                                            builder: (_) => Result_view(displayId: datas[i][2], stationName: datas[i][0], stationId: datas[i][1], stationInfo: result, starCheck: star_check)));
+                    FutureBuilder(
+                      future: _fetch2(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData == false) {
+                          return Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        } else {
+                          return ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: datas.length,
+                            itemBuilder: (c, i) {
+                              return TextButton(
+                                onPressed: () async {
+                                  var storage = await SharedPreferences.getInstance();
+                                  var results = storage.getStringList('정차${datas[i][1]}');
+                                  var star_check = results == null ? false : true;
+                                  var result;
+                                  try {
+                                    result = await busArrivalInfo(datas[i][2]);
+                                  } catch (e) {
+                                    result = [{'routeId': '000000', 'routeName': "정보를 찾을 수 없음", "routeTypeName": "정보가 없습니다."}];
+                                  }
+                                  Navigator.push(context, MaterialPageRoute(
+                                      builder: (_) => Result_view(displayId: datas[i][2], stationName: datas[i][0], stationId: datas[i][1], stationInfo: result, starCheck: star_check)));
 
-                                      },
-                                      style: TextButton.styleFrom(
-                                        foregroundColor: Colors.white,
-                                      ),
-                                      child: Container(
-                                          height: 60,
-                                          width: double.infinity,
-                                          margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.vertical(
-                                                bottom: Radius.circular(15),
-                                                top: Radius.circular(15)),
-                                            color: Colors.blueGrey,
+                                },
+                                style: TextButton.styleFrom(
+                                  foregroundColor: Colors.white,
+                                ),
+                                child: Container(
+                                    padding: EdgeInsets.only(left: 15, right: 10, top: 5, bottom: 5),
+                                    width: double.infinity,
+                                    margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.vertical(
+                                            bottom: Radius.circular(15),
+                                            top: Radius.circular(15)),
+                                        color: Colors.white,
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.grey.withOpacity(
+                                                0.7),
+                                            blurRadius: 1.0,
+                                            spreadRadius: 0.0,
+                                            offset: const Offset(0, 5),
                                           ),
-                                          child: Row(
-                                            mainAxisAlignment: MainAxisAlignment
+                                        ],
+                                        border: Border.all(color: Colors.black,width: 1)
+                                    ),
+                                    child: Row(
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      children: [
+                                        Icon(Icons.directions_bus,
+                                          color: Colors.green,
+                                          size: 30,
+                                        ),
+                                        const SizedBox(width: 20,),
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment
                                                 .start,
                                             children: [
-                                              Container(
-                                                padding: EdgeInsets.only(
-                                                    left: 20, right: 30),
-                                                child: Image.network(
-                                                  "https://media.discordapp.net/attachments/905797523363483659/1116527200972308560/bus-stop.png?width=432&height=432",
-                                                  scale: 10,),
+                                              Text(
+                                                "${datas[i][0]}",
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 20),
+                                                overflow: TextOverflow
+                                                    .ellipsis,
                                               ),
-                                              Container(
-                                                  child: Column(
-                                                    crossAxisAlignment: CrossAxisAlignment
-                                                        .start,
-                                                    children: [
-                                                      Container(
-                                                        padding: EdgeInsets.only(
-                                                            top: 10, right: 10),
-                                                        width: MediaQuery
-                                                            .of(context)
-                                                            .size
-                                                            .width - 140,
-                                                        child: Text(
-                                                          "${datas[i][0]}",
-                                                          style: TextStyle(
-                                                              color: Colors.white,
-                                                              fontSize: 20),
-                                                          overflow: TextOverflow
-                                                              .ellipsis,
-                                                        ),
-                                                      ),
-                                                      Container(
-                                                        padding: EdgeInsets.only(
-                                                            right: 10),
-                                                        child: Text(
-                                                          "정류장코드 : ${datas[i][1]}",
-                                                          style: TextStyle(
-                                                              color: Colors.white,
-                                                              fontSize: 15),
-                                                          overflow: TextOverflow
-                                                              .ellipsis,
-                                                        ),
-                                                      )
-                                                    ],
-                                                  )
+                                              Text(
+                                                "정류장코드 : ${datas[i][1]}",
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 15),
+                                                overflow: TextOverflow
+                                                    .ellipsis,
                                               ),
                                             ],
-                                          )
-                                      ),
-                                    );
-                                  }
-                              );
-                            }
-                          },
-                        )
-                    ),
+                                          ),
+                                        )
+                                      ],
+                                    )
+                                  ),
+                                );
+                              }
+                          );
+                        }
+                      },
+                    )
                   ]
                 ],
               ),
             ),
+            SizedBox(
+              height: 100,
+            )
           ],
         ),
       ),

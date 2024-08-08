@@ -183,8 +183,9 @@ class _AccountState extends State<Account> {
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  Image.asset("assets/bus-stop.png",width: 40,height: 40,fit: BoxFit.fill,),
                                   SizedBox(width: 10,),
+                                  Icon(Icons.directions_bus,size: 30,color: Colors.green,),
+                                  SizedBox(width: 20,),
                                   Expanded(
                                     child: Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -211,6 +212,9 @@ class _AccountState extends State<Account> {
                   }
                 },
               ),
+            ),
+            SizedBox(
+              height: 100,
             )
           ],
         )
